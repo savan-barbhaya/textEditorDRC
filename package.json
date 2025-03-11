@@ -1,6 +1,6 @@
 {
     "name": "text-editor-drc",
-    "description": "A temporary packaged fork of Lexical's official playground.",
+    "description": "Text Editor Made with Love by DRC Systems",
     "license": "MIT",
     "keywords": [
       "react",
@@ -99,7 +99,7 @@
     },
     "repository": {
       "type": "git",
-      "url": "git+https://github.com/drcpythonmfe/-lexical-texteditorclickup",
+      "url": "git+https://github.com/savan-barbhaya/textEditorDRC.git",
       "directory": "packages/lexical-playground"
     },
     
