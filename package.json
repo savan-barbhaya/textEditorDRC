@@ -1,5 +1,5 @@
 {
-    "name": "text-editor-drc",
+    "name": "text-editor-drcsystems",
     "description": "Text Editor Made with Love by DRC Systems",
     "license": "MIT",
     "keywords": [
@@ -46,7 +46,7 @@
       "AI Based editor",
       "AI Based rich text editor"
     ],
-    "version": "0.0.1",
+    "version": "0.0.3",
     "private": false,
     "main": "LexicalPlayground.js",
     "scripts": {
@@ -103,5 +103,5 @@
       "directory": "packages/lexical-playground"
     },
     
-    "author": "Dhrupad patel ,HarshVardhan ,  Brijesh Padsala"
+    "author": "Dhrupad patel ,HarshVardhan ,  Brijesh Padsala, Kush Patel"
   }
