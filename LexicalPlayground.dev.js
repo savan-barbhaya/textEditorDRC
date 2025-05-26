@@ -5088,8 +5088,10 @@ function ComponentPickerMenuPlugin({
   config,
   handleClickUpload
 }) {
+  const showMenuRef = React.useRef(false);
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
   const [modal, showModal] = useModal();
+  const [showMenu, setShowMenu] = React.useState(true);
   const [queryString, setQueryString] = React.useState(null);
 
   const uploadData = data => {
@@ -5101,6 +5103,23 @@ function ComponentPickerMenuPlugin({
   const checkForTriggerMatch = LexicalTypeaheadMenuPlugin.useBasicTypeaheadTriggerMatch('/', {
     minLength: 0
   });
+
+  function getQueryTextForSearch(editor) {
+    let text = null;
+    editor.getEditorState().read(() => {
+      const selection = lexical.$getSelection();
+
+      if (lexical.$isRangeSelection(selection)) {
+        const anchor = selection.anchor;
+        const anchorNode = anchor.getNode();
+        const textContent = anchorNode.getTextContent();
+        const offset = anchor.offset;
+        text = textContent.slice(0, offset);
+      }
+    });
+    return text;
+  }
+
   const getDynamicOptions = React.useCallback(() => {
     const options = [];
 
@@ -5318,6 +5337,35 @@ function ComponentPickerMenuPlugin({
       closeMenu();
     });
   }, [editor]);
+  React.useEffect(() => {
+    const removeListener = editor.registerUpdateListener(() => {
+      editor.getEditorState().read(() => {
+        const text = getQueryTextForSearch(editor);
+        const match = checkForTriggerMatch(text, editor);
+        const shouldShow = !!match;
+
+        if (showMenuRef.current !== shouldShow) {
+          showMenuRef.current = shouldShow;
+          setShowMenu(shouldShow);
+        }
+      });
+    });
+    return () => {
+      removeListener();
+    };
+  }, [editor]);
+  React.useEffect(() => {
+    const handleClickOutside = event => {
+      if (showMenuRef.current && !showMenuRef.current.contains(event.target)) {
+        setShowMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [setShowMenu]);
   return /*#__PURE__*/React.createElement(React.Fragment, null, modal, /*#__PURE__*/React.createElement(LexicalTypeaheadMenuPlugin.LexicalTypeaheadMenuPlugin, {
     onQueryChange: setQueryString,
     onSelectOption: onSelectOption,
@@ -5327,8 +5375,9 @@ function ComponentPickerMenuPlugin({
       selectedIndex,
       selectOptionAndCleanUp,
       setHighlightedIndex
-    }) => anchorElementRef.current && options.length ? /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React.createElement("div", {
-      className: "typeahead-popovers component-picker-menu"
+    }) => anchorElementRef.current && options.length && showMenu ? /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React.createElement("div", {
+      className: "typeahead-popovers component-picker-menu",
+      ref: showMenuRef
     }, /*#__PURE__*/React.createElement("ul", null, options.map((option, i) => /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(ComponentPickerMenuItem, {
       index: i,
       isSelected: selectedIndex === i,
@@ -6740,30 +6789,39 @@ function DropDown({
   React.useEffect(() => {
     const button = buttonRef.current;
     const dropDown = dropDownRef.current;
+    if (!showDropDown || !button || !dropDown) return;
 
-    if (showDropDown && button !== null && dropDown !== null) {
+    const updatePosition = () => {
       const {
         top,
         left
       } = button.getBoundingClientRect();
       dropDown.style.top = `${top + 40}px`;
       dropDown.style.left = `${Math.min(left, window.innerWidth - dropDown.offsetWidth - 20)}px`;
-    }
-
-    const handleScroll = () => {
-      if (showDropDown && button !== null && dropDown !== null) {
-        const {
-          top,
-          left
-        } = button.getBoundingClientRect();
-        dropDown.style.top = `${top + 40}px`;
-        dropDown.style.left = `${Math.min(left, window.innerWidth - dropDown.offsetWidth - 20)}px`;
-      }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    updatePosition();
+    window.addEventListener('scroll', updatePosition);
+    window.addEventListener('resize', updatePosition); // Find all scrollable ancestors of the button
+
+    const scrollParents = [];
+    let parent = button.parentElement;
+
+    while (parent) {
+      const overflowY = getComputedStyle(parent).overflowY;
+
+      if (overflowY === 'auto' || overflowY === 'scroll') {
+        scrollParents.push(parent);
+      }
+
+      parent = parent.parentElement;
+    }
+
+    scrollParents.forEach(el => el.addEventListener('scroll', updatePosition));
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', updatePosition);
+      window.removeEventListener('resize', updatePosition);
+      scrollParents.forEach(el => el.removeEventListener('scroll', updatePosition));
     };
   }, [dropDownRef, buttonRef, anchorElem.parentElement?.scrollTop, showDropDown]); // useEffect(() => {
   //   if (bit) {
@@ -6845,31 +6903,31 @@ function DropDown({
         document.removeEventListener('click', handle);
       };
     }
-  }, [dropDownRef, buttonRef, showDropDown, anchorElem.parentElement?.scrollTop, stopCloseOnClickSelf]);
-  React.useEffect(() => {
-    const scrollerElem = anchorElem.parentElement;
+  }, [dropDownRef, buttonRef, showDropDown, anchorElem.parentElement?.scrollTop, stopCloseOnClickSelf]); // useEffect(() => {
+  //   const scrollerElem = anchorElem.parentElement;
+  //   const update = () => {
+  //     const scrollPosition = scrollerElem?.scrollTop;
+  //     if (scrollerElem?.scrollTop) {
+  //       console.log('hiiii');
+  //     }
+  //   };
+  //   window.addEventListener('resize', update);
+  //   if (scrollerElem) {
+  //     scrollerElem.addEventListener('scroll', update);
+  //   }
+  //   return () => {
+  //     window.removeEventListener('resize', update);
+  //     if (scrollerElem) {
+  //       scrollerElem.removeEventListener('scroll', update);
+  //     }
+  //   };
+  // }, [
+  //   anchorElem?.parentElement?.scrollTop,
+  //   buttonRef,
+  //   setShowDropDown,
+  //   showDropDown,
+  // ]);
 
-    const update = () => {
-
-      if (scrollerElem?.scrollTop) {
-        console.log('hiiii');
-      }
-    };
-
-    window.addEventListener('resize', update);
-
-    if (scrollerElem) {
-      scrollerElem.addEventListener('scroll', update);
-    }
-
-    return () => {
-      window.removeEventListener('resize', update);
-
-      if (scrollerElem) {
-        scrollerElem.removeEventListener('scroll', update);
-      }
-    };
-  }, [anchorElem?.parentElement?.scrollTop, buttonRef, setShowDropDown, showDropDown]);
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
     disabled: disabled,
     "aria-label": buttonAriaLabel || buttonLabel,
@@ -9035,14 +9093,33 @@ function MentionsTypeaheadMenuItem({
 function MentionsPlugin({
   dummyMentionsDatas
 }) {
+  const menuRef = React.useRef(null);
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
   const [queryString, setQueryString] = React.useState(null);
   const [userData, setUserData] = React.useState([]);
+  const [showMenu, setShowMenu] = React.useState(true);
   const results = useMentionLookupService(userData, queryString);
   const options = React.useMemo(() => results.map(result => new MentionTypeaheadOption(result.name, result.email, /*#__PURE__*/React.createElement("i", {
     className: "icon user",
     "data-email": result.email
   }))).slice(0, SUGGESTION_LIST_LENGTH_LIMIT), [results]);
+
+  function getQueryTextForSearch(editor) {
+    let text = null;
+    editor.getEditorState().read(() => {
+      const selection = lexical.$getSelection();
+
+      if (lexical.$isRangeSelection(selection)) {
+        const anchor = selection.anchor;
+        const anchorNode = anchor.getNode();
+        const textContent = anchorNode.getTextContent();
+        const offset = anchor.offset;
+        text = textContent.slice(0, offset);
+      }
+    });
+    return text;
+  }
+
   const onSelectOption = React.useCallback((selectedOption, nodeToReplace, closeMenu) => {
     editor.update(() => {
       const mentionNode = $createMentionNode(selectedOption.name, selectedOption?.email); //selectedOption?.email
@@ -9061,6 +9138,31 @@ function MentionsPlugin({
   React.useEffect(() => {
     setUserData(dummyMentionsDatas || []);
   }, [dummyMentionsDatas]);
+  React.useEffect(() => {
+    const removeListener = editor.registerUpdateListener(() => {
+      editor.getEditorState().read(() => {
+        const text = getQueryTextForSearch(editor);
+        const match = checkForMentionMatch(text || "");
+        const shouldShow = !!match;
+        setShowMenu(shouldShow);
+      });
+    });
+    return () => {
+      removeListener();
+    };
+  }, [editor]);
+  React.useEffect(() => {
+    const handleClickOutside = event => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setShowMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [setShowMenu]);
   return /*#__PURE__*/React.createElement(LexicalTypeaheadMenuPlugin.LexicalTypeaheadMenuPlugin, {
     onQueryChange: setQueryString,
     onSelectOption: onSelectOption,
@@ -9070,8 +9172,9 @@ function MentionsPlugin({
       selectedIndex,
       selectOptionAndCleanUp,
       setHighlightedIndex
-    }) => anchorElementRef.current && results.length ? /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React.createElement("div", {
-      className: "typeahead-popovers nogridview mentions-menu"
+    }) => anchorElementRef.current && results.length && showMenu ? /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React.createElement("div", {
+      className: "typeahead-popovers nogridview mentions-menu",
+      ref: menuRef
     }, /*#__PURE__*/React.createElement("ul", null, options.map((option, i) => /*#__PURE__*/React.createElement(MentionsTypeaheadMenuItem, {
       index: i,
       isSelected: selectedIndex === i,
@@ -10579,6 +10682,7 @@ function Editor({
   isCharLimit,
   isCharLimitUtf8,
   isRichText = false,
+  allowEmoji = true,
   showTreeView,
   showTableOfContents,
   onChange,
@@ -10676,7 +10780,7 @@ function Editor({
     config: normToolbarConfig
   }), /*#__PURE__*/React.createElement(EmojiPickerPlugin, null), /*#__PURE__*/React.createElement(AutoEmbedPlugin, null), /*#__PURE__*/React.createElement(MentionsPlugin, {
     dummyMentionsDatas: dummyMentionsDatas
-  }), /*#__PURE__*/React.createElement(EmojisPlugin, null), /*#__PURE__*/React.createElement(LexicalHashtagPlugin.HashtagPlugin, null), /*#__PURE__*/React.createElement(KeywordsPlugin, null), /*#__PURE__*/React.createElement(SpeechToTextPlugin$1, null), /*#__PURE__*/React.createElement(LexicalAutoLinkPlugin, null), onChange && /*#__PURE__*/React.createElement(LexicalOnChangePlugin.OnChangePlugin, {
+  }), allowEmoji && /*#__PURE__*/React.createElement(EmojisPlugin, null), /*#__PURE__*/React.createElement(LexicalHashtagPlugin.HashtagPlugin, null), /*#__PURE__*/React.createElement(KeywordsPlugin, null), /*#__PURE__*/React.createElement(SpeechToTextPlugin$1, null), /*#__PURE__*/React.createElement(LexicalAutoLinkPlugin, null), onChange && /*#__PURE__*/React.createElement(LexicalOnChangePlugin.OnChangePlugin, {
     onChange: (editorState, editor) => {
       if (onChangeMode === 'html') {
         editor.update(() => {
