@@ -5395,20 +5395,22 @@ function ComponentPickerMenuPlugin({
   }));
 }
 
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
 const ACCEPTABLE_IMAGE_TYPES = ['image/', 'image/heic', 'image/heif', 'image/gif', 'image/webp'];
-function DragDropPaste() {
+function DragOnly() {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
   React.useEffect(() => {
-    return editor.registerCommand(richText.DRAG_DROP_PASTE, files => {
+    return editor.registerCommand(lexical.DROP_COMMAND, event => {
+      event.preventDefault();
+      const dt = event.dataTransfer;
+
+      if (!dt || dt.files.length === 0) {
+        return false;
+      }
+
+      const files = Array.from(event.dataTransfer.files);
+
       (async () => {
-        const filesResult = await utils.mediaFileReader(files, [ACCEPTABLE_IMAGE_TYPES].flatMap(x => x));
+        const filesResult = await utils.mediaFileReader(files, ACCEPTABLE_IMAGE_TYPES);
 
         for (const {
           file,
@@ -6792,12 +6794,70 @@ function DropDown({
     if (!showDropDown || !button || !dropDown) return;
 
     const updatePosition = () => {
+      if (!button || !dropDown) return;
+      const btnRect = button.getBoundingClientRect();
+      const ddRect = dropDown.getBoundingClientRect();
+      const offset = 8; // your desired spacing
+      // available space around the button
+
+      const space = {
+        bottom: window.innerHeight - btnRect.bottom,
+        top: btnRect.top,
+        right: window.innerWidth - btnRect.right,
+        left: btnRect.left
+      }; // find the first placement that fits
+
+      const placements = [{
+        side: 'bottom',
+        fits: space.bottom >= ddRect.height + offset
+      }, {
+        side: 'top',
+        fits: space.top >= ddRect.height + offset
+      }, {
+        side: 'right',
+        fits: space.right >= ddRect.width + offset
+      }, {
+        side: 'left',
+        fits: space.left >= ddRect.width + offset
+      }];
       const {
-        top,
-        left
-      } = button.getBoundingClientRect();
-      dropDown.style.top = `${top + 40}px`;
-      dropDown.style.left = `${Math.min(left, window.innerWidth - dropDown.offsetWidth - 20)}px`;
+        side
+      } = placements.find(p => p.fits) || {
+        side: 'bottom'
+      }; // compute top/left based on chosen side
+
+      let top, left;
+
+      switch (side) {
+        case 'bottom':
+          top = btnRect.bottom + offset;
+          left = btnRect.left;
+          break;
+
+        case 'top':
+          top = btnRect.top - ddRect.height - offset;
+          left = btnRect.left;
+          break;
+
+        case 'right':
+          top = btnRect.top;
+          left = btnRect.right + offset;
+          break;
+
+        case 'left':
+          top = btnRect.top;
+          left = btnRect.left - ddRect.width - offset;
+          break;
+      } // clamp left so dropdown never spills off-screen
+
+
+      left = Math.min(Math.max(0, left), window.innerWidth - ddRect.width - offset); // apply styles
+
+      Object.assign(dropDown.style, {
+        position: 'fixed',
+        top: `${top}px`,
+        left: `${left}px`
+      });
     };
 
     updatePosition();
@@ -9191,14 +9251,6 @@ function MentionsPlugin({
   });
 }
 
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
 const removeNode = (editor, node) => {
   try {
     editor.update(() => {
@@ -9264,9 +9316,39 @@ function OnImageUploadPlugin({
           });
         }
       }
-    });
+    }); // Handle paste events for images
+
+    const unregisterPaste = editor.registerCommand(lexical.PASTE_COMMAND, event => {
+      const clipboardData = event.clipboardData;
+
+      if (clipboardData) {
+        const files = Array.from(clipboardData.files || []);
+        files.forEach(async file => {
+          if (file.type.startsWith('image/')) {
+            const result = await onUpload(file, "1");
+            editor.update(() => {
+              const imageNode = $createImageNode({
+                src: result.url,
+                altText: file.name
+              }); // Use Lexical API to get the current selection
+
+              const selection = lexical.$getSelection();
+
+              if (selection !== null) {
+                // Insert the image node at cursor
+                // @ts-ignore
+                selection.insertNodes([imageNode]);
+              }
+            });
+          }
+        });
+      }
+
+      return false;
+    }, lexical.COMMAND_PRIORITY_CRITICAL);
     return () => {
       unregisterMutationListener();
+      unregisterPaste();
     };
   }, [editor, onUpload]);
   return null;
@@ -10775,7 +10857,7 @@ function Editor({
     className: `editor-container ${containerClassName ?? ''} ${showTreeView ? 'tree-view' : ''} ${!isRichText ? 'plain-text' : ''}`
   }, isMaxLength && /*#__PURE__*/React.createElement(MaxLengthPlugin, {
     maxLength: 30
-  }), /*#__PURE__*/React.createElement(DragDropPaste, null), /*#__PURE__*/React.createElement(LexicalAutoFocusPlugin.AutoFocusPlugin, null), /*#__PURE__*/React.createElement(LexicalClearEditorPlugin.ClearEditorPlugin, null), /*#__PURE__*/React.createElement(CommentPlugin, null), /*#__PURE__*/React.createElement(ComponentPickerMenuPlugin, {
+  }), /*#__PURE__*/React.createElement(DragOnly, null), /*#__PURE__*/React.createElement(LexicalAutoFocusPlugin.AutoFocusPlugin, null), /*#__PURE__*/React.createElement(LexicalClearEditorPlugin.ClearEditorPlugin, null), /*#__PURE__*/React.createElement(CommentPlugin, null), /*#__PURE__*/React.createElement(ComponentPickerMenuPlugin, {
     handleClickUpload: handleFileUpload,
     config: normToolbarConfig
   }), /*#__PURE__*/React.createElement(EmojiPickerPlugin, null), /*#__PURE__*/React.createElement(AutoEmbedPlugin, null), /*#__PURE__*/React.createElement(MentionsPlugin, {
