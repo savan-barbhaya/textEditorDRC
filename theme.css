@@ -1,4 +1,3 @@
-
 .TextEditor__ltr {
   text-align: left;
 }
@@ -423,4 +422,22 @@
 }
 .TextEditor__embedBlockFocus {
   outline: 2px solid rgb(60, 132, 244);
+}
+.TextEditor__paragraph span {
+  font-weight: normal !important;
+}
+.TextEditor_User_Image {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  -webkit-user-select: none;
+  user-select: none;
+  margin-right: 8px;
+  line-height: 16px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 50%;
+  align-items: center;
 }

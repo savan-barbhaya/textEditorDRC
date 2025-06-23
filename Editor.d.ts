@@ -6,8 +6,8 @@
  *
  */
 /// <reference types="react" />
+import { type EditorState, type LexicalEditor } from 'lexical';
 import type { ToolbarConfig } from './plugins/toolbarTypes';
-import type { EditorState, LexicalEditor } from 'lexical';
 import { type OnImageUpload } from './plugins/OnImageUploadPlugin';
 export declare type EditorProps = {
     isCollab?: boolean;

@@ -23,7 +23,7 @@ var LexicalPlainTextPlugin = require('@lexical/react/LexicalPlainTextPlugin');
 var LexicalRichTextPlugin = require('@lexical/react/LexicalRichTextPlugin');
 var LexicalTabIndentationPlugin = require('@lexical/react/LexicalTabIndentationPlugin');
 var LexicalTablePlugin = require('@lexical/react/LexicalTablePlugin');
-var React = require('react');
+var React$1 = require('react');
 var code = require('@lexical/code');
 var markdown = require('@lexical/markdown');
 var LexicalCollaborationContext = require('@lexical/react/LexicalCollaborationContext');
@@ -106,25 +106,25 @@ function createWebsocketProvider(id, yjsDocMap) {
  * LICENSE file in the root directory of this source tree.
  *
  */
-const Context$2 = /*#__PURE__*/React.createContext({});
+const Context$2 = /*#__PURE__*/React$1.createContext({});
 const SharedHistoryContext = ({
   children
 }) => {
-  const historyContext = React.useMemo(() => ({
+  const historyContext = React$1.useMemo(() => ({
     historyState: LexicalHistoryPlugin.createEmptyHistoryState()
   }), []);
-  return /*#__PURE__*/React.createElement(Context$2.Provider, {
+  return /*#__PURE__*/React$1.createElement(Context$2.Provider, {
     value: historyContext
   }, children);
 };
 const useSharedHistoryContext = () => {
-  return React.useContext(Context$2);
+  return React$1.useContext(Context$2);
 };
 
 /* eslint-disable header/header */
-const EditorComposerContext = /*#__PURE__*/React.createContext(null);
+const EditorComposerContext = /*#__PURE__*/React$1.createContext(null);
 function useEditorComposerContext() {
-  const editorContext = React.useContext(EditorComposerContext);
+  const editorContext = React$1.useContext(EditorComposerContext);
 
   if (editorContext == null) {
     {
@@ -149,13 +149,13 @@ function PortalImpl({
   title,
   closeOnClickOutside
 }) {
-  const modalRef = React.useRef(null);
-  React.useEffect(() => {
+  const modalRef = React$1.useRef(null);
+  React$1.useEffect(() => {
     if (modalRef.current !== null) {
       modalRef.current.focus();
     }
   }, []);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     let modalOverlayElement = null;
 
     const handler = event => {
@@ -191,21 +191,21 @@ function PortalImpl({
       }
     };
   }, [closeOnClickOutside, onClose]);
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", {
     className: "Modal__overlay",
     role: "dialog"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React$1.createElement("div", {
     className: "Modal__modal",
     tabIndex: -1,
     ref: modalRef
-  }, /*#__PURE__*/React.createElement("h2", {
+  }, /*#__PURE__*/React$1.createElement("h2", {
     className: "Modal__title"
-  }, title), /*#__PURE__*/React.createElement("button", {
+  }, title), /*#__PURE__*/React$1.createElement("button", {
     className: "Modal__closeButton",
     "aria-label": "Close modal",
     type: "button",
     onClick: onClose
-  }, "X"), /*#__PURE__*/React.createElement("div", {
+  }, "X"), /*#__PURE__*/React$1.createElement("div", {
     className: "Modal__content"
   }, children)));
 }
@@ -216,7 +216,7 @@ function Modal({
   title,
   closeOnClickOutside = false
 }) {
-  return /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React.createElement(PortalImpl, {
+  return /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React$1.createElement(PortalImpl, {
     onClose: onClose,
     title: title,
     closeOnClickOutside: closeOnClickOutside
@@ -231,11 +231,11 @@ function Modal({
  *
  */
 function useModal() {
-  const [modalContent, setModalContent] = React.useState(null);
-  const onClose = React.useCallback(() => {
+  const [modalContent, setModalContent] = React$1.useState(null);
+  const onClose = React$1.useCallback(() => {
     setModalContent(null);
   }, []);
-  const modal = React.useMemo(() => {
+  const modal = React$1.useMemo(() => {
     if (modalContent === null) {
       return null;
     }
@@ -245,13 +245,13 @@ function useModal() {
       content,
       closeOnClickOutside
     } = modalContent;
-    return /*#__PURE__*/React.createElement(Modal, {
+    return /*#__PURE__*/React$1.createElement(Modal, {
       onClose: onClose,
       title: title,
       closeOnClickOutside: closeOnClickOutside
     }, content);
   }, [modalContent, onClose]);
-  const showModal = React.useCallback((title, getContent, closeOnClickOutside = false) => {
+  const showModal = React$1.useCallback((title, getContent, closeOnClickOutside = false) => {
     setModalContent({
       closeOnClickOutside,
       content: getContent(onClose),
@@ -313,7 +313,7 @@ function Button({
   small,
   title
 }) {
-  return /*#__PURE__*/React.createElement("button", _extends({
+  return /*#__PURE__*/React$1.createElement("button", _extends({
     type: "button",
     disabled: disabled,
     className: joinClasses('Button__root', disabled && 'Button__disabled', small && 'Button__small', className),
@@ -325,7 +325,7 @@ function Button({
   }), children);
 }
 
-const ImageComponent$2 = /*#__PURE__*/React.lazy( // @ts-ignore
+const ImageComponent$2 = /*#__PURE__*/React$1.lazy( // @ts-ignore
 () => Promise.resolve().then(function () { return ImageComponent$1; }));
 
 function convertImageElement(domNode) {
@@ -516,9 +516,9 @@ class ImageNode extends lexical.DecoratorNode {
   }
 
   decorate() {
-    return /*#__PURE__*/React.createElement(React.Suspense, {
+    return /*#__PURE__*/React$1.createElement(React$1.Suspense, {
       fallback: null
-    }, /*#__PURE__*/React.createElement(ImageComponent$2, {
+    }, /*#__PURE__*/React$1.createElement(ImageComponent$2, {
       src: this.__src,
       altText: this.__altText,
       width: this.__width,
@@ -577,10 +577,10 @@ function TweetComponent({
   onLoad,
   tweetID
 }) {
-  const containerRef = React.useRef(null);
-  const previousTweetIDRef = React.useRef('');
-  const [isTweetLoading, setIsTweetLoading] = React.useState(false);
-  const createTweet = React.useCallback(async () => {
+  const containerRef = React$1.useRef(null);
+  const previousTweetIDRef = React$1.useRef('');
+  const [isTweetLoading, setIsTweetLoading] = React$1.useState(false);
+  const createTweet = React$1.useCallback(async () => {
     try {
       // @ts-expect-error Twitter is attached to the window.
       await window.twttr.widgets.createTweet(tweetID, containerRef.current);
@@ -596,7 +596,7 @@ function TweetComponent({
       }
     }
   }, [onError, onLoad, tweetID]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (tweetID !== previousTweetIDRef.current) {
       setIsTweetLoading(true);
 
@@ -619,11 +619,11 @@ function TweetComponent({
       }
     }
   }, [createTweet, onError, tweetID]);
-  return /*#__PURE__*/React.createElement(LexicalBlockWithAlignableContents.BlockWithAlignableContents, {
+  return /*#__PURE__*/React$1.createElement(LexicalBlockWithAlignableContents.BlockWithAlignableContents, {
     className: className,
     format: format,
     nodeKey: nodeKey
-  }, isTweetLoading ? loadingComponent : null, /*#__PURE__*/React.createElement("div", {
+  }, isTweetLoading ? loadingComponent : null, /*#__PURE__*/React$1.createElement("div", {
     style: {
       display: 'inline-block',
       width: '550px'
@@ -702,7 +702,7 @@ class TweetNode extends LexicalDecoratorBlockNode.DecoratorBlockNode {
       base: embedBlockTheme.base || '',
       focus: embedBlockTheme.focus || ''
     };
-    return /*#__PURE__*/React.createElement(TweetComponent, {
+    return /*#__PURE__*/React$1.createElement(TweetComponent, {
       className: className,
       format: this.__format,
       loadingComponent: "Loading...",
@@ -948,15 +948,15 @@ function ActionsPlugin({
   isRichText
 }) {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  const [isEditable, setIsEditable] = React.useState(() => editor.isEditable());
-  React.useState(false);
-  const [connected, setConnected] = React.useState(false);
-  const [isEditorEmpty, setIsEditorEmpty] = React.useState(true);
+  const [isEditable, setIsEditable] = React$1.useState(() => editor.isEditable());
+  React$1.useState(false);
+  const [connected, setConnected] = React$1.useState(false);
+  const [isEditorEmpty, setIsEditorEmpty] = React$1.useState(true);
   const [modal, showModal] = useModal();
   const {
     isCollabActive
   } = LexicalCollaborationContext.useCollaborationContext();
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     return utils.mergeRegister(editor.registerEditableListener(editable => {
       setIsEditable(editable);
     }), editor.registerCommand(yjs$1.CONNECTED_COMMAND, payload => {
@@ -965,7 +965,7 @@ function ActionsPlugin({
       return false;
     }, lexical.COMMAND_PRIORITY_EDITOR));
   }, [editor]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     return editor.registerUpdateListener(({
       dirtyElements,
       prevEditorState,
@@ -994,7 +994,7 @@ function ActionsPlugin({
       });
     });
   }, [editor, isEditable]);
-  React.useCallback(() => {
+  React$1.useCallback(() => {
     editor.update(() => {
       const root = lexical.$getRoot();
       const firstChild = root.getFirstChild();
@@ -1009,9 +1009,9 @@ function ActionsPlugin({
       root.selectEnd();
     });
   }, [editor]);
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", {
     className: "actions"
-  }, isCollabActive && /*#__PURE__*/React.createElement("button", {
+  }, isCollabActive && /*#__PURE__*/React$1.createElement("button", {
     type: "button",
     className: "action-button connect",
     onClick: () => {
@@ -1019,7 +1019,7 @@ function ActionsPlugin({
     },
     title: `${connected ? 'Disconnect' : 'Connect'} Collaborative Editing`,
     "aria-label": `${connected ? 'Disconnect from' : 'Connect to'} a collaborative editing server`
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: connected ? 'disconnect' : 'connect'
   })), modal);
 }
@@ -1031,7 +1031,7 @@ function ActionsPlugin({
  * LICENSE file in the root directory of this source tree.
  *
  */
-const Context$1 = /*#__PURE__*/React.createContext([_cb => () => {
+const Context$1 = /*#__PURE__*/React$1.createContext([_cb => () => {
   return;
 }, _newSuggestion => {
   return;
@@ -1039,7 +1039,7 @@ const Context$1 = /*#__PURE__*/React.createContext([_cb => () => {
 const SharedAutocompleteContext = ({
   children
 }) => {
-  const context = React.useMemo(() => {
+  const context = React$1.useMemo(() => {
     let suggestion = null;
     const listeners = new Set();
     return [cb => {
@@ -1056,14 +1056,14 @@ const SharedAutocompleteContext = ({
       }
     }];
   }, []);
-  return /*#__PURE__*/React.createElement(Context$1.Provider, {
+  return /*#__PURE__*/React$1.createElement(Context$1.Provider, {
     value: context
   }, children);
 };
 const useSharedAutocompleteContext = () => {
-  const [subscribe, publish] = React.useContext(Context$1);
-  const [suggestion, setSuggestion] = React.useState(null);
-  React.useEffect(() => {
+  const [subscribe, publish] = React$1.useContext(Context$1);
+  const [suggestion, setSuggestion] = React$1.useState(null);
+  React$1.useEffect(() => {
     return subscribe(newSuggestion => {
       setSuggestion(newSuggestion);
     });
@@ -1115,7 +1115,7 @@ class AutocompleteNode extends lexical.DecoratorNode {
       return null;
     }
 
-    return /*#__PURE__*/React.createElement(AutocompleteComponent, null);
+    return /*#__PURE__*/React$1.createElement(AutocompleteComponent, null);
   }
 
 }
@@ -1128,7 +1128,7 @@ function AutocompleteComponent() {
   const userAgentData = window.navigator.userAgentData;
   const isMobile = userAgentData !== undefined ? userAgentData.mobile : window.innerWidth <= 800 && window.innerHeight <= 600; // TODO Move to theme
 
-  return /*#__PURE__*/React.createElement("span", {
+  return /*#__PURE__*/React$1.createElement("span", {
     style: {
       color: '#ccc'
     },
@@ -1260,7 +1260,7 @@ function $search(selection$1) {
 
 
 function useQuery() {
-  return React.useCallback(searchText => {
+  return React$1.useCallback(searchText => {
     const server = new AutocompleteServer();
     console.time('query');
     const response = server.query(searchText);
@@ -1273,7 +1273,7 @@ function AutocompletePlugin() {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
   const [, setSuggestion] = useSharedAutocompleteContext();
   const query = useQuery();
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     let autocompleteNodeKey = null;
     let lastMatch = null;
     let lastSuggestion = null;
@@ -1478,7 +1478,7 @@ const DICTIONARY = ['information', 'available', 'copyright', 'university', 'mana
 function DialogButtonsList({
   children
 }) {
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", {
     className: "DialogButtonsList"
   }, children);
 }
@@ -1486,7 +1486,7 @@ function DialogActions({
   'data-test-id': dataTestId,
   children
 }) {
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", {
     className: "DialogActions",
     "data-test-id": dataTestId
   }, children);
@@ -1498,11 +1498,11 @@ function FigmaComponent({
   nodeKey,
   documentID
 }) {
-  return /*#__PURE__*/React.createElement(LexicalBlockWithAlignableContents.BlockWithAlignableContents, {
+  return /*#__PURE__*/React$1.createElement(LexicalBlockWithAlignableContents.BlockWithAlignableContents, {
     className: className,
     format: format,
     nodeKey: nodeKey
-  }, /*#__PURE__*/React.createElement("iframe", {
+  }, /*#__PURE__*/React$1.createElement("iframe", {
     width: "560",
     height: "315",
     src: `https://www.figma.com/embed?embed_host=lexical&url=\
@@ -1560,7 +1560,7 @@ class FigmaNode extends LexicalDecoratorBlockNode.DecoratorBlockNode {
       base: embedBlockTheme.base || '',
       focus: embedBlockTheme.focus || ''
     };
-    return /*#__PURE__*/React.createElement(FigmaComponent, {
+    return /*#__PURE__*/React$1.createElement(FigmaComponent, {
       className: className,
       format: this.__format,
       nodeKey: this.getKey(),
@@ -1587,7 +1587,7 @@ function $createFigmaNode(documentID) {
 const INSERT_FIGMA_COMMAND = lexical.createCommand('INSERT_FIGMA_COMMAND');
 function FigmaPlugin() {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (!editor.hasNodes([FigmaNode])) {
       throw new Error('FigmaPlugin: FigmaNode not registered on editor');
     }
@@ -1627,16 +1627,16 @@ function OfficeComponent({
     height: '30px',
     width: '250px'
   };
-  return /*#__PURE__*/React.createElement(LexicalBlockWithAlignableContents.BlockWithAlignableContents, {
+  return /*#__PURE__*/React$1.createElement(LexicalBlockWithAlignableContents.BlockWithAlignableContents, {
     className: className,
     format: format,
     nodeKey: nodeKey
-  }, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("a", {
+  }, /*#__PURE__*/React$1.createElement("p", null, /*#__PURE__*/React$1.createElement("a", {
     href: `https://view.officeapps.live.com/op/view.aspx?src=${url}`,
     target: "_blank",
     rel: id,
     title: id
-  }, /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React$1.createElement("span", {
     "data-lexical-text": "true",
     style: buttonStyle,
     title: id
@@ -1767,7 +1767,7 @@ class OfficeNode extends LexicalDecoratorBlockNode.DecoratorBlockNode {
       base: embedBlockTheme.base || '',
       focus: embedBlockTheme.focus || ''
     };
-    return /*#__PURE__*/React.createElement(OfficeComponent, {
+    return /*#__PURE__*/React$1.createElement(OfficeComponent, {
       className: className,
       format: this.__format,
       nodeKey: this.getKey(),
@@ -1796,14 +1796,33 @@ function $createOfficeNode(data) {
 const INSERT_OFFICE_COMMAND = lexical.createCommand('INSERT_OFFICE_COMMAND');
 function OfficePlugin() {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (!editor.hasNodes([OfficeNode])) {
       throw new Error('OfficePlugin: OfficeNode not registered on editor');
     }
 
     return editor.registerCommand(INSERT_OFFICE_COMMAND, payload => {
-      const officeNode = $createOfficeNode(payload);
-      utils.$insertNodeToNearestRoot(officeNode);
+      editor.update(() => {
+        const officeNode = $createOfficeNode(payload);
+        const selection = lexical.$getSelection();
+        const root = lexical.$getRoot();
+        const selectedNodes = selection?.getNodes(); // Remove initial empty paragraph if it exists
+
+        if (selectedNodes?.length === 1 && lexical.$isParagraphNode(selectedNodes[0]) && selectedNodes[0].getTextContent() === '') {
+          selectedNodes[0].remove();
+        } // Insert the file
+
+
+        utils.$insertNodeToNearestRoot(officeNode); // Insert a new paragraph after the video
+
+        const paragraph = lexical.$createParagraphNode();
+        root.append(paragraph); // Move cursor into the new paragraph
+
+        const newSelection = lexical.$createRangeSelection();
+        newSelection.anchor.set(paragraph.getKey(), 0, 'element');
+        newSelection.focus.set(paragraph.getKey(), 0, 'element');
+        lexical.$setSelection(newSelection);
+      });
       return true;
     }, lexical.COMMAND_PRIORITY_EDITOR);
   }, [editor]);
@@ -1836,15 +1855,15 @@ function PdfComponent({
     height: '30px',
     width: '250px'
   };
-  return /*#__PURE__*/React.createElement(LexicalBlockWithAlignableContents.BlockWithAlignableContents, {
+  return /*#__PURE__*/React$1.createElement(LexicalBlockWithAlignableContents.BlockWithAlignableContents, {
     className: className,
     format: format,
     nodeKey: nodeKey
-  }, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("a", {
+  }, /*#__PURE__*/React$1.createElement("p", null, /*#__PURE__*/React$1.createElement("a", {
     href: url,
     target: "_blank",
     rel: id
-  }, /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React$1.createElement("span", {
     "data-lexical-text": "true",
     style: buttonStyle,
     title: id
@@ -1973,7 +1992,7 @@ class PdfNode extends LexicalDecoratorBlockNode.DecoratorBlockNode {
       base: embedBlockTheme.base || '',
       focus: embedBlockTheme.focus || ''
     };
-    return /*#__PURE__*/React.createElement(PdfComponent, {
+    return /*#__PURE__*/React$1.createElement(PdfComponent, {
       className: className,
       format: this.__format,
       nodeKey: this.getKey(),
@@ -2001,14 +2020,33 @@ function $createPdfNode(data) {
 const INSERT_PDF_COMMAND = lexical.createCommand('INSERT_PDF_COMMAND');
 function PdfPlugin() {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (!editor.hasNodes([PdfNode])) {
       throw new Error('PdfPlugin: PdfNode not registered on editor');
     }
 
     return editor.registerCommand(INSERT_PDF_COMMAND, payload => {
-      const pdfNode = $createPdfNode(payload);
-      utils.$insertNodeToNearestRoot(pdfNode);
+      editor.update(() => {
+        const pdfNode = $createPdfNode(payload);
+        const selection = lexical.$getSelection();
+        const root = lexical.$getRoot();
+        const selectedNodes = selection?.getNodes(); // Remove initial empty paragraph if it exists
+
+        if (selectedNodes?.length === 1 && lexical.$isParagraphNode(selectedNodes[0]) && selectedNodes[0].getTextContent() === '') {
+          selectedNodes[0].remove();
+        } // Insert the PDF
+
+
+        utils.$insertNodeToNearestRoot(pdfNode); // Insert a new paragraph after the video
+
+        const paragraph = lexical.$createParagraphNode();
+        root.append(paragraph); // Move cursor into the new paragraph
+
+        const newSelection = lexical.$createRangeSelection();
+        newSelection.anchor.set(paragraph.getKey(), 0, 'element');
+        newSelection.focus.set(paragraph.getKey(), 0, 'element');
+        lexical.$setSelection(newSelection);
+      });
       return true;
     }, lexical.COMMAND_PRIORITY_EDITOR);
   }, [editor]);
@@ -2025,7 +2063,7 @@ function PdfPlugin() {
 const INSERT_TWEET_COMMAND = lexical.createCommand('INSERT_TWEET_COMMAND');
 function TwitterPlugin() {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (!editor.hasNodes([TweetNode])) {
       throw new Error('TwitterPlugin: TweetNode not registered on editor');
     }
@@ -2065,15 +2103,15 @@ function VideoComponent({
     height: '30px',
     width: '250px'
   };
-  return /*#__PURE__*/React.createElement(LexicalBlockWithAlignableContents.BlockWithAlignableContents, {
+  return /*#__PURE__*/React$1.createElement(LexicalBlockWithAlignableContents.BlockWithAlignableContents, {
     className: className,
     format: format,
     nodeKey: nodeKey
-  }, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("a", {
+  }, /*#__PURE__*/React$1.createElement("p", null, /*#__PURE__*/React$1.createElement("a", {
     href: url,
     target: "_blank",
     rel: id
-  }, /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React$1.createElement("span", {
     "data-lexical-text": "true",
     style: buttonStyle,
     title: id
@@ -2202,7 +2240,7 @@ class VideoNode extends LexicalDecoratorBlockNode.DecoratorBlockNode {
       base: embedBlockTheme.base || '',
       focus: embedBlockTheme.focus || ''
     };
-    return /*#__PURE__*/React.createElement(VideoComponent, {
+    return /*#__PURE__*/React$1.createElement(VideoComponent, {
       className: className,
       format: this.__format,
       nodeKey: this.getKey(),
@@ -2219,24 +2257,36 @@ function $createVideoNode(data) {
   return new VideoNode(data);
 }
 
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
 const INSERT_VIDEO_COMMAND = lexical.createCommand('INSERT_VIDEO_COMMAND');
 function VideoPlugin() {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (!editor.hasNodes([VideoNode])) {
       throw new Error('VideoPlugin: VideoNode not registered on editor');
     }
 
     return editor.registerCommand(INSERT_VIDEO_COMMAND, payload => {
-      const videoNode = $createVideoNode(payload);
-      utils.$insertNodeToNearestRoot(videoNode);
+      editor.update(() => {
+        const videoNode = $createVideoNode(payload);
+        const selection = lexical.$getSelection();
+        const root = lexical.$getRoot();
+        const selectedNodes = selection?.getNodes(); // Remove initial empty paragraph if it exists
+
+        if (selectedNodes?.length === 1 && lexical.$isParagraphNode(selectedNodes[0]) && selectedNodes[0].getTextContent() === '') {
+          selectedNodes[0].remove();
+        } // Insert the video
+
+
+        utils.$insertNodeToNearestRoot(videoNode); // Insert a new paragraph after the video
+
+        const paragraph = lexical.$createParagraphNode();
+        root.append(paragraph); // Move cursor into the new paragraph
+
+        const newSelection = lexical.$createRangeSelection();
+        newSelection.anchor.set(paragraph.getKey(), 0, 'element');
+        newSelection.focus.set(paragraph.getKey(), 0, 'element');
+        lexical.$setSelection(newSelection);
+      });
       return true;
     }, lexical.COMMAND_PRIORITY_EDITOR);
   }, [editor]);
@@ -2249,11 +2299,11 @@ function YouTubeComponent({
   nodeKey,
   videoID
 }) {
-  return /*#__PURE__*/React.createElement(LexicalBlockWithAlignableContents.BlockWithAlignableContents, {
+  return /*#__PURE__*/React$1.createElement(LexicalBlockWithAlignableContents.BlockWithAlignableContents, {
     className: className,
     format: format,
     nodeKey: nodeKey
-  }, /*#__PURE__*/React.createElement("iframe", {
+  }, /*#__PURE__*/React$1.createElement("iframe", {
     width: "560",
     height: "315",
     src: `https://www.youtube.com/embed/${videoID}`,
@@ -2356,7 +2406,7 @@ class YouTubeNode extends LexicalDecoratorBlockNode.DecoratorBlockNode {
       base: embedBlockTheme.base || '',
       focus: embedBlockTheme.focus || ''
     };
-    return /*#__PURE__*/React.createElement(YouTubeComponent, {
+    return /*#__PURE__*/React$1.createElement(YouTubeComponent, {
       className: className,
       format: this.__format,
       nodeKey: this.getKey(),
@@ -2383,7 +2433,7 @@ function $createYouTubeNode(videoID) {
 const INSERT_YOUTUBE_COMMAND = lexical.createCommand('INSERT_YOUTUBE_COMMAND');
 function YouTubePlugin() {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (!editor.hasNodes([YouTubeNode])) {
       throw new Error('YouTubePlugin: YouTubeNode not registered on editor');
     }
@@ -2419,7 +2469,7 @@ const YoutubeEmbedConfig = {
   contentName: 'Youtube Video',
   exampleUrl: 'https://www.youtube.com/watch?v=jNQXAC9IVRw',
   // Icon for display.
-  icon: /*#__PURE__*/React.createElement("i", {
+  icon: /*#__PURE__*/React$1.createElement("i", {
     className: "icon youtube"
   }),
   insertNode: (editor, result) => {
@@ -2446,7 +2496,7 @@ const VideoEmbedConfig = {
   contentName: 'Video',
   exampleUrl: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
   // Icon for display.
-  icon: /*#__PURE__*/React.createElement("i", {
+  icon: /*#__PURE__*/React$1.createElement("i", {
     className: "icon videos"
   }),
   insertNode: (editor, result) => {
@@ -2476,7 +2526,7 @@ const PdfEmbedConfig = {
   contentName: 'Pdf',
   exampleUrl: 'https://media.geeksforgeeks.org/wp-content/cdn-uploads/20210101201653/PDF.pdf',
   // Icon for display.
-  icon: /*#__PURE__*/React.createElement("i", {
+  icon: /*#__PURE__*/React$1.createElement("i", {
     className: "icon pdf"
   }),
   insertNode: (editor, result) => {
@@ -2506,7 +2556,7 @@ const OfficeEmbedConfig = {
   contentName: 'Office',
   exampleUrl: 'https://media.stage.truflux.drcsystems.ooo/uploads/project/294/Timesheet%20report%20_1_.xlsx',
   // Icon for display.
-  icon: /*#__PURE__*/React.createElement("i", {
+  icon: /*#__PURE__*/React$1.createElement("i", {
     className: "icon office"
   }),
   insertNode: (editor, result) => {
@@ -2549,7 +2599,7 @@ function AutoEmbedMenuItem({
     className += ' selected';
   }
 
-  return /*#__PURE__*/React.createElement("li", {
+  return /*#__PURE__*/React$1.createElement("li", {
     key: option.key,
     tabIndex: -1,
     className: className,
@@ -2559,7 +2609,7 @@ function AutoEmbedMenuItem({
     id: 'typeahead-item-' + index,
     onMouseEnter: onMouseEnter,
     onClick: onClick
-  }, /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React$1.createElement("span", {
     className: "text"
   }, option.title));
 }
@@ -2570,9 +2620,9 @@ function AutoEmbedMenu({
   onOptionClick,
   onOptionMouseEnter
 }) {
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", {
     className: "typeahead-popovers"
-  }, /*#__PURE__*/React.createElement("ul", null, options.map((option, i) => /*#__PURE__*/React.createElement(AutoEmbedMenuItem, {
+  }, /*#__PURE__*/React$1.createElement("ul", null, options.map((option, i) => /*#__PURE__*/React$1.createElement(AutoEmbedMenuItem, {
     index: i,
     isSelected: selectedItemIndex === i,
     onClick: () => onOptionClick(option, i),
@@ -2596,10 +2646,10 @@ function AutoEmbedDialog({
   embedConfig,
   onClose
 }) {
-  const [text, setText] = React.useState('');
+  const [text, setText] = React$1.useState('');
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  const [embedResult, setEmbedResult] = React.useState(null);
-  const validateText = React.useMemo(() => debounce(inputText => {
+  const [embedResult, setEmbedResult] = React$1.useState(null);
+  const validateText = React$1.useMemo(() => debounce(inputText => {
     const urlMatch = LexicalAutoEmbedPlugin.URL_MATCHER.exec(inputText);
 
     if (embedConfig != null && inputText != null && urlMatch != null) {
@@ -2618,13 +2668,13 @@ function AutoEmbedDialog({
     }
   };
 
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", {
     style: {
       width: '600px'
     }
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React$1.createElement("div", {
     className: "Input__wrapper"
-  }, /*#__PURE__*/React.createElement("input", {
+  }, /*#__PURE__*/React$1.createElement("input", {
     type: "text",
     className: "Input__input",
     placeholder: embedConfig.exampleUrl,
@@ -2637,7 +2687,7 @@ function AutoEmbedDialog({
       setText(value);
       validateText(value);
     }
-  })), /*#__PURE__*/React.createElement(DialogActions, null, /*#__PURE__*/React.createElement(Button, {
+  })), /*#__PURE__*/React$1.createElement(DialogActions, null, /*#__PURE__*/React$1.createElement(Button, {
     disabled: !embedResult,
     onClick: onClick,
     "data-test-id": `${embedConfig.type}-embed-modal-submit-btn`
@@ -2647,7 +2697,7 @@ function AutoEmbedPlugin() {
   const [modal, showModal] = useModal();
 
   const openEmbedModal = embedConfig => {
-    showModal(`Embed ${embedConfig.contentName}`, onClose => /*#__PURE__*/React.createElement(AutoEmbedDialog, {
+    showModal(`Embed ${embedConfig.contentName}`, onClose => /*#__PURE__*/React$1.createElement(AutoEmbedDialog, {
       embedConfig: embedConfig,
       onClose: onClose
     }));
@@ -2661,7 +2711,7 @@ function AutoEmbedPlugin() {
     })];
   };
 
-  return /*#__PURE__*/React.createElement(React.Fragment, null, modal, /*#__PURE__*/React.createElement(LexicalAutoEmbedPlugin.LexicalAutoEmbedPlugin, {
+  return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, modal, /*#__PURE__*/React$1.createElement(LexicalAutoEmbedPlugin.LexicalAutoEmbedPlugin, {
     embedConfigs: EmbedConfigs,
     onOpenEmbedModalForConfig: openEmbedModal,
     getMenuOptions: getMenuOptions,
@@ -2670,13 +2720,13 @@ function AutoEmbedPlugin() {
       options,
       selectOptionAndCleanUp,
       setHighlightedIndex
-    }) => anchorElementRef.current ? /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React.createElement("div", {
+    }) => anchorElementRef.current ? /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React$1.createElement("div", {
       className: "typeahead-popovers auto-embed-menu",
       style: {
         marginLeft: anchorElementRef.current.style.width,
         width: 200
       }
-    }, /*#__PURE__*/React.createElement(AutoEmbedMenu, {
+    }, /*#__PURE__*/React$1.createElement(AutoEmbedMenu, {
       options: options,
       selectedItemIndex: selectedIndex,
       onOptionClick: (option, index) => {
@@ -2723,7 +2773,7 @@ const MATCHERS = [text => {
   };
 }];
 function LexicalAutoLinkPlugin() {
-  return /*#__PURE__*/React.createElement(LexicalAutoLinkPlugin$1.AutoLinkPlugin, {
+  return /*#__PURE__*/React$1.createElement(LexicalAutoLinkPlugin$1.AutoLinkPlugin, {
     matchers: MATCHERS
   });
 }
@@ -2740,7 +2790,7 @@ function ClickableLinkPlugin({
   newTab = true
 }) {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     function onClick(e) {
       const event = e;
       const linkDomNode = getLinkDomNode(event, editor);
@@ -2828,9 +2878,9 @@ function getLinkDomNode(event, editor) {
  *
  */
 function useDebounce(fn, ms, maxWait) {
-  const funcRef = React.useRef(null);
+  const funcRef = React$1.useRef(null);
   funcRef.current = fn;
-  return React.useMemo(() => lodash.debounce((...args) => {
+  return React$1.useMemo(() => lodash.debounce((...args) => {
     if (funcRef.current) {
       funcRef.current(...args);
     }
@@ -2850,7 +2900,7 @@ function CopyButton({
   editor,
   getCodeDOMNode
 }) {
-  const [isCopyCompleted, setCopyCompleted] = React.useState(false);
+  const [isCopyCompleted, setCopyCompleted] = React$1.useState(false);
   const removeSuccessIcon = useDebounce(() => {
     setCopyCompleted(false);
   }, 1000);
@@ -2883,13 +2933,13 @@ function CopyButton({
     }
   }
 
-  return /*#__PURE__*/React.createElement("button", {
+  return /*#__PURE__*/React$1.createElement("button", {
     className: "menu-item",
     onClick: handleClick,
     "aria-label": "copy"
-  }, isCopyCompleted ? /*#__PURE__*/React.createElement("i", {
+  }, isCopyCompleted ? /*#__PURE__*/React$1.createElement("i", {
     className: "format success"
-  }) : /*#__PURE__*/React.createElement("i", {
+  }) : /*#__PURE__*/React$1.createElement("i", {
     className: "format copy"
   }));
 }
@@ -2907,15 +2957,15 @@ function CodeActionMenuContainer({
   anchorElem
 }) {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  const [lang, setLang] = React.useState('');
-  const [isShown, setShown] = React.useState(false);
-  const [shouldListenMouseMove, setShouldListenMouseMove] = React.useState(false);
-  const [position, setPosition] = React.useState({
+  const [lang, setLang] = React$1.useState('');
+  const [isShown, setShown] = React$1.useState(false);
+  const [shouldListenMouseMove, setShouldListenMouseMove] = React$1.useState(false);
+  const [position, setPosition] = React$1.useState({
     right: '0',
     top: '0'
   });
-  const codeSetRef = React.useRef(new Set());
-  const codeDOMNodeRef = React.useRef(null);
+  const codeSetRef = React$1.useRef(new Set());
+  const codeDOMNodeRef = React$1.useRef(null);
 
   function getCodeDOMNode() {
     return codeDOMNodeRef.current;
@@ -2965,7 +3015,7 @@ function CodeActionMenuContainer({
       });
     }
   }, 50, 1000);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (!shouldListenMouseMove) {
       return;
     }
@@ -2995,13 +3045,13 @@ function CodeActionMenuContainer({
     });
   });
   const codeFriendlyName = code.getLanguageFriendlyName(lang);
-  return /*#__PURE__*/React.createElement(React.Fragment, null, isShown ? /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, isShown ? /*#__PURE__*/React$1.createElement("div", {
     className: "code-action-menu-container",
     style: { ...position
     }
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React$1.createElement("div", {
     className: "code-highlight-language"
-  }, codeFriendlyName), /*#__PURE__*/React.createElement(CopyButton, {
+  }, codeFriendlyName), /*#__PURE__*/React$1.createElement(CopyButton, {
     editor: editor,
     getCodeDOMNode: getCodeDOMNode
   })) : null);
@@ -3028,7 +3078,7 @@ function getMouseInfo(event) {
 function CodeActionMenuPlugin({
   anchorElem = document.body
 }) {
-  return /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React.createElement(CodeActionMenuContainer, {
+  return /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React$1.createElement(CodeActionMenuContainer, {
     anchorElem: anchorElem
   }), anchorElem);
 }
@@ -3042,7 +3092,7 @@ function CodeActionMenuPlugin({
  */
 function CodeHighlightPlugin() {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     return code.registerCodeHighlighting(editor);
   }, [editor]);
   return null;
@@ -3333,7 +3383,7 @@ const INSERT_COLLAPSIBLE_COMMAND = lexical.createCommand();
 const TOGGLE_COLLAPSIBLE_COMMAND = lexical.createCommand();
 function CollapsiblePlugin() {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (!editor.hasNodes([CollapsibleContainerNode, CollapsibleTitleNode, CollapsibleContentNode])) {
       throw new Error('CollapsiblePlugin: CollapsibleContainerNode, CollapsibleTitleNode, or CollapsibleContentNode not registered on editor');
     }
@@ -3479,7 +3529,7 @@ function CollapsiblePlugin() {
  * LICENSE file in the root directory of this source tree.
  *
  */
-const useLayoutEffectImpl = CAN_USE_DOM ? React.useLayoutEffect : React.useEffect;
+const useLayoutEffectImpl = CAN_USE_DOM ? React$1.useLayoutEffect : React$1.useEffect;
 var useLayoutEffect = useLayoutEffectImpl;
 
 function createUID$2() {
@@ -3827,8 +3877,8 @@ class CommentStore {
 
 }
 function useCommentStore(commentStore) {
-  const [comments, setComments] = React.useState(commentStore.getComments());
-  React.useEffect(() => {
+  const [comments, setComments] = React$1.useState(commentStore.getComments());
+  React$1.useEffect(() => {
     return commentStore.registerOnChange(() => {
       setComments(commentStore.getComments());
     });
@@ -3960,7 +4010,7 @@ var CommentEditorTheme = theme$1;
 function LexicalContentEditable({
   className
 }) {
-  return /*#__PURE__*/React.createElement(LexicalContentEditable$1.ContentEditable, {
+  return /*#__PURE__*/React$1.createElement(LexicalContentEditable$1.ContentEditable, {
     className: className || 'ContentEditable__root'
   });
 }
@@ -3976,7 +4026,7 @@ function Placeholder({
   children,
   className
 }) {
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", {
     className: className || 'Placeholder__root'
   }, children);
 }
@@ -4007,7 +4057,7 @@ function EscapeHandlerPlugin({
   onEscape
 }) {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     return editor.registerCommand(lexical.KEY_ESCAPE_COMMAND, event => {
       return onEscape(event);
     }, 2);
@@ -4031,27 +4081,27 @@ function PlainTextEditor({
     },
     theme: CommentEditorTheme
   };
-  return /*#__PURE__*/React.createElement(LexicalComposer.LexicalComposer, {
+  return /*#__PURE__*/React$1.createElement(LexicalComposer.LexicalComposer, {
     initialConfig: initialConfig
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React$1.createElement("div", {
     className: "CommentPlugin_CommentInputBox_EditorContainer"
-  }, /*#__PURE__*/React.createElement(LexicalPlainTextPlugin.PlainTextPlugin, {
-    contentEditable: /*#__PURE__*/React.createElement(LexicalContentEditable, {
+  }, /*#__PURE__*/React$1.createElement(LexicalPlainTextPlugin.PlainTextPlugin, {
+    contentEditable: /*#__PURE__*/React$1.createElement(LexicalContentEditable, {
       className: className
     }),
-    placeholder: /*#__PURE__*/React.createElement(Placeholder, null, placeholder),
+    placeholder: /*#__PURE__*/React$1.createElement(Placeholder, null, placeholder),
     ErrorBoundary: LexicalErrorBoundary
-  }), /*#__PURE__*/React.createElement(LexicalOnChangePlugin.OnChangePlugin, {
+  }), /*#__PURE__*/React$1.createElement(LexicalOnChangePlugin.OnChangePlugin, {
     onChange: onChange
-  }), /*#__PURE__*/React.createElement(LexicalHistoryPlugin.HistoryPlugin, null), autoFocus !== false && /*#__PURE__*/React.createElement(LexicalAutoFocusPlugin.AutoFocusPlugin, null), /*#__PURE__*/React.createElement(EscapeHandlerPlugin, {
+  }), /*#__PURE__*/React$1.createElement(LexicalHistoryPlugin.HistoryPlugin, null), autoFocus !== false && /*#__PURE__*/React$1.createElement(LexicalAutoFocusPlugin.AutoFocusPlugin, null), /*#__PURE__*/React$1.createElement(EscapeHandlerPlugin, {
     onEscape: onEscape
-  }), /*#__PURE__*/React.createElement(LexicalClearEditorPlugin.ClearEditorPlugin, null), editorRef !== undefined && /*#__PURE__*/React.createElement(EditorRefPlugin, {
+  }), /*#__PURE__*/React$1.createElement(LexicalClearEditorPlugin.ClearEditorPlugin, null), editorRef !== undefined && /*#__PURE__*/React$1.createElement(EditorRefPlugin, {
     editorRef: editorRef
   })));
 }
 
 function useOnChange(setContent, setCanSubmit) {
-  return React.useCallback((editorState, _editor) => {
+  return React$1.useCallback((editorState, _editor) => {
     editorState.read(() => {
       setContent(text.$rootTextContent());
       setCanSubmit(!text.$isRootTextContentEmpty(_editor.isComposing(), true));
@@ -4064,15 +4114,15 @@ function CommentInputBox({
   cancelAddComment,
   submitAddComment
 }) {
-  const [content, setContent] = React.useState('');
-  const [canSubmit, setCanSubmit] = React.useState(false);
-  const boxRef = React.useRef(null);
-  const selectionState = React.useMemo(() => ({
+  const [content, setContent] = React$1.useState('');
+  const [canSubmit, setCanSubmit] = React$1.useState(false);
+  const boxRef = React$1.useRef(null);
+  const selectionState = React$1.useMemo(() => ({
     container: document.createElement('div'),
     elements: []
   }), []);
   const author = useCollabAuthorName();
-  const updateLocation = React.useCallback(() => {
+  const updateLocation = React$1.useCallback(() => {
     editor.getEditorState().read(() => {
       const selection$1 = lexical.$getSelection();
 
@@ -4140,7 +4190,7 @@ function CommentInputBox({
       };
     }
   }, [selectionState.container, updateLocation]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     window.addEventListener('resize', updateLocation);
     return () => {
       window.removeEventListener('resize', updateLocation);
@@ -4169,19 +4219,19 @@ function CommentInputBox({
   };
 
   const onChange = useOnChange(setContent, setCanSubmit);
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", {
     className: "CommentPlugin_CommentInputBox",
     ref: boxRef
-  }, /*#__PURE__*/React.createElement(PlainTextEditor, {
+  }, /*#__PURE__*/React$1.createElement(PlainTextEditor, {
     className: "CommentPlugin_CommentInputBox_Editor",
     onEscape: onEscape,
     onChange: onChange
-  }), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React$1.createElement("div", {
     className: "CommentPlugin_CommentInputBox_Buttons"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, /*#__PURE__*/React$1.createElement(Button, {
     onClick: cancelAddComment,
     className: "CommentPlugin_CommentInputBox_Button"
-  }, "Cancel"), /*#__PURE__*/React.createElement(Button, {
+  }, "Cancel"), /*#__PURE__*/React$1.createElement(Button, {
     onClick: submitComment,
     disabled: !canSubmit,
     className: "CommentPlugin_CommentInputBox_Button primary"
@@ -4193,9 +4243,9 @@ function CommentsComposer({
   thread,
   placeholder
 }) {
-  const [content, setContent] = React.useState('');
-  const [canSubmit, setCanSubmit] = React.useState(false);
-  const editorRef = React.useRef(null);
+  const [content, setContent] = React$1.useState('');
+  const [canSubmit, setCanSubmit] = React$1.useState(false);
+  const editorRef = React$1.useRef(null);
   const author = useCollabAuthorName();
   const onChange = useOnChange(setContent, setCanSubmit);
 
@@ -4210,7 +4260,7 @@ function CommentsComposer({
     }
   };
 
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PlainTextEditor, {
+  return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement(PlainTextEditor, {
     className: "CommentPlugin_CommentsPanel_Editor",
     autoFocus: false,
     onEscape: () => {
@@ -4219,11 +4269,11 @@ function CommentsComposer({
     onChange: onChange,
     editorRef: editorRef,
     placeholder: placeholder
-  }), /*#__PURE__*/React.createElement(Button, {
+  }), /*#__PURE__*/React$1.createElement(Button, {
     className: "CommentPlugin_CommentsPanel_SendButton",
     onClick: submitComment,
     disabled: !canSubmit
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "send"
   })));
 }
@@ -4234,14 +4284,14 @@ function ShowDeleteCommentOrThreadDialog({
   onClose,
   thread = undefined
 }) {
-  return /*#__PURE__*/React.createElement(React.Fragment, null, "Are you sure you want to delete this ", commentOrThread.type, "?", /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, "Are you sure you want to delete this ", commentOrThread.type, "?", /*#__PURE__*/React$1.createElement("div", {
     className: "Modal__content"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, /*#__PURE__*/React$1.createElement(Button, {
     onClick: () => {
       deleteCommentOrThread(commentOrThread, thread);
       onClose();
     }
-  }, "Delete"), ' ', /*#__PURE__*/React.createElement(Button, {
+  }, "Delete"), ' ', /*#__PURE__*/React$1.createElement(Button, {
     onClick: () => {
       onClose();
     }
@@ -4257,19 +4307,19 @@ function CommentsPanelListComment({
   const seconds = Math.round((comment.timeStamp - performance.now()) / 1000);
   const minutes = Math.round(seconds / 60);
   const [modal, showModal] = useModal();
-  return /*#__PURE__*/React.createElement("li", {
+  return /*#__PURE__*/React$1.createElement("li", {
     className: "CommentPlugin_CommentsPanel_List_Comment"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React$1.createElement("div", {
     className: "CommentPlugin_CommentsPanel_List_Details"
-  }, /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React$1.createElement("span", {
     className: "CommentPlugin_CommentsPanel_List_Comment_Author"
-  }, comment.author), /*#__PURE__*/React.createElement("span", {
+  }, comment.author), /*#__PURE__*/React$1.createElement("span", {
     className: "CommentPlugin_CommentsPanel_List_Comment_Time"
-  }, "\xB7 ", seconds > -10 ? 'Just now' : rtf.format(minutes, 'minute'))), /*#__PURE__*/React.createElement("p", {
+  }, "\xB7 ", seconds > -10 ? 'Just now' : rtf.format(minutes, 'minute'))), /*#__PURE__*/React$1.createElement("p", {
     className: comment.deleted ? 'CommentPlugin_CommentsPanel_DeletedComment' : ''
-  }, comment.content), !comment.deleted && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Button, {
+  }, comment.content), !comment.deleted && /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement(Button, {
     onClick: () => {
-      showModal('Delete Comment', onClose => /*#__PURE__*/React.createElement(ShowDeleteCommentOrThreadDialog, {
+      showModal('Delete Comment', onClose => /*#__PURE__*/React$1.createElement(ShowDeleteCommentOrThreadDialog, {
         commentOrThread: comment,
         deleteCommentOrThread: deleteComment,
         thread: thread,
@@ -4277,7 +4327,7 @@ function CommentsPanelListComment({
       }));
     },
     className: "CommentPlugin_CommentsPanel_List_DeleteButton"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "delete"
   })), modal));
 }
@@ -4291,14 +4341,14 @@ function CommentsPanelList({
   markNodeMap
 }) {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  const [counter, setCounter] = React.useState(0);
+  const [counter, setCounter] = React$1.useState(0);
   const [modal, showModal] = useModal();
-  const rtf = React.useMemo(() => new Intl.RelativeTimeFormat('en', {
+  const rtf = React$1.useMemo(() => new Intl.RelativeTimeFormat('en', {
     localeMatcher: 'best fit',
     numeric: 'auto',
     style: 'short'
   }), []);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     // Used to keep the time stamp up to date
     const id = setTimeout(() => {
       setCounter(counter + 1);
@@ -4307,7 +4357,7 @@ function CommentsPanelList({
       clearTimeout(id);
     };
   }, [counter]);
-  return /*#__PURE__*/React.createElement("ul", {
+  return /*#__PURE__*/React$1.createElement("ul", {
     className: "CommentPlugin_CommentsPanel_List",
     ref: listRef
   }, comments.map(commentOrThread => {
@@ -4343,36 +4393,36 @@ function CommentsPanelList({
       return (
         /*#__PURE__*/
         // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
-        React.createElement("li", {
+        React$1.createElement("li", {
           key: id,
           onClick: handleClickThread,
           className: `CommentPlugin_CommentsPanel_List_Thread ${markNodeMap.has(id) ? 'interactive' : ''} ${activeIDs.indexOf(id) === -1 ? '' : 'active'}`
-        }, /*#__PURE__*/React.createElement("div", {
+        }, /*#__PURE__*/React$1.createElement("div", {
           className: "CommentPlugin_CommentsPanel_List_Thread_QuoteBox"
-        }, /*#__PURE__*/React.createElement("blockquote", {
+        }, /*#__PURE__*/React$1.createElement("blockquote", {
           className: "CommentPlugin_CommentsPanel_List_Thread_Quote"
-        }, '> ', /*#__PURE__*/React.createElement("span", null, commentOrThread.quote)), /*#__PURE__*/React.createElement(Button, {
+        }, '> ', /*#__PURE__*/React$1.createElement("span", null, commentOrThread.quote)), /*#__PURE__*/React$1.createElement(Button, {
           onClick: () => {
-            showModal('Delete Thread', onClose => /*#__PURE__*/React.createElement(ShowDeleteCommentOrThreadDialog, {
+            showModal('Delete Thread', onClose => /*#__PURE__*/React$1.createElement(ShowDeleteCommentOrThreadDialog, {
               commentOrThread: commentOrThread,
               deleteCommentOrThread: deleteCommentOrThread,
               onClose: onClose
             }));
           },
           className: "CommentPlugin_CommentsPanel_List_DeleteButton"
-        }, /*#__PURE__*/React.createElement("i", {
+        }, /*#__PURE__*/React$1.createElement("i", {
           className: "delete"
-        })), modal), /*#__PURE__*/React.createElement("ul", {
+        })), modal), /*#__PURE__*/React$1.createElement("ul", {
           className: "CommentPlugin_CommentsPanel_List_Thread_Comments"
-        }, commentOrThread.comments.map(comment => /*#__PURE__*/React.createElement(CommentsPanelListComment, {
+        }, commentOrThread.comments.map(comment => /*#__PURE__*/React$1.createElement(CommentsPanelListComment, {
           key: comment.id,
           comment: comment,
           deleteComment: deleteCommentOrThread,
           thread: commentOrThread,
           rtf: rtf
-        }))), /*#__PURE__*/React.createElement("div", {
+        }))), /*#__PURE__*/React$1.createElement("div", {
           className: "CommentPlugin_CommentsPanel_List_Thread_Editor"
-        }, /*#__PURE__*/React.createElement(CommentsComposer, {
+        }, /*#__PURE__*/React$1.createElement(CommentsComposer, {
           submitAddComment: submitAddComment,
           thread: commentOrThread,
           placeholder: "Reply to comment..."
@@ -4380,7 +4430,7 @@ function CommentsPanelList({
       );
     }
 
-    return /*#__PURE__*/React.createElement(CommentsPanelListComment, {
+    return /*#__PURE__*/React$1.createElement(CommentsPanelListComment, {
       key: id,
       comment: commentOrThread,
       deleteComment: deleteCommentOrThread,
@@ -4396,15 +4446,15 @@ function CommentsPanel({
   submitAddComment,
   markNodeMap
 }) {
-  const listRef = React.useRef(null);
+  const listRef = React$1.useRef(null);
   const isEmpty = comments.length === 0;
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", {
     className: "CommentPlugin_CommentsPanel"
-  }, /*#__PURE__*/React.createElement("h2", {
+  }, /*#__PURE__*/React$1.createElement("h2", {
     className: "CommentPlugin_CommentsPanel_Heading"
-  }, "Comments"), isEmpty ? /*#__PURE__*/React.createElement("div", {
+  }, "Comments"), isEmpty ? /*#__PURE__*/React$1.createElement("div", {
     className: "CommentPlugin_CommentsPanel_Empty"
-  }, "No Comments") : /*#__PURE__*/React.createElement(CommentsPanelList, {
+  }, "No Comments") : /*#__PURE__*/React$1.createElement(CommentsPanelList, {
     activeIDs: activeIDs,
     comments: comments,
     deleteCommentOrThread: deleteCommentOrThread,
@@ -4428,25 +4478,25 @@ function CommentPlugin({
 }) {
   const collabContext = LexicalCollaborationContext.useCollaborationContext();
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  const commentStore = React.useMemo(() => new CommentStore(editor), [editor]);
+  const commentStore = React$1.useMemo(() => new CommentStore(editor), [editor]);
   const comments = useCommentStore(commentStore);
-  const markNodeMap = React.useMemo(() => {
+  const markNodeMap = React$1.useMemo(() => {
     return new Map();
   }, []);
-  const [activeAnchorKey, setActiveAnchorKey] = React.useState();
-  const [activeIDs, setActiveIDs] = React.useState([]);
-  const [showCommentInput, setShowCommentInput] = React.useState(false);
-  const [showComments, setShowComments] = React.useState(false);
+  const [activeAnchorKey, setActiveAnchorKey] = React$1.useState();
+  const [activeIDs, setActiveIDs] = React$1.useState([]);
+  const [showCommentInput, setShowCommentInput] = React$1.useState(false);
+  const [showComments, setShowComments] = React$1.useState(false);
   const {
     yjsDocMap
   } = collabContext;
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (providerFactory) {
       const provider = providerFactory('comments', yjsDocMap);
       return commentStore.registerCollaboration(provider);
     }
   }, [commentStore, providerFactory, yjsDocMap]);
-  const cancelAddComment = React.useCallback(() => {
+  const cancelAddComment = React$1.useCallback(() => {
     editor.update(() => {
       const selection = lexical.$getSelection(); // Restore selection
 
@@ -4456,7 +4506,7 @@ function CommentPlugin({
     });
     setShowCommentInput(false);
   }, [editor]);
-  const deleteCommentOrThread = React.useCallback((comment, thread) => {
+  const deleteCommentOrThread = React$1.useCallback((comment, thread) => {
     if (comment.type === 'comment') {
       const deletionInfo = commentStore.deleteCommentOrThread(comment, thread);
       if (!deletionInfo) return;
@@ -4491,7 +4541,7 @@ function CommentPlugin({
       }
     }
   }, [commentStore, editor, markNodeMap]);
-  const submitAddComment = React.useCallback((commentOrThread, isInlineComment, thread) => {
+  const submitAddComment = React$1.useCallback((commentOrThread, isInlineComment, thread) => {
     commentStore.addComment(commentOrThread, thread);
 
     if (isInlineComment) {
@@ -4516,7 +4566,7 @@ function CommentPlugin({
       setShowCommentInput(false);
     }
   }, [commentStore, editor]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     const changedElems = [];
 
     for (let i = 0; i < activeIDs.length; i++) {
@@ -4543,7 +4593,7 @@ function CommentPlugin({
       }
     };
   }, [activeIDs, editor, markNodeMap]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     const markNodeKeysToIDs = new Map();
     return utils.mergeRegister(utils.registerNestedElementResolver(editor, mark.MarkNode, from => {
       return mark.$createMarkNode(from.getIDs());
@@ -4642,11 +4692,11 @@ function CommentPlugin({
     }, lexical.COMMAND_PRIORITY_EDITOR));
   }, [editor, markNodeMap]);
 
-  return /*#__PURE__*/React.createElement(React.Fragment, null, showCommentInput && /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React.createElement(CommentInputBox, {
+  return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, showCommentInput && /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React$1.createElement(CommentInputBox, {
     editor: editor,
     cancelAddComment: cancelAddComment,
     submitAddComment: submitAddComment
-  }), document.body), showComments && /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React.createElement(CommentsPanel, {
+  }), document.body), showComments && /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React$1.createElement(CommentsPanel, {
     comments: comments,
     submitAddComment: submitAddComment,
     deleteCommentOrThread: deleteCommentOrThread,
@@ -4668,11 +4718,11 @@ function FileInput({
   onChange,
   'data-test-id': dataTestId
 }) {
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", {
     className: "Input__wrapper"
-  }, /*#__PURE__*/React.createElement("label", {
+  }, /*#__PURE__*/React$1.createElement("label", {
     className: "Input__label"
-  }, label), /*#__PURE__*/React.createElement("input", {
+  }, label), /*#__PURE__*/React$1.createElement("input", {
     type: "file",
     accept: accept,
     className: "Input__input",
@@ -4696,11 +4746,11 @@ function TextInput({
   placeholder = '',
   'data-test-id': dataTestId
 }) {
-  return /*#__PURE__*/React.createElement(React.Fragment, null, type == 'number' ? /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, type == 'number' ? /*#__PURE__*/React$1.createElement("div", {
     className: "Input__wrapper"
-  }, /*#__PURE__*/React.createElement("label", {
+  }, /*#__PURE__*/React$1.createElement("label", {
     className: "Input__label"
-  }, label), /*#__PURE__*/React.createElement("input", {
+  }, label), /*#__PURE__*/React$1.createElement("input", {
     type: "number",
     max: "5",
     min: "1",
@@ -4711,11 +4761,11 @@ function TextInput({
       onChange(e.target.value);
     },
     "data-test-id": dataTestId
-  })) : /*#__PURE__*/React.createElement("div", {
+  })) : /*#__PURE__*/React$1.createElement("div", {
     className: "Input__wrapper"
-  }, /*#__PURE__*/React.createElement("label", {
+  }, /*#__PURE__*/React$1.createElement("label", {
     className: "Input__label"
-  }, label), /*#__PURE__*/React.createElement("input", {
+  }, label), /*#__PURE__*/React$1.createElement("input", {
     type: type,
     className: "Input__input",
     placeholder: placeholder,
@@ -4741,22 +4791,22 @@ const INSERT_IMAGE_COMMAND = lexical.createCommand('INSERT_IMAGE_COMMAND');
 function InsertImageUriDialogBody({
   onClick
 }) {
-  const [src, setSrc] = React.useState('');
-  const [altText, setAltText] = React.useState('');
+  const [src, setSrc] = React$1.useState('');
+  const [altText, setAltText] = React$1.useState('');
   const isDisabled = src === '';
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(TextInput, {
+  return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement(TextInput, {
     label: "Image URL",
     placeholder: "i.e. https://source.unsplash.com/random",
     onChange: setSrc,
     value: src,
     "data-test-id": "image-modal-url-input"
-  }), /*#__PURE__*/React.createElement(TextInput, {
+  }), /*#__PURE__*/React$1.createElement(TextInput, {
     label: "Alt Text",
     placeholder: "Random unsplash image",
     onChange: setAltText,
     value: altText,
     "data-test-id": "image-modal-alt-text-input"
-  }), /*#__PURE__*/React.createElement(DialogActions, null, /*#__PURE__*/React.createElement(Button, {
+  }), /*#__PURE__*/React$1.createElement(DialogActions, null, /*#__PURE__*/React$1.createElement(Button, {
     "data-test-id": "image-modal-confirm-btn",
     disabled: isDisabled,
     onClick: () => onClick({
@@ -4768,9 +4818,9 @@ function InsertImageUriDialogBody({
 function InsertImageUploadedDialogBody({
   onClick
 }) {
-  const [file, setFile] = React.useState();
-  const [src, setSrc] = React.useState('');
-  const [altText, setAltText] = React.useState('');
+  const [file, setFile] = React$1.useState();
+  const [src, setSrc] = React$1.useState('');
+  const [altText, setAltText] = React$1.useState('');
   const isDisabled = file === undefined;
 
   const loadImage = files => {
@@ -4790,12 +4840,12 @@ function InsertImageUploadedDialogBody({
     }
   };
 
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FileInput, {
+  return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement(FileInput, {
     label: "Upload Document",
     onChange: loadImage,
     accept: "image/jpeg,image/jpg,image/png,video/mp4,video/webm,video/mov,video/avi,video/flv,video/mkv,video/wmv,application/pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/csv,application/vnd.oasis.opendocument.spreadsheet",
     "data-test-id": "image-modal-file-upload"
-  }), /*#__PURE__*/React.createElement(DialogActions, null, /*#__PURE__*/React.createElement(Button, {
+  }), /*#__PURE__*/React$1.createElement(DialogActions, null, /*#__PURE__*/React$1.createElement(Button, {
     "data-test-id": "image-modal-file-upload-btn",
     disabled: isDisabled,
     onClick: () => {
@@ -4812,9 +4862,9 @@ function InsertImageDialog({
   onClose,
   handleClick
 }) {
-  const [mode, setMode] = React.useState(null);
-  const hasModifier = React.useRef(false);
-  React.useEffect(() => {
+  const [mode, setMode] = React$1.useState(null);
+  const hasModifier = React$1.useRef(false);
+  React$1.useEffect(() => {
     hasModifier.current = false;
 
     const handler = e => {
@@ -4851,12 +4901,12 @@ function InsertImageDialog({
     onClose();
   };
 
-  return /*#__PURE__*/React.createElement(React.Fragment, null, !mode && /*#__PURE__*/React.createElement(DialogButtonsList, null, /*#__PURE__*/React.createElement(Button, {
+  return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, !mode && /*#__PURE__*/React$1.createElement(DialogButtonsList, null, /*#__PURE__*/React$1.createElement(Button, {
     "data-test-id": "image-modal-option-file",
     onClick: () => setMode('file')
-  }, "File")), mode === 'url' && /*#__PURE__*/React.createElement(InsertImageUriDialogBody, {
+  }, "File")), mode === 'url' && /*#__PURE__*/React$1.createElement(InsertImageUriDialogBody, {
     onClick: onClick
-  }), mode === 'file' && /*#__PURE__*/React.createElement(InsertImageUploadedDialogBody, {
+  }), mode === 'file' && /*#__PURE__*/React$1.createElement(InsertImageUploadedDialogBody, {
     onClick: onClick
   }));
 }
@@ -4864,7 +4914,7 @@ function ImagesPlugin({
   captionsEnabled
 }) {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (!editor.hasNodes([ImageNode])) {
       throw new Error('ImagesPlugin: ImageNode not registered on editor');
     }
@@ -5069,7 +5119,7 @@ function ComponentPickerMenuItem({
     data = Object.entries(dynamicOptions)?.filter(([key, value]) => key?.toLowerCase()?.replace(/\s+/g, '') === option?.title?.toLowerCase()?.replace(/\s+/g, ''))?.map(([key, value]) => ['show' , value]);
   }
 
-  return /*#__PURE__*/React.createElement(React.Fragment, null, Object.fromEntries(data)?.show && /*#__PURE__*/React.createElement("li", {
+  return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, Object.fromEntries(data)?.show && /*#__PURE__*/React$1.createElement("li", {
     key: option.key,
     tabIndex: -1,
     className: className,
@@ -5079,7 +5129,7 @@ function ComponentPickerMenuItem({
     id: 'typeahead-item-' + index,
     onMouseEnter: onMouseEnter,
     onClick: onClick
-  }, option.icon, /*#__PURE__*/React.createElement("span", {
+  }, option.icon, /*#__PURE__*/React$1.createElement("span", {
     className: "text"
   }, option.title)));
 }
@@ -5088,11 +5138,11 @@ function ComponentPickerMenuPlugin({
   config,
   handleClickUpload
 }) {
-  const showMenuRef = React.useRef(false);
+  const showMenuRef = React$1.useRef(false);
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
   const [modal, showModal] = useModal();
-  const [showMenu, setShowMenu] = React.useState(true);
-  const [queryString, setQueryString] = React.useState(null);
+  const [showMenu, setShowMenu] = React$1.useState(true);
+  const [queryString, setQueryString] = React$1.useState(null);
 
   const uploadData = data => {
     if (typeof handleClickUpload === 'function') {
@@ -5120,7 +5170,7 @@ function ComponentPickerMenuPlugin({
     return text;
   }
 
-  const getDynamicOptions = React.useCallback(() => {
+  const getDynamicOptions = React$1.useCallback(() => {
     const options = [];
 
     if (queryString == null) {
@@ -5135,7 +5185,7 @@ function ComponentPickerMenuPlugin({
     if (fullTableMatch) {
       const [rows, columns] = fullTableMatch[0].split('x').map(n => parseInt(n, 10));
       options.push(new ComponentPickerOption(`${rows}x${columns} Table`, {
-        icon: /*#__PURE__*/React.createElement("i", {
+        icon: /*#__PURE__*/React$1.createElement("i", {
           className: "icon table"
         }),
         keywords: ['table'],
@@ -5150,7 +5200,7 @@ function ComponentPickerMenuPlugin({
       options.push(...Array.from({
         length: 5
       }, (_, i) => i + 1).map(columns => new ComponentPickerOption(`${rows}x${columns} Table`, {
-        icon: /*#__PURE__*/React.createElement("i", {
+        icon: /*#__PURE__*/React$1.createElement("i", {
           className: "icon table"
         }),
         keywords: ['table'],
@@ -5164,9 +5214,9 @@ function ComponentPickerMenuPlugin({
 
     return options;
   }, [editor, queryString]);
-  const options = React.useMemo(() => {
+  const options = React$1.useMemo(() => {
     const baseOptions = [...(config.paragraph ? [new ComponentPickerOption('Paragraph', {
-      icon: /*#__PURE__*/React.createElement("i", {
+      icon: /*#__PURE__*/React$1.createElement("i", {
         className: "icon paragraph"
       }),
       keywords: ['normal', 'paragraph', 'p', 'text'],
@@ -5180,7 +5230,7 @@ function ComponentPickerMenuPlugin({
     })] : []), ...(config.heading1 || config.heading2 || config.heading3 ? Array.from({
       length: 3
     }, (_, i) => i + 1).filter(n => config[`heading${n}`]).map(n => new ComponentPickerOption(`Heading ${n}`, {
-      icon: /*#__PURE__*/React.createElement("i", {
+      icon: /*#__PURE__*/React$1.createElement("i", {
         className: `icon h${n}`
       }),
       keywords: ['heading', 'header', `h${n}`],
@@ -5192,7 +5242,7 @@ function ComponentPickerMenuPlugin({
         }
       })
     })) : []), ...(config.table ? [new ComponentPickerOption('Table', {
-      icon: /*#__PURE__*/React.createElement("i", {
+      icon: /*#__PURE__*/React$1.createElement("i", {
         className: "icon table"
       }),
       keywords: ['table', 'grid', 'spreadsheet', 'rows', 'columns'],
@@ -5217,19 +5267,19 @@ function ComponentPickerMenuPlugin({
     //     )),
     // }),
     ...(config.numberedList ? [new ComponentPickerOption('Numbered List', {
-      icon: /*#__PURE__*/React.createElement("i", {
+      icon: /*#__PURE__*/React$1.createElement("i", {
         className: "icon number"
       }),
       keywords: ['numbered list', 'ordered list', 'ol'],
       onSelect: () => editor.dispatchCommand(list.INSERT_ORDERED_LIST_COMMAND, undefined)
     })] : []), ...(config.bulletedList ? [new ComponentPickerOption('Bulleted List', {
-      icon: /*#__PURE__*/React.createElement("i", {
+      icon: /*#__PURE__*/React$1.createElement("i", {
         className: "icon bullet"
       }),
       keywords: ['bulleted list', 'unordered list', 'ul'],
       onSelect: () => editor.dispatchCommand(list.INSERT_UNORDERED_LIST_COMMAND, undefined)
     })] : []), ...(config.checkList ? [new ComponentPickerOption('Check List', {
-      icon: /*#__PURE__*/React.createElement("i", {
+      icon: /*#__PURE__*/React$1.createElement("i", {
         className: "icon check"
       }),
       keywords: ['check list', 'todo list'],
@@ -5300,11 +5350,11 @@ function ComponentPickerMenuPlugin({
     //     }),
     // }),
     ...(config.UploadDocuments ? [new ComponentPickerOption('Upload Documents', {
-      icon: /*#__PURE__*/React.createElement("i", {
+      icon: /*#__PURE__*/React$1.createElement("i", {
         className: "icon image"
       }),
       keywords: ['image', 'photo', 'picture', 'file', 'ppt', 'mp4', 'pdf', 'docux', 'word file', 'Upload Document', 'Document'],
-      onSelect: () => showModal('Upload Document', onClose => /*#__PURE__*/React.createElement(InsertImageDialog, {
+      onSelect: () => showModal('Upload Document', onClose => /*#__PURE__*/React$1.createElement(InsertImageDialog, {
         activeEditor: editor,
         onClose: onClose,
         handleClick: uploadData
@@ -5316,7 +5366,7 @@ function ComponentPickerMenuPlugin({
     //     editor.dispatchCommand(INSERT_COLLAPSIBLE_COMMAND, undefined),
     // }),
     ...(config.alignments ? ['left', 'center', 'right', 'justify'].filter(alignment => config[`align${alignment.charAt(0).toUpperCase() + alignment.slice(1)}`]).map(alignment => new ComponentPickerOption(`Align ${alignment}`, {
-      icon: /*#__PURE__*/React.createElement("i", {
+      icon: /*#__PURE__*/React$1.createElement("i", {
         className: `icon ${alignment}-align`
       }),
       keywords: ['align', 'justify', alignment],
@@ -5327,7 +5377,7 @@ function ComponentPickerMenuPlugin({
       return new RegExp(queryString, 'gi').exec(option.title) || option.keywords != null ? option.keywords.some(keyword => new RegExp(queryString, 'gi').exec(keyword)) : false;
     })] : baseOptions;
   }, [editor, getDynamicOptions, queryString, showModal]);
-  const onSelectOption = React.useCallback((selectedOption, nodeToRemove, closeMenu, matchingString) => {
+  const onSelectOption = React$1.useCallback((selectedOption, nodeToRemove, closeMenu, matchingString) => {
     editor.update(() => {
       if (nodeToRemove) {
         nodeToRemove.remove();
@@ -5337,7 +5387,7 @@ function ComponentPickerMenuPlugin({
       closeMenu();
     });
   }, [editor]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     const removeListener = editor.registerUpdateListener(() => {
       editor.getEditorState().read(() => {
         const text = getQueryTextForSearch(editor);
@@ -5354,7 +5404,7 @@ function ComponentPickerMenuPlugin({
       removeListener();
     };
   }, [editor]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     const handleClickOutside = event => {
       if (showMenuRef.current && !showMenuRef.current.contains(event.target)) {
         setShowMenu(false);
@@ -5366,7 +5416,7 @@ function ComponentPickerMenuPlugin({
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [setShowMenu]);
-  return /*#__PURE__*/React.createElement(React.Fragment, null, modal, /*#__PURE__*/React.createElement(LexicalTypeaheadMenuPlugin.LexicalTypeaheadMenuPlugin, {
+  return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, modal, /*#__PURE__*/React$1.createElement(LexicalTypeaheadMenuPlugin.LexicalTypeaheadMenuPlugin, {
     onQueryChange: setQueryString,
     onSelectOption: onSelectOption,
     triggerFn: checkForTriggerMatch,
@@ -5375,10 +5425,10 @@ function ComponentPickerMenuPlugin({
       selectedIndex,
       selectOptionAndCleanUp,
       setHighlightedIndex
-    }) => anchorElementRef.current && options.length && showMenu ? /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React.createElement("div", {
+    }) => anchorElementRef.current && options.length && showMenu ? /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React$1.createElement("div", {
       className: "typeahead-popovers component-picker-menu",
       ref: showMenuRef
-    }, /*#__PURE__*/React.createElement("ul", null, options.map((option, i) => /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(ComponentPickerMenuItem, {
+    }, /*#__PURE__*/React$1.createElement("ul", null, options.map((option, i) => /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement(ComponentPickerMenuItem, {
       index: i,
       isSelected: selectedIndex === i,
       dynamicOptions: config,
@@ -5398,7 +5448,7 @@ function ComponentPickerMenuPlugin({
 const ACCEPTABLE_IMAGE_TYPES = ['image/', 'image/heic', 'image/heif', 'image/gif', 'image/webp'];
 function DragOnly() {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     return editor.registerCommand(lexical.DROP_COMMAND, event => {
       event.preventDefault();
       const dt = event.dataTransfer;
@@ -5806,10 +5856,10 @@ function hideTargetLine(targetLineElem) {
 
 function useDraggableBlockMenu(editor, anchorElem, isEditable) {
   const scrollerElem = anchorElem.parentElement;
-  const menuRef = React.useRef(null);
-  const targetLineRef = React.useRef(null);
-  const [draggableBlockElem, setDraggableBlockElem] = React.useState(null);
-  React.useEffect(() => {
+  const menuRef = React$1.useRef(null);
+  const targetLineRef = React$1.useRef(null);
+  const [draggableBlockElem, setDraggableBlockElem] = React$1.useState(null);
+  React$1.useEffect(() => {
     function onMouseMove(event) {
       const target = event.target;
 
@@ -5838,12 +5888,12 @@ function useDraggableBlockMenu(editor, anchorElem, isEditable) {
       scrollerElem?.removeEventListener('mouseleave', onMouseLeave);
     };
   }, [scrollerElem, anchorElem, editor]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (menuRef.current) {
       setMenuPosition(draggableBlockElem, menuRef.current, anchorElem);
     }
   }, [anchorElem, draggableBlockElem]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     function onDragover(event) {
       const [isFileTransfer] = richText.eventFiles(event);
 
@@ -5958,16 +6008,16 @@ function useDraggableBlockMenu(editor, anchorElem, isEditable) {
     hideTargetLine(targetLineRef.current);
   }
 
-  return /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("div", {
     className: "icon draggable-block-menu",
     ref: menuRef,
     id: "icon draggable-block-menus",
     draggable: true,
     onDragStart: onDragStart,
     onDragEnd: onDragEnd
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React$1.createElement("div", {
     className: isEditable ? 'icon' : ''
-  })), /*#__PURE__*/React.createElement("div", {
+  })), /*#__PURE__*/React$1.createElement("div", {
     className: "draggable-block-target-line",
     ref: targetLineRef
   })), anchorElem);
@@ -6010,7 +6060,7 @@ function EmojiMenuItem({
     className += ' selected';
   }
 
-  return /*#__PURE__*/React.createElement("li", {
+  return /*#__PURE__*/React$1.createElement("li", {
     key: option.key,
     tabIndex: -1,
     className: className,
@@ -6020,7 +6070,7 @@ function EmojiMenuItem({
     id: 'typeahead-item-' + index,
     onMouseEnter: onMouseEnter,
     onClick: onClick
-  }, /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React$1.createElement("span", {
     className: "text"
   }, option.emoji, " ", option.title));
 }
@@ -6028,13 +6078,13 @@ function EmojiMenuItem({
 const MAX_EMOJI_SUGGESTION_COUNT = 10;
 function EmojiPickerPlugin() {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  const [queryString, setQueryString] = React.useState(null);
-  const [emojis, setEmojis] = React.useState([]);
-  React.useEffect(() => {
+  const [queryString, setQueryString] = React$1.useState(null);
+  const [emojis, setEmojis] = React$1.useState([]);
+  React$1.useEffect(() => {
     // @ts-ignore
     Promise.resolve().then(function () { return emojiList$1; }).then(file => setEmojis(file.default));
   }, []);
-  const emojiOptions = React.useMemo(() => emojis != null ? emojis.map(({
+  const emojiOptions = React$1.useMemo(() => emojis != null ? emojis.map(({
     emoji,
     aliases,
     tags
@@ -6044,12 +6094,12 @@ function EmojiPickerPlugin() {
   const checkForTriggerMatch = LexicalTypeaheadMenuPlugin.useBasicTypeaheadTriggerMatch(':', {
     minLength: 0
   });
-  const options = React.useMemo(() => {
+  const options = React$1.useMemo(() => {
     return emojiOptions.filter(option => {
       return queryString != null ? new RegExp(queryString, 'gi').exec(option.title) || option.keywords != null ? option.keywords.some(keyword => new RegExp(queryString, 'gi').exec(keyword)) : false : emojiOptions;
     }).slice(0, MAX_EMOJI_SUGGESTION_COUNT);
   }, [emojiOptions, queryString]);
-  const onSelectOption = React.useCallback((selectedOption, nodeToRemove, closeMenu) => {
+  const onSelectOption = React$1.useCallback((selectedOption, nodeToRemove, closeMenu) => {
     editor.update(() => {
       const selection = lexical.$getSelection();
 
@@ -6065,7 +6115,7 @@ function EmojiPickerPlugin() {
       closeMenu();
     });
   }, [editor]);
-  return /*#__PURE__*/React.createElement(LexicalTypeaheadMenuPlugin.LexicalTypeaheadMenuPlugin, {
+  return /*#__PURE__*/React$1.createElement(LexicalTypeaheadMenuPlugin.LexicalTypeaheadMenuPlugin, {
     onQueryChange: setQueryString,
     onSelectOption: onSelectOption,
     triggerFn: checkForTriggerMatch,
@@ -6079,11 +6129,11 @@ function EmojiPickerPlugin() {
         return null;
       }
 
-      return anchorElementRef.current && options.length ? /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React.createElement("div", {
+      return anchorElementRef.current && options.length ? /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React$1.createElement("div", {
         className: "typeahead-popovers emoji-menu"
-      }, /*#__PURE__*/React.createElement("ul", null, options.map((option, index) => /*#__PURE__*/React.createElement("div", {
+      }, /*#__PURE__*/React$1.createElement("ul", null, options.map((option, index) => /*#__PURE__*/React$1.createElement("div", {
         key: option.key
-      }, /*#__PURE__*/React.createElement(EmojiMenuItem, {
+      }, /*#__PURE__*/React$1.createElement(EmojiMenuItem, {
         index: index,
         isSelected: selectedIndex === index,
         onClick: () => {
@@ -6210,7 +6260,7 @@ function textNodeTransform(node) {
 }
 
 function useEmojis(editor) {
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (!editor.hasNodes([EmojiNode])) {
       throw new Error('EmojisPlugin: EmojiNode not registered on editor');
     }
@@ -6222,6 +6272,36 @@ function useEmojis(editor) {
 function EmojisPlugin() {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
   useEmojis(editor);
+  return null;
+}
+
+function EnsureTrailingParagraphOnUpdatePlugin() {
+  const [editor] = LexicalComposerContext.useLexicalComposerContext();
+  React$1.useEffect(() => {
+    const removeListener = editor.registerUpdateListener(({
+      editorState
+    }) => {
+      editor.update(() => {
+        const root = lexical.$getRoot();
+        const children = root.getChildren();
+
+        if (children.length === 0) {
+          const paragraphNode = lexical.$createParagraphNode();
+          root.append(paragraphNode);
+        } else {
+          const lastNode = children[children.length - 1]; // Add trailing paragraph if last node is not paragraph
+
+          if (!lastNode.hasFormat && !lastNode.isInline() && lastNode.getType() !== 'paragraph') {
+            const paragraphNode = lexical.$createParagraphNode();
+            root.append(paragraphNode);
+          }
+        }
+      });
+    });
+    return () => {
+      removeListener();
+    };
+  }, [editor]);
   return null;
 }
 
@@ -6267,25 +6347,25 @@ function LinkPreviewContent({
     return null;
   }
 
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", {
     className: "LinkPreview__container"
-  }, preview.img && /*#__PURE__*/React.createElement("div", {
+  }, preview.img && /*#__PURE__*/React$1.createElement("div", {
     className: "LinkPreview__imageWrapper"
-  }, /*#__PURE__*/React.createElement("img", {
+  }, /*#__PURE__*/React$1.createElement("img", {
     src: preview.img,
     alt: preview.title,
     className: "LinkPreview__image"
-  })), preview.domain && /*#__PURE__*/React.createElement("div", {
+  })), preview.domain && /*#__PURE__*/React$1.createElement("div", {
     className: "LinkPreview__domain"
-  }, preview.domain), preview.title && /*#__PURE__*/React.createElement("div", {
+  }, preview.domain), preview.title && /*#__PURE__*/React$1.createElement("div", {
     className: "LinkPreview__title"
-  }, preview.title), preview.description && /*#__PURE__*/React.createElement("div", {
+  }, preview.title), preview.description && /*#__PURE__*/React$1.createElement("div", {
     className: "LinkPreview__description"
   }, preview.description));
 }
 
 function Glimmer(props) {
-  return /*#__PURE__*/React.createElement("div", _extends({
+  return /*#__PURE__*/React$1.createElement("div", _extends({
     className: "LinkPreview__glimmer"
   }, props, {
     style: {
@@ -6298,24 +6378,24 @@ function Glimmer(props) {
 function LinkPreview({
   url
 }) {
-  return /*#__PURE__*/React.createElement(React.Suspense, {
-    fallback: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Glimmer, {
+  return /*#__PURE__*/React$1.createElement(React$1.Suspense, {
+    fallback: /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement(Glimmer, {
       style: {
         height: '80px'
       },
       index: 0
-    }), /*#__PURE__*/React.createElement(Glimmer, {
+    }), /*#__PURE__*/React$1.createElement(Glimmer, {
       style: {
         width: '60%'
       },
       index: 1
-    }), /*#__PURE__*/React.createElement(Glimmer, {
+    }), /*#__PURE__*/React$1.createElement(Glimmer, {
       style: {
         width: '80%'
       },
       index: 2
     }))
-  }, /*#__PURE__*/React.createElement(LinkPreviewContent, {
+  }, /*#__PURE__*/React$1.createElement(LinkPreviewContent, {
     url: url
   }));
 }
@@ -6423,12 +6503,12 @@ function FloatingLinkEditor({
   setIsLink,
   anchorElem
 }) {
-  const editorRef = React.useRef(null);
-  const inputRef = React.useRef(null);
-  const [linkUrl, setLinkUrl] = React.useState('');
-  const [isEditMode, setEditMode] = React.useState(false);
-  const [lastSelection, setLastSelection] = React.useState(null);
-  const updateLinkEditor = React.useCallback(() => {
+  const editorRef = React$1.useRef(null);
+  const inputRef = React$1.useRef(null);
+  const [linkUrl, setLinkUrl] = React$1.useState('');
+  const [isEditMode, setEditMode] = React$1.useState(false);
+  const [lastSelection, setLastSelection] = React$1.useState(null);
+  const updateLinkEditor = React$1.useCallback(() => {
     const selection = lexical.$getSelection();
 
     if (lexical.$isRangeSelection(selection)) {
@@ -6484,7 +6564,7 @@ function FloatingLinkEditor({
 
     return true;
   }, [anchorElem, editor]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     const scrollerElem = anchorElem.parentElement;
 
     const update = () => {
@@ -6507,7 +6587,7 @@ function FloatingLinkEditor({
       }
     };
   }, [anchorElem.parentElement, editor, updateLinkEditor]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     return utils.mergeRegister(editor.registerUpdateListener(({
       editorState
     }) => {
@@ -6526,20 +6606,20 @@ function FloatingLinkEditor({
       return false;
     }, lexical.COMMAND_PRIORITY_HIGH));
   }, [editor, updateLinkEditor, setIsLink, isLink]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     editor.getEditorState().read(() => {
       updateLinkEditor();
     });
   }, [editor, updateLinkEditor]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (isEditMode && inputRef.current) {
       inputRef.current.focus();
     }
   }, [isEditMode]);
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", {
     ref: editorRef,
     className: "link-editors"
-  }, isEditMode ? /*#__PURE__*/React.createElement("input", {
+  }, isEditMode ? /*#__PURE__*/React$1.createElement("input", {
     ref: inputRef,
     className: "link-input",
     value: linkUrl,
@@ -6559,13 +6639,13 @@ function FloatingLinkEditor({
         }
       }
     }
-  }) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  }) : /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("div", {
     className: "link-input"
-  }, /*#__PURE__*/React.createElement("a", {
+  }, /*#__PURE__*/React$1.createElement("a", {
     href: linkUrl,
     target: "_blank",
     rel: "noopener noreferrer"
-  }, linkUrl), /*#__PURE__*/React.createElement("div", {
+  }, linkUrl), /*#__PURE__*/React$1.createElement("div", {
     className: "link-edit",
     role: "button",
     tabIndex: 0,
@@ -6573,15 +6653,15 @@ function FloatingLinkEditor({
     onClick: () => {
       setEditMode(true);
     }
-  })), /*#__PURE__*/React.createElement(LinkPreview, {
+  })), /*#__PURE__*/React$1.createElement(LinkPreview, {
     url: linkUrl
   })));
 }
 
 function useFloatingLinkEditorToolbar(editor, anchorElem) {
-  const [activeEditor, setActiveEditor] = React.useState(editor);
-  const [isLink, setIsLink] = React.useState(false);
-  const updateToolbar = React.useCallback(() => {
+  const [activeEditor, setActiveEditor] = React$1.useState(editor);
+  const [isLink, setIsLink] = React$1.useState(false);
+  const updateToolbar = React$1.useCallback(() => {
     const selection = lexical.$getSelection();
 
     if (lexical.$isRangeSelection(selection)) {
@@ -6596,7 +6676,7 @@ function useFloatingLinkEditorToolbar(editor, anchorElem) {
       }
     }
   }, []);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     return utils.mergeRegister(editor.registerUpdateListener(({
       editorState
     }) => {
@@ -6609,7 +6689,7 @@ function useFloatingLinkEditorToolbar(editor, anchorElem) {
       return false;
     }, lexical.COMMAND_PRIORITY_CRITICAL));
   }, [editor, updateToolbar]);
-  return isLink ? /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React.createElement(FloatingLinkEditor, {
+  return isLink ? /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React$1.createElement(FloatingLinkEditor, {
     editor: activeEditor,
     isLink: isLink,
     anchorElem: anchorElem,
@@ -6676,15 +6756,15 @@ CAN_USE_DOM && /AppleWebKit\/[\d.]+/.test(navigator.userAgent) && !IS_CHROME;
  * LICENSE file in the root directory of this source tree.
  *
  */
-const DropDownContext = /*#__PURE__*/React.createContext(null);
+const DropDownContext = /*#__PURE__*/React$1.createContext(null);
 function DropDownItem({
   children,
   className,
   onClick,
   title
 }) {
-  const ref = React.useRef(null);
-  const dropDownContext = React.useContext(DropDownContext);
+  const ref = React$1.useRef(null);
+  const dropDownContext = React$1.useContext(DropDownContext);
 
   if (dropDownContext === null) {
     throw new Error('DropDownItem must be used within a DropDown');
@@ -6693,12 +6773,12 @@ function DropDownItem({
   const {
     registerItem
   } = dropDownContext;
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (ref && ref.current) {
       registerItem(ref);
     }
   }, [ref, registerItem]);
-  return /*#__PURE__*/React.createElement("button", {
+  return /*#__PURE__*/React$1.createElement("button", {
     className: className,
     onClick: onClick,
     ref: ref,
@@ -6714,9 +6794,9 @@ function DropDownItems({
   showDropDown,
   anchorElem = document.body
 }) {
-  const [items, setItems] = React.useState();
-  const [highlightedItem, setHighlightedItem] = React.useState();
-  const registerItem = React.useCallback(itemRef => {
+  const [items, setItems] = React$1.useState();
+  const [highlightedItem, setHighlightedItem] = React$1.useState();
+  const registerItem = React$1.useCallback(itemRef => {
     setItems(prev => prev ? [...prev, itemRef] : [itemRef]);
   }, [setItems]);
 
@@ -6744,10 +6824,10 @@ function DropDownItems({
     }
   };
 
-  const contextValue = React.useMemo(() => ({
+  const contextValue = React$1.useMemo(() => ({
     registerItem
   }), [registerItem]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (items && !highlightedItem) {
       setHighlightedItem(items[0]);
     }
@@ -6756,9 +6836,9 @@ function DropDownItems({
       highlightedItem.current.focus();
     }
   }, [items, highlightedItem, anchorElem]);
-  return /*#__PURE__*/React.createElement(DropDownContext.Provider, {
+  return /*#__PURE__*/React$1.createElement(DropDownContext.Provider, {
     value: contextValue
-  }, showDropDown && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  }, showDropDown && /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("div", {
     className: "dropdowns all_dropdown",
     ref: dropDownRef,
     onKeyDown: handleKeyDown
@@ -6776,9 +6856,9 @@ function DropDown({
   anchorElem = document.body,
   bit = false
 }) {
-  const dropDownRef = React.useRef(null);
-  const buttonRef = React.useRef(null);
-  const [showDropDown, setShowDropDown] = React.useState(false);
+  const dropDownRef = React$1.useRef(null);
+  const buttonRef = React$1.useRef(null);
+  const [showDropDown, setShowDropDown] = React$1.useState(false);
 
   const handleClose = () => {
     setShowDropDown(false);
@@ -6788,7 +6868,7 @@ function DropDown({
     }
   };
 
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     const button = buttonRef.current;
     const dropDown = dropDownRef.current;
     if (!showDropDown || !button || !dropDown) return;
@@ -6942,7 +7022,7 @@ function DropDown({
   //   showDropDown,
   // ]);
 
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     const button = buttonRef.current;
 
     if (button !== null && showDropDown) {
@@ -6988,20 +7068,20 @@ function DropDown({
   //   showDropDown,
   // ]);
 
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+  return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("button", {
     disabled: disabled,
     "aria-label": buttonAriaLabel || buttonLabel,
     className: buttonClassName,
     type: "button",
     onClick: () => setShowDropDown(!showDropDown),
     ref: buttonRef
-  }, buttonIconClassName && /*#__PURE__*/React.createElement("span", {
+  }, buttonIconClassName && /*#__PURE__*/React$1.createElement("span", {
     className: buttonIconClassName
-  }), buttonLabel && /*#__PURE__*/React.createElement("span", {
+  }), buttonLabel && /*#__PURE__*/React$1.createElement("span", {
     className: "text dropdowns-button-text"
-  }, buttonLabel), /*#__PURE__*/React.createElement("i", {
+  }, buttonLabel), /*#__PURE__*/React$1.createElement("i", {
     className: "chevron-down"
-  })), /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React.createElement(DropDownItems, {
+  })), /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React$1.createElement(DropDownItems, {
     showDropDown: showDropDown,
     dropDownRef: dropDownRef,
     anchorElem: anchorElem,
@@ -7020,14 +7100,14 @@ function ColorPicker({
   disabled = false,
   ...rest
 }) {
-  const [selfColor, setSelfColor] = React.useState(transformColor('hex', color));
-  const [inputColor, setInputColor] = React.useState(color);
-  const innerDivRef = React.useRef(null);
-  const saturationPosition = React.useMemo(() => ({
+  const [selfColor, setSelfColor] = React$1.useState(transformColor('hex', color));
+  const [inputColor, setInputColor] = React$1.useState(color);
+  const innerDivRef = React$1.useRef(null);
+  const saturationPosition = React$1.useMemo(() => ({
     x: selfColor.hsv.s / 100 * WIDTH,
     y: (100 - selfColor.hsv.v) / 100 * HEIGHT
   }), [selfColor.hsv.s, selfColor.hsv.v]);
-  const huePosition = React.useMemo(() => ({
+  const huePosition = React$1.useMemo(() => ({
     x: selfColor.hsv.h / 360 * WIDTH
   }), [selfColor.hsv]);
 
@@ -7064,36 +7144,36 @@ function ColorPicker({
     setInputColor(newColor.hex);
   };
 
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     // Check if the dropdowns is actually active
     if (innerDivRef.current !== null && onChange) {
       onChange(selfColor.hex);
       setInputColor(selfColor.hex);
     }
   }, [selfColor, onChange]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (color === undefined) return;
     const newColor = transformColor('hex', color);
     setSelfColor(newColor);
     setInputColor(newColor.hex);
   }, [color]);
-  return /*#__PURE__*/React.createElement(DropDown, _extends({
+  return /*#__PURE__*/React$1.createElement(DropDown, _extends({
     bit: bit
   }, rest, {
     disabled: disabled
-  }), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React$1.createElement("div", {
     className: "color-picker-wrapper",
     style: {
       width: WIDTH
     },
     ref: innerDivRef
-  }, /*#__PURE__*/React.createElement(TextInput, {
+  }, /*#__PURE__*/React$1.createElement(TextInput, {
     label: "Hex",
     onChange: onSetHex,
     value: inputColor
-  }), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React$1.createElement("div", {
     className: "color-picker-basic-color"
-  }, basicColors.map(basicColor => /*#__PURE__*/React.createElement("button", {
+  }, basicColors.map(basicColor => /*#__PURE__*/React$1.createElement("button", {
     className: basicColor === selfColor.hex ? ' active' : '',
     key: basicColor,
     style: {
@@ -7103,29 +7183,29 @@ function ColorPicker({
       setInputColor(basicColor);
       setSelfColor(transformColor('hex', basicColor));
     }
-  }))), /*#__PURE__*/React.createElement(MoveWrapper, {
+  }))), /*#__PURE__*/React$1.createElement(MoveWrapper, {
     className: "color-picker-saturation",
     style: {
       backgroundColor: `hsl(${selfColor.hsv.h}, 100%, 50%)`
     },
     onChange: onMoveSaturation
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React$1.createElement("div", {
     className: "color-picker-saturation_cursor",
     style: {
       backgroundColor: selfColor.hex,
       left: saturationPosition.x,
       top: saturationPosition.y
     }
-  })), /*#__PURE__*/React.createElement(MoveWrapper, {
+  })), /*#__PURE__*/React$1.createElement(MoveWrapper, {
     className: "color-picker-hue",
     onChange: onMoveHue
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React$1.createElement("div", {
     className: "color-picker-hue_cursor",
     style: {
       backgroundColor: `hsl(${selfColor.hsv.h}, 100%, 50%)`,
       left: huePosition.x
     }
-  })), /*#__PURE__*/React.createElement("div", {
+  })), /*#__PURE__*/React$1.createElement("div", {
     className: "color-picker-color",
     style: {
       backgroundColor: selfColor.hex
@@ -7139,7 +7219,7 @@ function MoveWrapper({
   onChange,
   children
 }) {
-  const divRef = React.useRef(null);
+  const divRef = React$1.useRef(null);
 
   const move = e => {
     if (divRef.current) {
@@ -7179,7 +7259,7 @@ function MoveWrapper({
     document.addEventListener('mouseup', onMouseUp, false);
   };
 
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", {
     ref: divRef,
     className: className,
     style: style,
@@ -7384,60 +7464,60 @@ function BlockFormatDropDown({
     }
   };
 
-  return /*#__PURE__*/React.createElement(DropDown, {
+  return /*#__PURE__*/React$1.createElement(DropDown, {
     bit: bit,
     disabled: disabled,
     buttonClassName: "toolbar-item blocks-controls",
     buttonIconClassName: 'icon block-type ' + blockType // buttonLabel={blockTypeToBlockName[blockType]}
     ,
     buttonAriaLabel: "Formatting options for text style"
-  }, /*#__PURE__*/React.createElement(DropDownItem, {
+  }, /*#__PURE__*/React$1.createElement(DropDownItem, {
     className: 'item ' + dropDownActiveClass(blockType === 'paragraph'),
     onClick: formatParagraph
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "icon paragraph"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Normal")), /*#__PURE__*/React.createElement(DropDownItem, {
+  }, "Normal")), /*#__PURE__*/React$1.createElement(DropDownItem, {
     className: 'item ' + dropDownActiveClass(blockType === 'h1'),
     onClick: () => formatHeading('h1')
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "icon h1"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Heading 1")), /*#__PURE__*/React.createElement(DropDownItem, {
+  }, "Heading 1")), /*#__PURE__*/React$1.createElement(DropDownItem, {
     className: 'item ' + dropDownActiveClass(blockType === 'h2'),
     onClick: () => formatHeading('h2')
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "icon h2"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Heading 2")), /*#__PURE__*/React.createElement(DropDownItem, {
+  }, "Heading 2")), /*#__PURE__*/React$1.createElement(DropDownItem, {
     className: 'item ' + dropDownActiveClass(blockType === 'h3'),
     onClick: () => formatHeading('h3')
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "icon h3"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Heading 3")), /*#__PURE__*/React.createElement(DropDownItem, {
+  }, "Heading 3")), /*#__PURE__*/React$1.createElement(DropDownItem, {
     className: 'item ' + dropDownActiveClass(blockType === 'bullet'),
     onClick: formatBulletList
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "icon bullet-list"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Bullet List")), /*#__PURE__*/React.createElement(DropDownItem, {
+  }, "Bullet List")), /*#__PURE__*/React$1.createElement(DropDownItem, {
     className: 'item ' + dropDownActiveClass(blockType === 'number'),
     onClick: formatNumberedList
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "icon numbered-list"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
   }, "Numbered List")));
 }
 
 function Divider() {
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", {
     className: "divider"
   });
 }
@@ -7450,7 +7530,7 @@ function FontDropDown({
   disabled = false,
   options
 }) {
-  const handleClick = React.useCallback(option => {
+  const handleClick = React$1.useCallback(option => {
     editor.update(() => {
       const selection$1 = lexical.$getSelection();
 
@@ -7462,31 +7542,31 @@ function FontDropDown({
     });
   }, [editor, style]);
   const buttonAriaLabel = style === 'font-family' ? 'Formatting options for font family' : 'Formatting options for font size';
-  return /*#__PURE__*/React.createElement(React.Fragment, null, style === 'font-size' ? /*#__PURE__*/React.createElement(DropDown, {
+  return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, style === 'font-size' ? /*#__PURE__*/React$1.createElement(DropDown, {
     bit: bit,
     disabled: disabled,
     buttonClassName: 'toolbar-item ' + style // buttonLabel={value}
     ,
     buttonIconClassName: 'icon block-type font-family',
     buttonAriaLabel: buttonAriaLabel
-  }, options.map(([option, text]) => /*#__PURE__*/React.createElement(DropDownItem, {
+  }, options.map(([option, text]) => /*#__PURE__*/React$1.createElement(DropDownItem, {
     className: `item ${dropDownActiveClass(value === option)} ${style === 'font-size' ? 'fontsize-item' : ''}`,
     onClick: () => handleClick(option),
     key: option
-  }, /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, text)))) : /*#__PURE__*/React.createElement(DropDown, {
+  }, text)))) : /*#__PURE__*/React$1.createElement(DropDown, {
     bit: bit,
     disabled: disabled,
     buttonClassName: 'toolbar-item ' + style // buttonLabel={value}
     ,
     buttonIconClassName: style === 'font-family' ? 'icon block-type font-family' : '',
     buttonAriaLabel: buttonAriaLabel
-  }, options.map(([option, text]) => /*#__PURE__*/React.createElement(DropDownItem, {
+  }, options.map(([option, text]) => /*#__PURE__*/React$1.createElement(DropDownItem, {
     className: `item ${dropDownActiveClass(value === option)} ${style === 'font-size' ? 'fontsize-item' : ''}`,
     onClick: () => handleClick(option),
     key: option
-  }, /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React$1.createElement("span", {
     className: "text"
   }, text)))));
 }
@@ -7501,30 +7581,30 @@ function ToolbarPlugin({
   const normFontFamilyOption = Array.isArray(config.fontFamilyOptions) ? config.fontFamilyOptions : FONT_FAMILY_OPTIONS;
   const initFontFamily = normFontFamilyOption?.[0]?.[0] ?? FONT_FAMILY_OPTIONS[0][0];
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  const [activeEditor, setActiveEditor] = React.useState(editor);
-  const [blockType, setBlockType] = React.useState('paragraph');
-  const [selectedElementKey, setSelectedElementKey] = React.useState(null);
-  const [fontSize, setFontSize] = React.useState('15px');
-  const [fontColor, setFontColor] = React.useState('#000');
-  const [bgColor, setBgColor] = React.useState('#fff');
-  const [fontFamily, setFontFamily] = React.useState(initFontFamily);
-  const [isLink, setIsLink] = React.useState(false);
-  const [isBold, setIsBold] = React.useState(false);
-  const [isItalic, setIsItalic] = React.useState(false);
-  const [isUnderline, setIsUnderline] = React.useState(false);
-  const [isStrikethrough, setIsStrikethrough] = React.useState(false);
-  const [isSubscript, setIsSubscript] = React.useState(false);
-  const [isSuperscript, setIsSuperscript] = React.useState(false);
-  const [isCode, setIsCode] = React.useState(false);
-  const [canUndo, setCanUndo] = React.useState(false);
-  const [canRedo, setCanRedo] = React.useState(false);
+  const [activeEditor, setActiveEditor] = React$1.useState(editor);
+  const [blockType, setBlockType] = React$1.useState('paragraph');
+  const [selectedElementKey, setSelectedElementKey] = React$1.useState(null);
+  const [fontSize, setFontSize] = React$1.useState('15px');
+  const [fontColor, setFontColor] = React$1.useState('#000');
+  const [bgColor, setBgColor] = React$1.useState('#fff');
+  const [fontFamily, setFontFamily] = React$1.useState(initFontFamily);
+  const [isLink, setIsLink] = React$1.useState(false);
+  const [isBold, setIsBold] = React$1.useState(false);
+  const [isItalic, setIsItalic] = React$1.useState(false);
+  const [isUnderline, setIsUnderline] = React$1.useState(false);
+  const [isStrikethrough, setIsStrikethrough] = React$1.useState(false);
+  const [isSubscript, setIsSubscript] = React$1.useState(false);
+  const [isSuperscript, setIsSuperscript] = React$1.useState(false);
+  const [isCode, setIsCode] = React$1.useState(false);
+  const [canUndo, setCanUndo] = React$1.useState(false);
+  const [canRedo, setCanRedo] = React$1.useState(false);
   const [modal, showModal] = useModal();
-  const [isRTL, setIsRTL] = React.useState(false);
-  const [codeLanguage, setCodeLanguage] = React.useState('');
-  const [isEditable, setIsEditable] = React.useState(() => editor.isEditable());
-  React.useState('5');
-  React.useState('5');
-  React.useState('');
+  const [isRTL, setIsRTL] = React$1.useState(false);
+  const [codeLanguage, setCodeLanguage] = React$1.useState('');
+  const [isEditable, setIsEditable] = React$1.useState(() => editor.isEditable());
+  React$1.useState('5');
+  React$1.useState('5');
+  React$1.useState('');
   const langs = {
     auto: 'Detect Language',
     af: 'Afrikaans',
@@ -7636,7 +7716,7 @@ function ToolbarPlugin({
     name
   }));
   useEditorComposerContext();
-  const updateToolbar = React.useCallback(() => {
+  const updateToolbar = React$1.useCallback(() => {
     const selection$1 = lexical.$getSelection();
 
     if (lexical.$isRangeSelection(selection$1)) {
@@ -7700,14 +7780,14 @@ function ToolbarPlugin({
       setFontFamily(selection.$getSelectionStyleValueForProperty(selection$1, 'font-family', initFontFamily));
     }
   }, [activeEditor, initFontFamily]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     return editor.registerCommand(lexical.SELECTION_CHANGE_COMMAND, (_payload, newEditor) => {
       updateToolbar();
       setActiveEditor(newEditor);
       return false;
     }, lexical.COMMAND_PRIORITY_CRITICAL);
   }, [editor, updateToolbar]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     return utils.mergeRegister(editor.registerEditableListener(editable => {
       setIsEditable(editable);
     }), activeEditor.registerUpdateListener(({
@@ -7724,7 +7804,7 @@ function ToolbarPlugin({
       return false;
     }, lexical.COMMAND_PRIORITY_CRITICAL));
   }, [activeEditor, editor, updateToolbar]);
-  const applyStyleText = React.useCallback(styles => {
+  const applyStyleText = React$1.useCallback(styles => {
     activeEditor.update(() => {
       const selection$1 = lexical.$getSelection();
 
@@ -7733,7 +7813,7 @@ function ToolbarPlugin({
       }
     });
   }, [activeEditor]);
-  const clearFormatting = React.useCallback(() => {
+  const clearFormatting = React$1.useCallback(() => {
     activeEditor.update(() => {
       const selection$1 = lexical.$getSelection();
 
@@ -7753,24 +7833,24 @@ function ToolbarPlugin({
       }
     });
   }, [activeEditor]);
-  const onFontColorSelect = React.useCallback(value => {
+  const onFontColorSelect = React$1.useCallback(value => {
     applyStyleText({
       color: value
     });
   }, [applyStyleText]);
-  const onBgColorSelect = React.useCallback(value => {
+  const onBgColorSelect = React$1.useCallback(value => {
     applyStyleText({
       'background-color': value
     });
   }, [applyStyleText]);
-  const insertLink = React.useCallback(() => {
+  const insertLink = React$1.useCallback(() => {
     if (!isLink) {
       editor.dispatchCommand(link.TOGGLE_LINK_COMMAND, sanitizeUrl('https://'));
     } else {
       editor.dispatchCommand(link.TOGGLE_LINK_COMMAND, null);
     }
   }, [editor, isLink]);
-  const onCodeLanguageSelect = React.useCallback(value => {
+  const onCodeLanguageSelect = React$1.useCallback(value => {
     activeEditor.update(() => {
       if (selectedElementKey !== null) {
         const node = lexical.$getNodeByKey(selectedElementKey);
@@ -7781,7 +7861,7 @@ function ToolbarPlugin({
       }
     });
   }, [activeEditor, selectedElementKey]);
-  const applyStyleTexts = React.useCallback((styles, merge = true) => {
+  const applyStyleTexts = React$1.useCallback((styles, merge = true) => {
     activeEditor.update(() => {
       const selection$1 = lexical.$getSelection();
 
@@ -7819,12 +7899,12 @@ function ToolbarPlugin({
     }, {});
   };
 
-  const handleTextTransform = React.useCallback(transform => {
+  const handleTextTransform = React$1.useCallback(transform => {
     applyStyleTexts({
       'text-transform': transform
     });
   }, [applyStyleText]);
-  const onRTLClick = React.useCallback(() => {
+  const onRTLClick = React$1.useCallback(() => {
     applyStyleTexts({
       direction: 'rtl',
       'unicode-bidi': 'bidi-override',
@@ -7832,7 +7912,7 @@ function ToolbarPlugin({
       display: 'flex'
     });
   }, [applyStyleText]);
-  const onLTRClick = React.useCallback(() => {
+  const onLTRClick = React$1.useCallback(() => {
     applyStyleText({
       direction: 'ltr',
       'unicode-bidi': 'bidi-override',
@@ -7873,9 +7953,9 @@ function ToolbarPlugin({
     });
   };
 
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", {
     className: "toolbar"
-  }, floatingText ? /*#__PURE__*/React.createElement(React.Fragment, null, blockType === 'code' ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(DropDown, {
+  }, floatingText ? /*#__PURE__*/React$1.createElement(React$1.Fragment, null, blockType === 'code' ? /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement(DropDown, {
     anchorElem: anchorElem,
     bit: true,
     disabled: !isEditable,
@@ -7883,26 +7963,26 @@ function ToolbarPlugin({
     buttonLabel: code.getLanguageFriendlyName(codeLanguage),
     buttonAriaLabel: "Select language"
   }, CODE_LANGUAGE_OPTIONS.map(([value, name]) => {
-    return /*#__PURE__*/React.createElement(DropDownItem, {
+    return /*#__PURE__*/React$1.createElement(DropDownItem, {
       className: `item ${dropDownActiveClass(value === codeLanguage)}`,
       onClick: () => onCodeLanguageSelect(value),
       key: value
-    }, /*#__PURE__*/React.createElement("span", {
+    }, /*#__PURE__*/React$1.createElement("span", {
       className: "text"
     }, name));
-  }))) : /*#__PURE__*/React.createElement(React.Fragment, null, Boolean(config.fontFamilyOptions) && /*#__PURE__*/React.createElement(FontDropDown, {
+  }))) : /*#__PURE__*/React$1.createElement(React$1.Fragment, null, Boolean(config.fontFamilyOptions) && /*#__PURE__*/React$1.createElement(FontDropDown, {
     bit: true,
     disabled: !isEditable,
     style: 'font-family',
     value: fontFamily,
     editor: editor,
     options: normFontFamilyOption
-  }), config.formatBlockOptions && blockType in blockTypeToBlockName && activeEditor === editor && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(BlockFormatDropDown, {
+  }), config.formatBlockOptions && blockType in blockTypeToBlockName && activeEditor === editor && /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement(BlockFormatDropDown, {
     bit: true,
     disabled: !isEditable,
     blockType: blockType,
     editor: editor
-  })), config.biu && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+  })), config.biu && /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("button", {
     disabled: !isEditable,
     onClick: () => {
       activeEditor.dispatchCommand(lexical.FORMAT_TEXT_COMMAND, 'bold');
@@ -7911,9 +7991,9 @@ function ToolbarPlugin({
     title: IS_APPLE ? 'Bold (⌘B)' : 'Bold (Ctrl+B)',
     type: "button",
     "aria-label": `Format text as bold. Shortcut: ${IS_APPLE ? '⌘B' : 'Ctrl+B'}`
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "format bold"
-  })), /*#__PURE__*/React.createElement("button", {
+  })), /*#__PURE__*/React$1.createElement("button", {
     disabled: !isEditable,
     onClick: () => {
       activeEditor.dispatchCommand(lexical.FORMAT_TEXT_COMMAND, 'italic');
@@ -7922,9 +8002,9 @@ function ToolbarPlugin({
     title: IS_APPLE ? 'Italic (⌘I)' : 'Italic (Ctrl+I)',
     type: "button",
     "aria-label": `Format text as italics. Shortcut: ${IS_APPLE ? '⌘I' : 'Ctrl+I'}`
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "format italic"
-  })), /*#__PURE__*/React.createElement("button", {
+  })), /*#__PURE__*/React$1.createElement("button", {
     disabled: !isEditable,
     onClick: () => {
       activeEditor.dispatchCommand(lexical.FORMAT_TEXT_COMMAND, 'underline');
@@ -7933,9 +8013,9 @@ function ToolbarPlugin({
     title: IS_APPLE ? 'Underline (⌘U)' : 'Underline (Ctrl+U)',
     type: "button",
     "aria-label": `Format text to underlined. Shortcut: ${IS_APPLE ? '⌘U' : 'Ctrl+U'}`
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "format underline"
-  }))), config.codeBlock && /*#__PURE__*/React.createElement("button", {
+  }))), config.codeBlock && /*#__PURE__*/React$1.createElement("button", {
     disabled: !isEditable,
     onClick: () => {
       activeEditor.dispatchCommand(lexical.FORMAT_TEXT_COMMAND, 'code');
@@ -7944,64 +8024,64 @@ function ToolbarPlugin({
     title: "Insert code block",
     type: "button",
     "aria-label": "Insert code block"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "format code"
-  })), config.link && /*#__PURE__*/React.createElement("button", {
+  })), config.link && /*#__PURE__*/React$1.createElement("button", {
     disabled: !isEditable,
     onClick: insertLink,
     className: 'toolbar-item spaced ' + (isLink ? 'active' : ''),
     "aria-label": "Insert link",
     title: "Insert link",
     type: "button"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "format link"
-  })), config.uppercase && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+  })), config.uppercase && /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("button", {
     disabled: !isEditable,
     onClick: () => handleTextTransform('uppercase'),
     className: 'toolbar-item spaced ',
     "aria-label": "Format text as uppercase",
     title: "UPPERCASE",
     type: "button"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "format uppercase"
-  }))), config.lowercase && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+  }))), config.lowercase && /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("button", {
     disabled: !isEditable,
     onClick: () => handleTextTransform('lowercase'),
     className: 'toolbar-item spaced ',
     "aria-label": "Format text as lowercase",
     title: "lowercase",
     type: "button"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "format lowercase"
-  }))), config.capitalize && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+  }))), config.capitalize && /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("button", {
     disabled: !isEditable,
     onClick: () => handleTextTransform('capitalize'),
     className: 'toolbar-item spaced ',
     "aria-label": "Capitalize text",
     title: "Capitalize",
     type: "button"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "format capitalize"
-  }))), config.RTL && /*#__PURE__*/React.createElement("button", {
+  }))), config.RTL && /*#__PURE__*/React$1.createElement("button", {
     onClick: onRTLClick,
     className: "toolbar-item",
     title: "Right to Left",
     "aria-label": "Switch text direction to right to left"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "format rtl"
-  })), config.LTR && /*#__PURE__*/React.createElement("button", {
+  })), config.LTR && /*#__PURE__*/React$1.createElement("button", {
     onClick: onLTRClick,
     className: "toolbar-item",
     title: "Left to Right",
     "aria-label": "Switch text direction to left to right"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "format ltr"
-  })), config.ai && /*#__PURE__*/React.createElement("button", {
+  })), config.ai && /*#__PURE__*/React$1.createElement("button", {
     onClick: handleAIform,
     className: "toolbar-item",
     title: "AI",
     "aria-label": "Switch text direction to left to right"
-  }, "AI"), config.textColorPicker && /*#__PURE__*/React.createElement(ColorPicker, {
+  }, "AI"), config.textColorPicker && /*#__PURE__*/React$1.createElement(ColorPicker, {
     bit: true,
     disabled: !isEditable,
     buttonClassName: "toolbar-item color-picker",
@@ -8010,7 +8090,7 @@ function ToolbarPlugin({
     color: fontColor,
     onChange: onFontColorSelect,
     title: "text color"
-  }), config.bgColorPicker && /*#__PURE__*/React.createElement(ColorPicker, {
+  }), config.bgColorPicker && /*#__PURE__*/React$1.createElement(ColorPicker, {
     bit: true,
     disabled: !isEditable,
     buttonClassName: "toolbar-item color-picker",
@@ -8019,7 +8099,7 @@ function ToolbarPlugin({
     color: bgColor,
     onChange: onBgColorSelect,
     title: "bg color"
-  })), config.align && /*#__PURE__*/React.createElement(DropDown, {
+  })), config.align && /*#__PURE__*/React$1.createElement(DropDown, {
     bit: true,
     disabled: !isEditable,
     anchorElem: anchorElem // buttonLabel="Align"
@@ -8027,68 +8107,68 @@ function ToolbarPlugin({
     buttonIconClassName: "icon left-align",
     buttonClassName: "toolbar-item spaced alignment",
     buttonAriaLabel: "Formatting options for text alignment"
-  }, /*#__PURE__*/React.createElement(DropDownItem, {
+  }, /*#__PURE__*/React$1.createElement(DropDownItem, {
     onClick: () => {
       activeEditor.dispatchCommand(lexical.FORMAT_ELEMENT_COMMAND, 'left');
     },
     className: "item"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "icon left-align"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Left Align")), /*#__PURE__*/React.createElement(DropDownItem, {
+  }, "Left Align")), /*#__PURE__*/React$1.createElement(DropDownItem, {
     onClick: () => {
       activeEditor.dispatchCommand(lexical.FORMAT_ELEMENT_COMMAND, 'center');
     },
     className: "item"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "icon center-align"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Center Align")), /*#__PURE__*/React.createElement(DropDownItem, {
+  }, "Center Align")), /*#__PURE__*/React$1.createElement(DropDownItem, {
     onClick: () => {
       activeEditor.dispatchCommand(lexical.FORMAT_ELEMENT_COMMAND, 'right');
     },
     className: "item"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "icon right-align"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Right Align")), /*#__PURE__*/React.createElement(DropDownItem, {
+  }, "Right Align")), /*#__PURE__*/React$1.createElement(DropDownItem, {
     onClick: () => {
       activeEditor.dispatchCommand(lexical.FORMAT_ELEMENT_COMMAND, 'justify');
     },
     className: "item"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "icon justify-align"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Justify Align")), /*#__PURE__*/React.createElement(Divider, null), /*#__PURE__*/React.createElement(DropDownItem, {
+  }, "Justify Align")), /*#__PURE__*/React$1.createElement(Divider, null), /*#__PURE__*/React$1.createElement(DropDownItem, {
     onClick: () => {
       activeEditor.dispatchCommand(lexical.OUTDENT_CONTENT_COMMAND, undefined);
     },
     className: "item"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: 'icon ' + (isRTL ? 'indent' : 'outdent')
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Outdent")), /*#__PURE__*/React.createElement(DropDownItem, {
+  }, "Outdent")), /*#__PURE__*/React$1.createElement(DropDownItem, {
     onClick: () => {
       activeEditor.dispatchCommand(lexical.INDENT_CONTENT_COMMAND, undefined);
     },
     className: "item"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: 'icon ' + (isRTL ? 'outdent' : 'indent')
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Indent"))), config.fontSizeOptions && /*#__PURE__*/React.createElement(FontDropDown, {
+  }, "Indent"))), config.fontSizeOptions && /*#__PURE__*/React$1.createElement(FontDropDown, {
     bit: true,
     disabled: !isEditable,
     style: 'font-size',
     value: fontSize,
     editor: editor,
     options: FONT_SIZE_OPTIONS
-  }), config.formatTextOptions && /*#__PURE__*/React.createElement(DropDown, {
+  }), config.formatTextOptions && /*#__PURE__*/React$1.createElement(DropDown, {
     bit: true,
     anchorElem: anchorElem,
     disabled: !isEditable,
@@ -8096,49 +8176,49 @@ function ToolbarPlugin({
     buttonLabel: "",
     buttonAriaLabel: "Formatting options for additional text styles",
     buttonIconClassName: "icon dropdowns-more"
-  }, /*#__PURE__*/React.createElement(DropDownItem, {
+  }, /*#__PURE__*/React$1.createElement(DropDownItem, {
     onClick: () => {
       activeEditor.dispatchCommand(lexical.FORMAT_TEXT_COMMAND, 'strikethrough');
     },
     className: 'item ' + dropDownActiveClass(isStrikethrough),
     title: "Strikethrough",
     "aria-label": "Format text with a strikethrough"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "icon strikethrough"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Strikethrough")), /*#__PURE__*/React.createElement(DropDownItem, {
+  }, "Strikethrough")), /*#__PURE__*/React$1.createElement(DropDownItem, {
     onClick: () => {
       activeEditor.dispatchCommand(lexical.FORMAT_TEXT_COMMAND, 'subscript');
     },
     className: 'item ' + dropDownActiveClass(isSubscript),
     title: "Subscript",
     "aria-label": "Format text with a subscript"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "icon subscript"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Subscript")), /*#__PURE__*/React.createElement(DropDownItem, {
+  }, "Subscript")), /*#__PURE__*/React$1.createElement(DropDownItem, {
     onClick: () => {
       activeEditor.dispatchCommand(lexical.FORMAT_TEXT_COMMAND, 'superscript');
     },
     className: 'item ' + dropDownActiveClass(isSuperscript),
     title: "Superscript",
     "aria-label": "Format text with a superscript"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "icon superscript"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Superscript")), /*#__PURE__*/React.createElement(DropDownItem, {
+  }, "Superscript")), /*#__PURE__*/React$1.createElement(DropDownItem, {
     onClick: clearFormatting,
     className: "item",
     title: "Clear text formatting",
     "aria-label": "Clear all text formatting"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "icon clear"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Clear Formatting")))) : /*#__PURE__*/React.createElement(React.Fragment, null, config.undoRedo && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+  }, "Clear Formatting")))) : /*#__PURE__*/React$1.createElement(React$1.Fragment, null, config.undoRedo && /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("button", {
     disabled: !canUndo || !isEditable,
     onClick: () => {
       activeEditor.dispatchCommand(lexical.UNDO_COMMAND, undefined);
@@ -8147,9 +8227,9 @@ function ToolbarPlugin({
     type: "button",
     className: "toolbar-item spaced",
     "aria-label": "Undo"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "format undo"
-  })), /*#__PURE__*/React.createElement("button", {
+  })), /*#__PURE__*/React$1.createElement("button", {
     disabled: !canRedo || !isEditable,
     onClick: () => {
       activeEditor.dispatchCommand(lexical.REDO_COMMAND, undefined);
@@ -8158,33 +8238,33 @@ function ToolbarPlugin({
     type: "button",
     className: "toolbar-item",
     "aria-label": "Redo"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "format redo"
-  }))), config.editorshow && /*#__PURE__*/React.createElement(React.Fragment, null, blockType === 'code' ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(DropDown, {
+  }))), config.editorshow && /*#__PURE__*/React$1.createElement(React$1.Fragment, null, blockType === 'code' ? /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement(DropDown, {
     anchorElem: anchorElem,
     disabled: !isEditable,
     buttonClassName: "toolbar-item code-language",
     buttonLabel: code.getLanguageFriendlyName(codeLanguage),
     buttonAriaLabel: "Select language"
   }, CODE_LANGUAGE_OPTIONS.map(([value, name]) => {
-    return /*#__PURE__*/React.createElement(DropDownItem, {
+    return /*#__PURE__*/React$1.createElement(DropDownItem, {
       className: `item ${dropDownActiveClass(value === codeLanguage)}`,
       onClick: () => onCodeLanguageSelect(value),
       key: value
-    }, /*#__PURE__*/React.createElement("span", {
+    }, /*#__PURE__*/React$1.createElement("span", {
       className: "text"
     }, name));
-  }))) : /*#__PURE__*/React.createElement(React.Fragment, null, Boolean(config.fontFamilyOptions) && /*#__PURE__*/React.createElement(FontDropDown, {
+  }))) : /*#__PURE__*/React$1.createElement(React$1.Fragment, null, Boolean(config.fontFamilyOptions) && /*#__PURE__*/React$1.createElement(FontDropDown, {
     disabled: !isEditable,
     style: 'font-family',
     value: fontFamily,
     editor: editor,
     options: normFontFamilyOption
-  }), config.formatBlockOptions && blockType in blockTypeToBlockName && activeEditor === editor && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(BlockFormatDropDown, {
+  }), config.formatBlockOptions && blockType in blockTypeToBlockName && activeEditor === editor && /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement(BlockFormatDropDown, {
     disabled: !isEditable,
     blockType: blockType,
     editor: editor
-  })), config.biu && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+  })), config.biu && /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("button", {
     disabled: !isEditable,
     onClick: () => {
       activeEditor.dispatchCommand(lexical.FORMAT_TEXT_COMMAND, 'bold');
@@ -8193,9 +8273,9 @@ function ToolbarPlugin({
     title: IS_APPLE ? 'Bold (⌘B)' : 'Bold (Ctrl+B)',
     type: "button",
     "aria-label": `Format text as bold. Shortcut: ${IS_APPLE ? '⌘B' : 'Ctrl+B'}`
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "format bold"
-  })), /*#__PURE__*/React.createElement("button", {
+  })), /*#__PURE__*/React$1.createElement("button", {
     disabled: !isEditable,
     onClick: () => {
       activeEditor.dispatchCommand(lexical.FORMAT_TEXT_COMMAND, 'italic');
@@ -8204,9 +8284,9 @@ function ToolbarPlugin({
     title: IS_APPLE ? 'Italic (⌘I)' : 'Italic (Ctrl+I)',
     type: "button",
     "aria-label": `Format text as italics. Shortcut: ${IS_APPLE ? '⌘I' : 'Ctrl+I'}`
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "format italic"
-  })), /*#__PURE__*/React.createElement("button", {
+  })), /*#__PURE__*/React$1.createElement("button", {
     disabled: !isEditable,
     onClick: () => {
       activeEditor.dispatchCommand(lexical.FORMAT_TEXT_COMMAND, 'underline');
@@ -8215,9 +8295,9 @@ function ToolbarPlugin({
     title: IS_APPLE ? 'Underline (⌘U)' : 'Underline (Ctrl+U)',
     type: "button",
     "aria-label": `Format text to underlined. Shortcut: ${IS_APPLE ? '⌘U' : 'Ctrl+U'}`
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "format underline"
-  }))), config.codeBlock && /*#__PURE__*/React.createElement("button", {
+  }))), config.codeBlock && /*#__PURE__*/React$1.createElement("button", {
     disabled: !isEditable,
     onClick: () => {
       activeEditor.dispatchCommand(lexical.FORMAT_TEXT_COMMAND, 'code');
@@ -8226,59 +8306,59 @@ function ToolbarPlugin({
     title: "Insert code block",
     type: "button",
     "aria-label": "Insert code block"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "format code"
-  })), config.link && /*#__PURE__*/React.createElement("button", {
+  })), config.link && /*#__PURE__*/React$1.createElement("button", {
     disabled: !isEditable,
     onClick: insertLink,
     className: 'toolbar-item spaced ' + (isLink ? 'active' : ''),
     "aria-label": "Insert link",
     title: "Insert link",
     type: "button"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "format link"
-  })), config.uppercase && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+  })), config.uppercase && /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("button", {
     disabled: !isEditable,
     onClick: () => handleTextTransform('uppercase'),
     className: 'toolbar-item spaced ',
     "aria-label": "Format text as uppercase",
     title: "UPPERCASE",
     type: "button"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "format uppercase"
-  }))), config.lowercase && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+  }))), config.lowercase && /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("button", {
     disabled: !isEditable,
     onClick: () => handleTextTransform('lowercase'),
     className: 'toolbar-item spaced ',
     "aria-label": "Format text as lowercase",
     title: "lowercase",
     type: "button"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "format lowercase"
-  }))), config.capitalize && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+  }))), config.capitalize && /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("button", {
     disabled: !isEditable,
     onClick: () => handleTextTransform('capitalize'),
     className: 'toolbar-item spaced ',
     "aria-label": "Capitalize text",
     title: "Capitalize",
     type: "button"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "format capitalize"
-  }))), config.RTL && /*#__PURE__*/React.createElement("button", {
+  }))), config.RTL && /*#__PURE__*/React$1.createElement("button", {
     onClick: onRTLClick,
     className: "toolbar-item",
     title: "Right to Left",
     "aria-label": "Switch text direction to right to left"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "format rtl"
-  })), config.LTR && /*#__PURE__*/React.createElement("button", {
+  })), config.LTR && /*#__PURE__*/React$1.createElement("button", {
     onClick: onLTRClick,
     className: "toolbar-item",
     title: "Left to Right",
     "aria-label": "Switch text direction to left to right"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "format ltr"
-  })), config.textColorPicker && /*#__PURE__*/React.createElement(ColorPicker, {
+  })), config.textColorPicker && /*#__PURE__*/React$1.createElement(ColorPicker, {
     disabled: !isEditable,
     buttonClassName: "toolbar-item color-picker",
     buttonAriaLabel: "Formatting text color",
@@ -8286,7 +8366,7 @@ function ToolbarPlugin({
     color: fontColor,
     onChange: onFontColorSelect,
     title: "text color"
-  }), config.bgColorPicker && /*#__PURE__*/React.createElement(ColorPicker, {
+  }), config.bgColorPicker && /*#__PURE__*/React$1.createElement(ColorPicker, {
     disabled: !isEditable,
     buttonClassName: "toolbar-item color-picker",
     buttonAriaLabel: "Formatting background color",
@@ -8294,141 +8374,141 @@ function ToolbarPlugin({
     color: bgColor,
     onChange: onBgColorSelect,
     title: "bg color"
-  })), config.align && /*#__PURE__*/React.createElement(DropDown, {
+  })), config.align && /*#__PURE__*/React$1.createElement(DropDown, {
     anchorElem: anchorElem,
     disabled: !isEditable // buttonLabel="Align"
     ,
     buttonIconClassName: "icon left-align",
     buttonClassName: "toolbar-item spaced alignment",
     buttonAriaLabel: "Formatting options for text alignment"
-  }, /*#__PURE__*/React.createElement(DropDownItem, {
+  }, /*#__PURE__*/React$1.createElement(DropDownItem, {
     onClick: () => {
       activeEditor.dispatchCommand(lexical.FORMAT_ELEMENT_COMMAND, 'left');
     },
     className: "item"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "icon left-align"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Left Align")), /*#__PURE__*/React.createElement(DropDownItem, {
+  }, "Left Align")), /*#__PURE__*/React$1.createElement(DropDownItem, {
     onClick: () => {
       activeEditor.dispatchCommand(lexical.FORMAT_ELEMENT_COMMAND, 'center');
     },
     className: "item"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "icon center-align"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Center Align")), /*#__PURE__*/React.createElement(DropDownItem, {
+  }, "Center Align")), /*#__PURE__*/React$1.createElement(DropDownItem, {
     onClick: () => {
       activeEditor.dispatchCommand(lexical.FORMAT_ELEMENT_COMMAND, 'right');
     },
     className: "item"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "icon right-align"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Right Align")), /*#__PURE__*/React.createElement(DropDownItem, {
+  }, "Right Align")), /*#__PURE__*/React$1.createElement(DropDownItem, {
     onClick: () => {
       activeEditor.dispatchCommand(lexical.FORMAT_ELEMENT_COMMAND, 'justify');
     },
     className: "item"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "icon justify-align"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Justify Align")), /*#__PURE__*/React.createElement(Divider, null), /*#__PURE__*/React.createElement(DropDownItem, {
+  }, "Justify Align")), /*#__PURE__*/React$1.createElement(Divider, null), /*#__PURE__*/React$1.createElement(DropDownItem, {
     onClick: () => {
       activeEditor.dispatchCommand(lexical.OUTDENT_CONTENT_COMMAND, undefined);
     },
     className: "item"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: 'icon ' + (isRTL ? 'indent' : 'outdent')
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Outdent")), /*#__PURE__*/React.createElement(DropDownItem, {
+  }, "Outdent")), /*#__PURE__*/React$1.createElement(DropDownItem, {
     onClick: () => {
       activeEditor.dispatchCommand(lexical.INDENT_CONTENT_COMMAND, undefined);
     },
     className: "item"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: 'icon ' + (isRTL ? 'outdent' : 'indent')
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Indent"))), config.fontSizeOptions && /*#__PURE__*/React.createElement(FontDropDown, {
+  }, "Indent"))), config.fontSizeOptions && /*#__PURE__*/React$1.createElement(FontDropDown, {
     disabled: !isEditable,
     style: 'font-size',
     value: fontSize,
     editor: editor,
     options: FONT_SIZE_OPTIONS
-  }), config?.insertOptions && /*#__PURE__*/React.createElement(DropDown, {
+  }), config?.insertOptions && /*#__PURE__*/React$1.createElement(DropDown, {
     anchorElem: anchorElem,
     disabled: !isEditable,
     buttonClassName: "toolbar-item spaced" // buttonLabel="Insert"
     ,
     buttonAriaLabel: "Insert specialized editor node",
     buttonIconClassName: "icon plus"
-  }, handleClick && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(DropDownItem, {
+  }, handleClick && /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement(DropDownItem, {
     onClick: () => {
-      showModal('Upload Document', onClose => /*#__PURE__*/React.createElement(InsertImageDialog, {
+      showModal('Upload Document', onClose => /*#__PURE__*/React$1.createElement(InsertImageDialog, {
         activeEditor: activeEditor,
         onClose: onClose,
         handleClick: handleClick
       }));
     },
     className: "item"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "icon image"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Upload Document")))), config.formatTextOptions && /*#__PURE__*/React.createElement(DropDown, {
+  }, "Upload Document")))), config.formatTextOptions && /*#__PURE__*/React$1.createElement(DropDown, {
     anchorElem: anchorElem,
     disabled: !isEditable,
     buttonClassName: "toolbar-item spaced",
     buttonLabel: "",
     buttonAriaLabel: "Formatting options for additional text styles",
     buttonIconClassName: "icon dropdowns-more"
-  }, /*#__PURE__*/React.createElement(DropDownItem, {
+  }, /*#__PURE__*/React$1.createElement(DropDownItem, {
     onClick: () => {
       activeEditor.dispatchCommand(lexical.FORMAT_TEXT_COMMAND, 'strikethrough');
     },
     className: 'item ' + dropDownActiveClass(isStrikethrough),
     title: "Strikethrough",
     "aria-label": "Format text with a strikethrough"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "icon strikethrough"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Strikethrough")), /*#__PURE__*/React.createElement(DropDownItem, {
+  }, "Strikethrough")), /*#__PURE__*/React$1.createElement(DropDownItem, {
     onClick: () => {
       activeEditor.dispatchCommand(lexical.FORMAT_TEXT_COMMAND, 'subscript');
     },
     className: 'item ' + dropDownActiveClass(isSubscript),
     title: "Subscript",
     "aria-label": "Format text with a subscript"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "icon subscript"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Subscript")), /*#__PURE__*/React.createElement(DropDownItem, {
+  }, "Subscript")), /*#__PURE__*/React$1.createElement(DropDownItem, {
     onClick: () => {
       activeEditor.dispatchCommand(lexical.FORMAT_TEXT_COMMAND, 'superscript');
     },
     className: 'item ' + dropDownActiveClass(isSuperscript),
     title: "Superscript",
     "aria-label": "Format text with a superscript"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "icon superscript"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Superscript")), /*#__PURE__*/React.createElement(DropDownItem, {
+  }, "Superscript")), /*#__PURE__*/React$1.createElement(DropDownItem, {
     onClick: clearFormatting,
     className: "item",
     title: "Clear text formatting",
     "aria-label": "Clear all text formatting"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "icon clear"
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "text"
   }, "Clear Formatting"))))), modal);
 }
@@ -8457,15 +8537,15 @@ function TextFormatFloatingToolbar({
   isRichText,
   handleAIData
 }) {
-  const popupCharStylesEditorRef = React.useRef(null);
-  React.useCallback(() => {
+  const popupCharStylesEditorRef = React$1.useRef(null);
+  React$1.useCallback(() => {
     if (!isLink) {
       editor.dispatchCommand(link.TOGGLE_LINK_COMMAND, 'https://');
     } else {
       editor.dispatchCommand(link.TOGGLE_LINK_COMMAND, null);
     }
   }, [editor, isLink]);
-  const updateTextFormatFloatingToolbar = React.useCallback(() => {
+  const updateTextFormatFloatingToolbar = React$1.useCallback(() => {
     const selection = lexical.$getSelection();
     const popupCharStylesEditorElem = popupCharStylesEditorRef.current;
     const nativeSelection = window.getSelection();
@@ -8481,7 +8561,7 @@ function TextFormatFloatingToolbar({
       setFloatingElemPosition(rangeRect, popupCharStylesEditorElem, anchorElem);
     }
   }, [editor, anchorElem]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     const scrollerElem = anchorElem.parentElement;
 
     const update = () => {
@@ -8504,7 +8584,7 @@ function TextFormatFloatingToolbar({
       }
     };
   }, [editor, updateTextFormatFloatingToolbar, anchorElem]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     const scrollerElem = anchorElem.parentElement;
 
     const update = () => {
@@ -8529,7 +8609,7 @@ function TextFormatFloatingToolbar({
       }
     };
   }, [editor, updateTextFormatFloatingToolbar, anchorElem]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     editor.getEditorState().read(() => {
       updateTextFormatFloatingToolbar();
     });
@@ -8544,11 +8624,11 @@ function TextFormatFloatingToolbar({
       return false;
     }, lexical.COMMAND_PRIORITY_LOW));
   }, [editor, updateTextFormatFloatingToolbar]);
-  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", null, /*#__PURE__*/React$1.createElement("div", {
     ref: popupCharStylesEditorRef,
     id: "floating-text-format-popups",
     className: "floating-text-format-popup"
-  }, isRichText && /*#__PURE__*/React.createElement(ToolbarPlugin, {
+  }, isRichText && /*#__PURE__*/React$1.createElement(ToolbarPlugin, {
     handleAIData: handleAIData,
     config: config,
     handleClick: handleClick,
@@ -8557,16 +8637,16 @@ function TextFormatFloatingToolbar({
 }
 
 function useFloatingTextFormatToolbar(editor, anchorElem, config, isRichText, handleClick, handleAIData) {
-  const [isText, setIsText] = React.useState(false);
-  const [isLink, setIsLink] = React.useState(false);
-  const [isBold, setIsBold] = React.useState(false);
-  const [isItalic, setIsItalic] = React.useState(false);
-  const [isUnderline, setIsUnderline] = React.useState(false);
-  const [isStrikethrough, setIsStrikethrough] = React.useState(false);
-  const [isSubscript, setIsSubscript] = React.useState(false);
-  const [isSuperscript, setIsSuperscript] = React.useState(false);
-  const [isCode, setIsCode] = React.useState(false);
-  const updatePopup = React.useCallback(() => {
+  const [isText, setIsText] = React$1.useState(false);
+  const [isLink, setIsLink] = React$1.useState(false);
+  const [isBold, setIsBold] = React$1.useState(false);
+  const [isItalic, setIsItalic] = React$1.useState(false);
+  const [isUnderline, setIsUnderline] = React$1.useState(false);
+  const [isStrikethrough, setIsStrikethrough] = React$1.useState(false);
+  const [isSubscript, setIsSubscript] = React$1.useState(false);
+  const [isSuperscript, setIsSuperscript] = React$1.useState(false);
+  const [isCode, setIsCode] = React$1.useState(false);
+  const updatePopup = React$1.useCallback(() => {
     editor.getEditorState().read(() => {
       // Should not to pop up the floating toolbar when using IME input
       if (editor.isComposing()) {
@@ -8611,13 +8691,13 @@ function useFloatingTextFormatToolbar(editor, anchorElem, config, isRichText, ha
       }
     });
   }, [editor]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     document.addEventListener('selectionchange', updatePopup);
     return () => {
       document.removeEventListener('selectionchange', updatePopup);
     };
   }, [updatePopup]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     return utils.mergeRegister(editor.registerUpdateListener(() => {
       updatePopup();
     }), editor.registerRootListener(() => {
@@ -8631,7 +8711,7 @@ function useFloatingTextFormatToolbar(editor, anchorElem, config, isRichText, ha
     return null;
   }
 
-  return /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React.createElement(TextFormatFloatingToolbar, {
+  return /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React$1.createElement(TextFormatFloatingToolbar, {
     config: config,
     editor: editor,
     anchorElem: anchorElem,
@@ -8726,15 +8806,15 @@ function $createKeywordNode(keyword) {
 const KEYWORDS_REGEX = /(^|$|[^A-Za-zªµºÀ-ÖØ-öø-ˁˆ-ˑˠ-ˤˬˮͰ-ʹͶͷͺ-ͽΆΈ-ΊΌΎ-ΡΣ-ϵϷ-ҁҊ-ԧԱ-Ֆՙա-ևא-תװ-ײؠ-يٮٯٱ-ۓەۥۦۮۯۺ-ۼۿܐܒ-ܯݍ-ޥޱߊ-ߪߴߵߺࠀ-ࠕࠚࠤࠨࡀ-ࡘࢠࢢ-ࢬऄ-हऽॐक़-ॡॱ-ॷॹ-ॿঅ-ঌএঐও-নপ-রলশ-হঽৎড়ঢ়য়-ৡৰৱਅ-ਊਏਐਓ-ਨਪ-ਰਲਲ਼ਵਸ਼ਸਹਖ਼-ੜਫ਼ੲ-ੴઅ-ઍએ-ઑઓ-નપ-રલળવ-હઽૐૠૡଅ-ଌଏଐଓ-ନପ-ରଲଳଵ-ହଽଡ଼ଢ଼ୟ-ୡୱஃஅ-ஊஎ-ஐஒ-கஙசஜஞடணதந-பம-ஹௐఅ-ఌఎ-ఐఒ-నప-ళవ-హఽౘౙౠౡಅ-ಌಎ-ಐಒ-ನಪ-ಳವ-ಹಽೞೠೡೱೲഅ-ഌഎ-ഐഒ-ഺഽൎൠൡൺ-ൿඅ-ඖක-නඳ-රලව-ෆก-ะาำเ-ๆກຂຄງຈຊຍດ-ທນ-ຟມ-ຣລວສຫອ-ະາຳຽເ-ໄໆໜ-ໟༀཀ-ཇཉ-ཬྈ-ྌက-ဪဿၐ-ၕၚ-ၝၡၥၦၮ-ၰၵ-ႁႎႠ-ჅჇჍა-ჺჼ-ቈቊ-ቍቐ-ቖቘቚ-ቝበ-ኈኊ-ኍነ-ኰኲ-ኵኸ-ኾዀዂ-ዅወ-ዖዘ-ጐጒ-ጕጘ-ፚᎀ-ᎏᎠ-Ᏼᐁ-ᙬᙯ-ᙿᚁ-ᚚᚠ-ᛪᜀ-ᜌᜎ-ᜑᜠ-ᜱᝀ-ᝑᝠ-ᝬᝮ-ᝰក-ឳៗៜᠠ-ᡷᢀ-ᢨᢪᢰ-ᣵᤀ-ᤜᥐ-ᥭᥰ-ᥴᦀ-ᦫᧁ-ᧇᨀ-ᨖᨠ-ᩔᪧᬅ-ᬳᭅ-ᭋᮃ-ᮠᮮᮯᮺ-ᯥᰀ-ᰣᱍ-ᱏᱚ-ᱽᳩ-ᳬᳮ-ᳱᳵᳶᴀ-ᶿḀ-ἕἘ-Ἕἠ-ὅὈ-Ὅὐ-ὗὙὛὝὟ-ώᾀ-ᾴᾶ-ᾼιῂ-ῄῆ-ῌῐ-ΐῖ-Ίῠ-Ῥῲ-ῴῶ-ῼⁱⁿₐ-ₜℂℇℊ-ℓℕℙ-ℝℤΩℨK-ℭℯ-ℹℼ-ℿⅅ-ⅉⅎↃↄⰀ-Ⱞⰰ-ⱞⱠ-ⳤⳫ-ⳮⳲⳳⴀ-ⴥⴧⴭⴰ-ⵧⵯⶀ-ⶖⶠ-ⶦⶨ-ⶮⶰ-ⶶⶸ-ⶾⷀ-ⷆⷈ-ⷎⷐ-ⷖⷘ-ⷞⸯ々〆〱-〵〻〼ぁ-ゖゝ-ゟァ-ヺー-ヿㄅ-ㄭㄱ-ㆎㆠ-ㆺㇰ-ㇿ㐀-䶵一-鿌ꀀ-ꒌꓐ-ꓽꔀ-ꘌꘐ-ꘟꘪꘫꙀ-ꙮꙿ-ꚗꚠ-ꛥꜗ-ꜟꜢ-ꞈꞋ-ꞎꞐ-ꞓꞠ-Ɦꟸ-ꠁꠃ-ꠅꠇ-ꠊꠌ-ꠢꡀ-ꡳꢂ-ꢳꣲ-ꣷꣻꤊ-ꤥꤰ-ꥆꥠ-ꥼꦄ-ꦲꧏꨀ-ꨨꩀ-ꩂꩄ-ꩋꩠ-ꩶꩺꪀ-ꪯꪱꪵꪶꪹ-ꪽꫀꫂꫛ-ꫝꫠ-ꫪꫲ-ꫴꬁ-ꬆꬉ-ꬎꬑ-ꬖꬠ-ꬦꬨ-ꬮꯀ-ꯢ가-힣ힰ-ퟆퟋ-ퟻ豈-舘並-龎ﬀ-ﬆﬓ-ﬗיִײַ-ﬨשׁ-זּטּ-לּמּנּסּףּפּצּ-ﮱﯓ-ﴽﵐ-ﶏﶒ-ﷇﷰ-ﷻﹰ-ﹴﹶ-ﻼＡ-Ｚａ-ｚｦ-ﾾￂ-ￇￊ-ￏￒ-ￗￚ-ￜ])(congrats|congratulations|gratuluju|gratuluji|gratulujeme|blahopřeju|blahopřeji|blahopřejeme|Til lykke|Tillykke|Glückwunsch|Gratuliere|felicitaciones|enhorabuena|paljon onnea|onnittelut|Félicitations|gratula|gratulálok|gratulálunk|congratulazioni|complimenti|おめでとう|おめでとうございます|축하해|축하해요|gratulerer|Gefeliciteerd|gratulacje|Parabéns|parabéns|felicitações|felicitări|мои поздравления|поздравляем|поздравляю|gratulujem|blahoželám|ยินดีด้วย|ขอแสดงความยินดี|tebrikler|tebrik ederim|恭喜|祝贺你|恭喜你|恭喜|恭喜|baie geluk|veels geluk|অভিনন্দন|Čestitam|Čestitke|Čestitamo|Συγχαρητήρια|Μπράβο|અભિનંદન|badhai|बधाई|अभिनंदन|Честитам|Свака част|hongera|வாழ்த்துகள்|வாழ்த்துக்கள்|అభినందనలు|അഭിനന്ദനങ്ങൾ|Chúc mừng|מזל טוב|mazel tov|mazal tov)(^|$|[^A-Za-zªµºÀ-ÖØ-öø-ˁˆ-ˑˠ-ˤˬˮͰ-ʹͶͷͺ-ͽΆΈ-ΊΌΎ-ΡΣ-ϵϷ-ҁҊ-ԧԱ-Ֆՙա-ևא-תװ-ײؠ-يٮٯٱ-ۓەۥۦۮۯۺ-ۼۿܐܒ-ܯݍ-ޥޱߊ-ߪߴߵߺࠀ-ࠕࠚࠤࠨࡀ-ࡘࢠࢢ-ࢬऄ-हऽॐक़-ॡॱ-ॷॹ-ॿঅ-ঌএঐও-নপ-রলশ-হঽৎড়ঢ়য়-ৡৰৱਅ-ਊਏਐਓ-ਨਪ-ਰਲਲ਼ਵਸ਼ਸਹਖ਼-ੜਫ਼ੲ-ੴઅ-ઍએ-ઑઓ-નપ-રલળવ-હઽૐૠૡଅ-ଌଏଐଓ-ନପ-ରଲଳଵ-ହଽଡ଼ଢ଼ୟ-ୡୱஃஅ-ஊஎ-ஐஒ-கஙசஜஞடணதந-பம-ஹௐఅ-ఌఎ-ఐఒ-నప-ళవ-హఽౘౙౠౡಅ-ಌಎ-ಐಒ-ನಪ-ಳವ-ಹಽೞೠೡೱೲഅ-ഌഎ-ഐഒ-ഺഽൎൠൡൺ-ൿඅ-ඖක-නඳ-රලව-ෆก-ะาำเ-ๆກຂຄງຈຊຍດ-ທນ-ຟມ-ຣລວສຫອ-ະາຳຽເ-ໄໆໜ-ໟༀཀ-ཇཉ-ཬྈ-ྌက-ဪဿၐ-ၕၚ-ၝၡၥၦၮ-ၰၵ-ႁႎႠ-ჅჇჍა-ჺჼ-ቈቊ-ቍቐ-ቖቘቚ-ቝበ-ኈኊ-ኍነ-ኰኲ-ኵኸ-ኾዀዂ-ዅወ-ዖዘ-ጐጒ-ጕጘ-ፚᎀ-ᎏᎠ-Ᏼᐁ-ᙬᙯ-ᙿᚁ-ᚚᚠ-ᛪᜀ-ᜌᜎ-ᜑᜠ-ᜱᝀ-ᝑᝠ-ᝬᝮ-ᝰក-ឳៗៜᠠ-ᡷᢀ-ᢨᢪᢰ-ᣵᤀ-ᤜᥐ-ᥭᥰ-ᥴᦀ-ᦫᧁ-ᧇᨀ-ᨖᨠ-ᩔᪧᬅ-ᬳᭅ-ᭋᮃ-ᮠᮮᮯᮺ-ᯥᰀ-ᰣᱍ-ᱏᱚ-ᱽᳩ-ᳬᳮ-ᳱᳵᳶᴀ-ᶿḀ-ἕἘ-Ἕἠ-ὅὈ-Ὅὐ-ὗὙὛὝὟ-ώᾀ-ᾴᾶ-ᾼιῂ-ῄῆ-ῌῐ-ΐῖ-Ίῠ-Ῥῲ-ῴῶ-ῼⁱⁿₐ-ₜℂℇℊ-ℓℕℙ-ℝℤΩℨK-ℭℯ-ℹℼ-ℿⅅ-ⅉⅎↃↄⰀ-Ⱞⰰ-ⱞⱠ-ⳤⳫ-ⳮⳲⳳⴀ-ⴥⴧⴭⴰ-ⵧⵯⶀ-ⶖⶠ-ⶦⶨ-ⶮⶰ-ⶶⶸ-ⶾⷀ-ⷆⷈ-ⷎⷐ-ⷖⷘ-ⷞⸯ々〆〱-〵〻〼ぁ-ゖゝ-ゟァ-ヺー-ヿㄅ-ㄭㄱ-ㆎㆠ-ㆺㇰ-ㇿ㐀-䶵一-鿌ꀀ-ꒌꓐ-ꓽꔀ-ꘌꘐ-ꘟꘪꘫꙀ-ꙮꙿ-ꚗꚠ-ꛥꜗ-ꜟꜢ-ꞈꞋ-ꞎꞐ-ꞓꞠ-Ɦꟸ-ꠁꠃ-ꠅꠇ-ꠊꠌ-ꠢꡀ-ꡳꢂ-ꢳꣲ-ꣷꣻꤊ-ꤥꤰ-ꥆꥠ-ꥼꦄ-ꦲꧏꨀ-ꨨꩀ-ꩂꩄ-ꩋꩠ-ꩶꩺꪀ-ꪯꪱꪵꪶꪹ-ꪽꫀꫂꫛ-ꫝꫠ-ꫪꫲ-ꫴꬁ-ꬆꬉ-ꬎꬑ-ꬖꬠ-ꬦꬨ-ꬮꯀ-ꯢ가-힣ힰ-ퟆퟋ-ퟻ豈-舘並-龎ﬀ-ﬆﬓ-ﬗיִײַ-ﬨשׁ-זּטּ-לּמּנּסּףּפּצּ-ﮱﯓ-ﴽﵐ-ﶏﶒ-ﷇﷰ-ﷻﹰ-ﹴﹶ-ﻼＡ-Ｚａ-ｚｦ-ﾾￂ-ￇￊ-ￏￒ-ￗￚ-ￜ])/i;
 function KeywordsPlugin() {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (!editor.hasNodes([KeywordNode])) {
       throw new Error('KeywordsPlugin: KeywordNode not registered on editor');
     }
   }, [editor]);
-  const createKeywordNode = React.useCallback(textNode => {
+  const createKeywordNode = React$1.useCallback(textNode => {
     return $createKeywordNode(textNode.getTextContent());
   }, []);
-  const getKeywordMatch = React.useCallback(text => {
+  const getKeywordMatch = React$1.useCallback(text => {
     const matchArr = KEYWORDS_REGEX.exec(text);
 
     if (matchArr === null) {
@@ -8761,7 +8841,7 @@ function KeywordsPlugin() {
  *
  */
 function LinkPlugin() {
-  return /*#__PURE__*/React.createElement(LexicalLinkPlugin.LinkPlugin, {
+  return /*#__PURE__*/React$1.createElement(LexicalLinkPlugin.LinkPlugin, {
     validateUrl: validateUrl
   });
 }
@@ -8815,7 +8895,7 @@ function ListMaxIndentLevelPlugin({
   maxDepth
 }) {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     return editor.registerCommand(lexical.INDENT_CONTENT_COMMAND, () => !isIndentPermitted(maxDepth ?? 7), lexical.COMMAND_PRIORITY_CRITICAL);
   }, [editor, maxDepth]);
   return null;
@@ -8830,7 +8910,7 @@ function ListMaxIndentLevelPlugin({
  */
 function MarkdownPlugin() {
   const editorContext = useEditorComposerContext();
-  return /*#__PURE__*/React.createElement(LexicalMarkdownShortcutPlugin.MarkdownShortcutPlugin, {
+  return /*#__PURE__*/React$1.createElement(LexicalMarkdownShortcutPlugin.MarkdownShortcutPlugin, {
     transformers: [...PLAYGROUND_TRANSFORMERS, ...editorContext.extensions.transformers]
   });
 }
@@ -8846,7 +8926,7 @@ function MaxLengthPlugin({
   maxLength
 }) {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     let lastRestoredEditorState = null;
     return editor.registerNodeTransform(lexical.RootNode, rootNode => {
       const selection$1 = lexical.$getSelection();
@@ -9034,7 +9114,7 @@ const SUGGESTION_LIST_LENGTH_LIMIT = 5;
 const mentionsCache = new Map();
 
 function useMentionLookupService(dummyMentionsData, mentionString) {
-  const [results, setResults] = React.useState([]);
+  const [results, setResults] = React$1.useState([]);
   const dummyLookupService = {
     search(string, callback) {
       setTimeout(() => {
@@ -9045,7 +9125,7 @@ function useMentionLookupService(dummyMentionsData, mentionString) {
     }
 
   };
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     const cachedResults = mentionsCache.get(mentionString); // If mentionString is an empty string (just '@'), reset to show all
 
     if (mentionString === '') {
@@ -9133,7 +9213,7 @@ function MentionsTypeaheadMenuItem({
     className += ' selected';
   }
 
-  return /*#__PURE__*/React.createElement("li", {
+  return /*#__PURE__*/React$1.createElement("li", {
     key: option.key,
     tabIndex: -1,
     className: className,
@@ -9143,9 +9223,9 @@ function MentionsTypeaheadMenuItem({
     id: 'typeahead-item-' + index,
     onMouseEnter: onMouseEnter,
     onClick: onClick
-  }, option.picture, /*#__PURE__*/React.createElement("span", {
+  }, option.picture, /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, option.name), /*#__PURE__*/React.createElement("span", {
+  }, option.name), /*#__PURE__*/React$1.createElement("span", {
     className: "email"
   }, option.email));
 }
@@ -9153,13 +9233,23 @@ function MentionsTypeaheadMenuItem({
 function MentionsPlugin({
   dummyMentionsDatas
 }) {
-  const menuRef = React.useRef(null);
+  const menuRef = React$1.useRef(null);
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  const [queryString, setQueryString] = React.useState(null);
-  const [userData, setUserData] = React.useState([]);
-  const [showMenu, setShowMenu] = React.useState(true);
+  const [queryString, setQueryString] = React$1.useState(null);
+  const [userData, setUserData] = React$1.useState([]);
+  const [showMenu, setShowMenu] = React$1.useState(true);
   const results = useMentionLookupService(userData, queryString);
-  const options = React.useMemo(() => results.map(result => new MentionTypeaheadOption(result.name, result.email, /*#__PURE__*/React.createElement("i", {
+  const options = React$1.useMemo(() => results.map(result => new MentionTypeaheadOption(result.name, result.email, result.picture ? /*#__PURE__*/React$1.createElement("img", {
+    className: "TextEditor_User_Image",
+    src: result.picture,
+    onError: e => {
+      e.currentTarget.style.display = 'none';
+      const icon = document.createElement('i');
+      icon.className = 'icon user';
+      icon.setAttribute('data-email', result.email);
+      e.currentTarget.parentNode?.appendChild(icon);
+    }
+  }) : /*#__PURE__*/React$1.createElement("i", {
     className: "icon user",
     "data-email": result.email
   }))).slice(0, SUGGESTION_LIST_LENGTH_LIMIT), [results]);
@@ -9180,7 +9270,7 @@ function MentionsPlugin({
     return text;
   }
 
-  const onSelectOption = React.useCallback((selectedOption, nodeToReplace, closeMenu) => {
+  const onSelectOption = React$1.useCallback((selectedOption, nodeToReplace, closeMenu) => {
     editor.update(() => {
       const mentionNode = $createMentionNode(selectedOption.name, selectedOption?.email); //selectedOption?.email
 
@@ -9192,13 +9282,13 @@ function MentionsPlugin({
       closeMenu();
     });
   }, [editor]);
-  const checkForMentionMatch = React.useCallback(text => {
+  const checkForMentionMatch = React$1.useCallback(text => {
     return getPossibleQueryMatch(text);
   }, []);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     setUserData(dummyMentionsDatas || []);
   }, [dummyMentionsDatas]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     const removeListener = editor.registerUpdateListener(() => {
       editor.getEditorState().read(() => {
         const text = getQueryTextForSearch(editor);
@@ -9211,7 +9301,7 @@ function MentionsPlugin({
       removeListener();
     };
   }, [editor]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     const handleClickOutside = event => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setShowMenu(false);
@@ -9223,7 +9313,7 @@ function MentionsPlugin({
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [setShowMenu]);
-  return /*#__PURE__*/React.createElement(LexicalTypeaheadMenuPlugin.LexicalTypeaheadMenuPlugin, {
+  return /*#__PURE__*/React$1.createElement(LexicalTypeaheadMenuPlugin.LexicalTypeaheadMenuPlugin, {
     onQueryChange: setQueryString,
     onSelectOption: onSelectOption,
     triggerFn: checkForMentionMatch,
@@ -9232,10 +9322,10 @@ function MentionsPlugin({
       selectedIndex,
       selectOptionAndCleanUp,
       setHighlightedIndex
-    }) => anchorElementRef.current && results.length && showMenu ? /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React.createElement("div", {
+    }) => anchorElementRef.current && results.length && showMenu ? /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React$1.createElement("div", {
       className: "typeahead-popovers nogridview mentions-menu",
       ref: menuRef
-    }, /*#__PURE__*/React.createElement("ul", null, options.map((option, i) => /*#__PURE__*/React.createElement(MentionsTypeaheadMenuItem, {
+    }, /*#__PURE__*/React$1.createElement("ul", null, options.map((option, i) => /*#__PURE__*/React$1.createElement(MentionsTypeaheadMenuItem, {
       index: i,
       isSelected: selectedIndex === i,
       onClick: () => {
@@ -9264,7 +9354,7 @@ function OnImageUploadPlugin({
   onUpload
 }) {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (!onUpload) return;
     const unregisterMutationListener = editor.registerMutationListener(ImageNode, nodeMutations => {
       for (const [nodeKey, mutation] of nodeMutations) {
@@ -9354,7 +9444,7 @@ function OnImageUploadPlugin({
   return null;
 }
 
-const PollComponent$2 = /*#__PURE__*/React.lazy( // @ts-ignore
+const PollComponent$2 = /*#__PURE__*/React$1.lazy( // @ts-ignore
 () => Promise.resolve().then(function () { return PollComponent$1; }));
 
 function createUID$1() {
@@ -9502,9 +9592,9 @@ class PollNode extends lexical.DecoratorNode {
   }
 
   decorate() {
-    return /*#__PURE__*/React.createElement(React.Suspense, {
+    return /*#__PURE__*/React$1.createElement(React$1.Suspense, {
       fallback: null
-    }, /*#__PURE__*/React.createElement(PollComponent$2, {
+    }, /*#__PURE__*/React$1.createElement(PollComponent$2, {
       question: this.__question,
       options: this.__options,
       nodeKey: this.__key
@@ -9529,7 +9619,7 @@ function $isPollNode(node) {
 const INSERT_POLL_COMMAND = lexical.createCommand('INSERT_POLL_COMMAND');
 function PollPlugin() {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (!editor.hasNodes([PollNode])) {
       throw new Error('PollPlugin: PollNode not registered on editor');
     }
@@ -9580,8 +9670,8 @@ const getElement = () => {
 };
 
 function useReport() {
-  const timer = React.useRef(null);
-  const cleanup = React.useCallback(() => {
+  const timer = React$1.useRef(null);
+  const cleanup = React$1.useCallback(() => {
     if (timer !== null) {
       clearTimeout(timer.current);
     }
@@ -9590,10 +9680,10 @@ function useReport() {
       document.body.removeChild(getElement());
     }
   }, []);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     return cleanup;
   }, [cleanup]);
-  return React.useCallback(content => {
+  return React$1.useCallback(content => {
     // eslint-disable-next-line no-console
     console.log(content);
     const element = getElement();
@@ -9633,12 +9723,12 @@ const SUPPORT_SPEECH_RECOGNITION = 'SpeechRecognition' in window || 'webkitSpeec
 
 function SpeechToTextPlugin() {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  const [isEnabled, setIsEnabled] = React.useState(false);
+  const [isEnabled, setIsEnabled] = React$1.useState(false);
   const SpeechRecognition = // @ts-ignore
   window.SpeechRecognition || window.webkitSpeechRecognition;
-  const recognition = React.useRef(null);
+  const recognition = React$1.useRef(null);
   const report = useReport();
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (isEnabled && recognition.current === null) {
       recognition.current = new SpeechRecognition();
       recognition.current.continuous = true;
@@ -9689,7 +9779,7 @@ function SpeechToTextPlugin() {
       }
     };
   }, [SpeechRecognition, editor, isEnabled, report]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     return editor.registerCommand(SPEECH_TO_TEXT_COMMAND, _isEnabled => {
       setIsEnabled(_isEnabled);
       return true;
@@ -9723,7 +9813,7 @@ function registerKeyTimeStampTracker() {
 
 function TabFocusPlugin() {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (!hasRegisteredKeyDownListener) {
       registerKeyTimeStampTracker();
       hasRegisteredKeyDownListener = true;
@@ -9759,13 +9849,13 @@ function TableActionMenu$1({
   contextRef
 }) {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  const dropDownRef = React.useRef(null);
-  const [tableCellNode, updateTableCellNode] = React.useState(_tableCellNode);
-  const [selectionCounts, updateSelectionCounts] = React.useState({
+  const dropDownRef = React$1.useRef(null);
+  const [tableCellNode, updateTableCellNode] = React$1.useState(_tableCellNode);
+  const [selectionCounts, updateSelectionCounts] = React$1.useState({
     columns: 1,
     rows: 1
   });
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     return editor.registerMutationListener(table.TableCellNode, nodeMutations => {
       const nodeUpdated = nodeMutations.get(tableCellNode.getKey()) === 'updated';
 
@@ -9776,7 +9866,7 @@ function TableActionMenu$1({
       }
     });
   }, [editor, tableCellNode]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     editor.getEditorState().read(() => {
       const selection = lexical.$getSelection();
 
@@ -9789,7 +9879,7 @@ function TableActionMenu$1({
       }
     });
   }, [editor]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     const menuButtonElement = contextRef.current;
     const dropDownElement = dropDownRef.current;
 
@@ -9820,7 +9910,7 @@ function TableActionMenu$1({
       window.removeEventListener('scroll', handleScroll);
     };
   }, [contextRef, dropDownRef]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     function handleClickOutside(event) {
       if (dropDownRef.current != null && contextRef.current != null && !dropDownRef.current.contains(event.target) && !contextRef.current.contains(event.target)) {
         setIsMenuOpen(false);
@@ -9830,7 +9920,7 @@ function TableActionMenu$1({
     window.addEventListener('click', handleClickOutside);
     return () => window.removeEventListener('click', handleClickOutside);
   }, [setIsMenuOpen, contextRef]);
-  const clearTableSelection = React.useCallback(() => {
+  const clearTableSelection = React$1.useCallback(() => {
     editor.update(() => {
       if (tableCellNode.isAttached()) {
         const tableNode = table.$getTableNodeFromLexicalNodeOrThrow(tableCellNode);
@@ -9854,7 +9944,7 @@ function TableActionMenu$1({
       rootNode.selectStart();
     });
   }, [editor, tableCellNode]);
-  const insertTableRowAtSelection = React.useCallback(shouldInsertAfter => {
+  const insertTableRowAtSelection = React$1.useCallback(shouldInsertAfter => {
     editor.update(() => {
       const selection = lexical.$getSelection();
       const tableNode = table.$getTableNodeFromLexicalNodeOrThrow(tableCellNode);
@@ -9873,7 +9963,7 @@ function TableActionMenu$1({
       onClose();
     });
   }, [editor, tableCellNode, selectionCounts.rows, clearTableSelection, onClose]);
-  const insertTableColumnAtSelection = React.useCallback(shouldInsertAfter => {
+  const insertTableColumnAtSelection = React$1.useCallback(shouldInsertAfter => {
     editor.update(() => {
       const selection = lexical.$getSelection();
       const tableNode = table.$getTableNodeFromLexicalNodeOrThrow(tableCellNode);
@@ -9892,7 +9982,7 @@ function TableActionMenu$1({
       onClose();
     });
   }, [editor, tableCellNode, selectionCounts.columns, clearTableSelection, onClose]);
-  const deleteTableRowAtSelection = React.useCallback(() => {
+  const deleteTableRowAtSelection = React$1.useCallback(() => {
     editor.update(() => {
       const tableNode = table.$getTableNodeFromLexicalNodeOrThrow(tableCellNode);
       const tableRowIndex = table.$getTableRowIndexFromTableCellNode(tableCellNode);
@@ -9901,7 +9991,7 @@ function TableActionMenu$1({
       onClose();
     });
   }, [editor, tableCellNode, clearTableSelection, onClose]);
-  const deleteTableAtSelection = React.useCallback(() => {
+  const deleteTableAtSelection = React$1.useCallback(() => {
     editor.update(() => {
       const tableNode = table.$getTableNodeFromLexicalNodeOrThrow(tableCellNode);
       tableNode.remove();
@@ -9909,7 +9999,7 @@ function TableActionMenu$1({
       onClose();
     });
   }, [editor, tableCellNode, clearTableSelection, onClose]);
-  const deleteTableColumnAtSelection = React.useCallback(() => {
+  const deleteTableColumnAtSelection = React$1.useCallback(() => {
     editor.update(() => {
       const tableNode = table.$getTableNodeFromLexicalNodeOrThrow(tableCellNode);
       const tableColumnIndex = table.$getTableColumnIndexFromTableCellNode(tableCellNode);
@@ -9918,7 +10008,7 @@ function TableActionMenu$1({
       onClose();
     });
   }, [editor, tableCellNode, clearTableSelection, onClose]);
-  const toggleTableRowIsHeader = React.useCallback(() => {
+  const toggleTableRowIsHeader = React$1.useCallback(() => {
     editor.update(() => {
       const tableNode = table.$getTableNodeFromLexicalNodeOrThrow(tableCellNode);
       const tableRowIndex = table.$getTableRowIndexFromTableCellNode(tableCellNode);
@@ -9945,7 +10035,7 @@ function TableActionMenu$1({
       onClose();
     });
   }, [editor, tableCellNode, clearTableSelection, onClose]);
-  const toggleTableColumnIsHeader = React.useCallback(() => {
+  const toggleTableColumnIsHeader = React$1.useCallback(() => {
     editor.update(() => {
       const tableNode = table.$getTableNodeFromLexicalNodeOrThrow(tableCellNode);
       const tableColumnIndex = table.$getTableColumnIndexFromTableCellNode(tableCellNode);
@@ -10086,65 +10176,65 @@ function TableActionMenu$1({
   return /*#__PURE__*/ReactDOM.createPortal(
   /*#__PURE__*/
   // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-  React.createElement("div", {
+  React$1.createElement("div", {
     className: "dropdowns dropdown1",
     ref: dropDownRef,
     onClick: e => {
       e.stopPropagation();
     }
-  }, /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React$1.createElement("button", {
     type: "button",
     className: "item",
     onClick: () => insertTableRowAtSelection(false)
-  }, /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Insert", ' ', selectionCounts.rows === 1 ? 'row' : `${selectionCounts.rows} rows`, ' ', "above")), /*#__PURE__*/React.createElement("button", {
+  }, "Insert", ' ', selectionCounts.rows === 1 ? 'row' : `${selectionCounts.rows} rows`, ' ', "above")), /*#__PURE__*/React$1.createElement("button", {
     type: "button",
     className: "item",
     onClick: () => insertTableRowAtSelection(true)
-  }, /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Insert", ' ', selectionCounts.rows === 1 ? 'row' : `${selectionCounts.rows} rows`, ' ', "below")), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("button", {
+  }, "Insert", ' ', selectionCounts.rows === 1 ? 'row' : `${selectionCounts.rows} rows`, ' ', "below")), /*#__PURE__*/React$1.createElement("hr", null), /*#__PURE__*/React$1.createElement("button", {
     type: "button",
     className: "item",
     onClick: () => insertTableColumnAtSelection(false)
-  }, /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Insert", ' ', selectionCounts.columns === 1 ? 'column' : `${selectionCounts.columns} columns`, ' ', "left")), /*#__PURE__*/React.createElement("button", {
+  }, "Insert", ' ', selectionCounts.columns === 1 ? 'column' : `${selectionCounts.columns} columns`, ' ', "left")), /*#__PURE__*/React$1.createElement("button", {
     type: "button",
     className: "item",
     onClick: () => insertTableColumnAtSelection(true)
-  }, /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Insert", ' ', selectionCounts.columns === 1 ? 'column' : `${selectionCounts.columns} columns`, ' ', "right")), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("button", {
+  }, "Insert", ' ', selectionCounts.columns === 1 ? 'column' : `${selectionCounts.columns} columns`, ' ', "right")), /*#__PURE__*/React$1.createElement("hr", null), /*#__PURE__*/React$1.createElement("button", {
     type: "button",
     className: "item",
     onClick: () => deleteTableColumnAtSelection()
-  }, /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Delete column")), /*#__PURE__*/React.createElement("button", {
+  }, "Delete column")), /*#__PURE__*/React$1.createElement("button", {
     type: "button",
     className: "item",
     onClick: () => deleteTableRowAtSelection()
-  }, /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Delete row")), /*#__PURE__*/React.createElement("button", {
+  }, "Delete row")), /*#__PURE__*/React$1.createElement("button", {
     type: "button",
     className: "item",
     onClick: () => deleteTableAtSelection()
-  }, /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, "Delete table")), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("button", {
+  }, "Delete table")), /*#__PURE__*/React$1.createElement("hr", null), /*#__PURE__*/React$1.createElement("button", {
     type: "button",
     className: "item",
     onClick: () => toggleTableRowIsHeader()
-  }, /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React$1.createElement("span", {
     className: "text"
-  }, (tableCellNode.__headerState & table.TableCellHeaderStates.ROW) === table.TableCellHeaderStates.ROW ? 'Remove' : 'Add', ' ', "row header")), /*#__PURE__*/React.createElement("button", {
+  }, (tableCellNode.__headerState & table.TableCellHeaderStates.ROW) === table.TableCellHeaderStates.ROW ? 'Remove' : 'Add', ' ', "row header")), /*#__PURE__*/React$1.createElement("button", {
     type: "button",
     className: "item",
     onClick: () => toggleTableColumnIsHeader()
-  }, /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React$1.createElement("span", {
     className: "text"
   }, (tableCellNode.__headerState & table.TableCellHeaderStates.COLUMN) === table.TableCellHeaderStates.COLUMN ? 'Remove' : 'Add', ' ', "column header"))), document.body);
 }
@@ -10153,11 +10243,11 @@ function TableCellActionMenuContainer({
   anchorElem
 }) {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  const menuButtonRef = React.useRef(null);
-  const menuRootRef = React.useRef(null);
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const [tableCellNode, setTableMenuCellNode] = React.useState(null);
-  const moveMenu = React.useCallback(() => {
+  const menuButtonRef = React$1.useRef(null);
+  const menuRootRef = React$1.useRef(null);
+  const [isMenuOpen, setIsMenuOpen] = React$1.useState(false);
+  const [tableCellNode, setTableMenuCellNode] = React$1.useState(null);
+  const moveMenu = React$1.useCallback(() => {
     const menu = menuButtonRef.current;
     const selection = lexical.$getSelection();
     const nativeSelection = window.getSelection();
@@ -10190,14 +10280,14 @@ function TableCellActionMenuContainer({
       setTableMenuCellNode(null);
     }
   }, [editor]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     return editor.registerUpdateListener(() => {
       editor.getEditorState().read(() => {
         moveMenu();
       });
     });
   });
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     const menuButtonDOM = menuButtonRef.current;
 
     if (menuButtonDOM != null && tableCellNode != null) {
@@ -10217,18 +10307,18 @@ function TableCellActionMenuContainer({
       }
     }
   }, [menuButtonRef, tableCellNode, editor, anchorElem]);
-  const prevTableCellDOM = React.useRef(tableCellNode);
-  React.useEffect(() => {
+  const prevTableCellDOM = React$1.useRef(tableCellNode);
+  React$1.useEffect(() => {
     if (prevTableCellDOM.current !== tableCellNode) {
       setIsMenuOpen(false);
     }
 
     prevTableCellDOM.current = tableCellNode;
   }, [prevTableCellDOM, tableCellNode]);
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", {
     className: "table-cell-action-button-container",
     ref: menuButtonRef
-  }, tableCellNode != null && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+  }, tableCellNode != null && /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("button", {
     type: "button",
     className: "table-cell-action-button chevron-down",
     onClick: e => {
@@ -10236,9 +10326,9 @@ function TableCellActionMenuContainer({
       setIsMenuOpen(!isMenuOpen);
     },
     ref: menuRootRef
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "chevron-down"
-  })), isMenuOpen && /*#__PURE__*/React.createElement(TableActionMenu$1, {
+  })), isMenuOpen && /*#__PURE__*/React$1.createElement(TableActionMenu$1, {
     contextRef: menuRootRef,
     setIsMenuOpen: setIsMenuOpen,
     onClose: () => setIsMenuOpen(false),
@@ -10250,7 +10340,7 @@ function TableActionMenuPlugin({
   anchorElem = document.body
 }) {
   const isEditable = useLexicalEditable();
-  return /*#__PURE__*/ReactDOM.createPortal(isEditable ? /*#__PURE__*/React.createElement(TableCellActionMenuContainer, {
+  return /*#__PURE__*/ReactDOM.createPortal(isEditable ? /*#__PURE__*/React$1.createElement(TableCellActionMenuContainer, {
     anchorElem: anchorElem
   }) : null, anchorElem);
 }
@@ -10268,15 +10358,15 @@ const MIN_COLUMN_WIDTH = 50;
 function TableCellResizer({
   editor
 }) {
-  const targetRef = React.useRef(null);
-  const resizerRef = React.useRef(null);
-  const tableRectRef = React.useRef(null);
-  const mouseStartPosRef = React.useRef(null);
-  const [mouseCurrentPos, updateMouseCurrentPos] = React.useState(null);
-  const [activeCell, updateActiveCell] = React.useState(null);
-  const [isSelectingGrid, updateIsSelectingGrid] = React.useState(false);
-  const [draggingDirection, updateDraggingDirection] = React.useState(null);
-  React.useEffect(() => {
+  const targetRef = React$1.useRef(null);
+  const resizerRef = React$1.useRef(null);
+  const tableRectRef = React$1.useRef(null);
+  const mouseStartPosRef = React$1.useRef(null);
+  const [mouseCurrentPos, updateMouseCurrentPos] = React$1.useState(null);
+  const [activeCell, updateActiveCell] = React$1.useState(null);
+  const [isSelectingGrid, updateIsSelectingGrid] = React$1.useState(false);
+  const [draggingDirection, updateDraggingDirection] = React$1.useState(null);
+  React$1.useEffect(() => {
     return editor.registerCommand(lexical.SELECTION_CHANGE_COMMAND, payload => {
       const selection = lexical.$getSelection();
       const isGridSelection = lexical.DEPRECATED_$isGridSelection(selection);
@@ -10288,14 +10378,14 @@ function TableCellResizer({
       return false;
     }, lexical.COMMAND_PRIORITY_HIGH);
   });
-  const resetState = React.useCallback(() => {
+  const resetState = React$1.useCallback(() => {
     updateActiveCell(null);
     targetRef.current = null;
     updateDraggingDirection(null);
     mouseStartPosRef.current = null;
     tableRectRef.current = null;
   }, []);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     const onMouseMove = event => {
       setTimeout(() => {
         const target = event.target;
@@ -10353,7 +10443,7 @@ function TableCellResizer({
     return false;
   };
 
-  const updateRowHeight = React.useCallback(newHeight => {
+  const updateRowHeight = React$1.useCallback(newHeight => {
     if (!activeCell) {
       throw new Error('TableCellResizer: Expected active cell.');
     }
@@ -10382,7 +10472,7 @@ function TableCellResizer({
       tableRow.setHeight(newHeight);
     });
   }, [activeCell, editor]);
-  const updateColumnWidth = React.useCallback(newWidth => {
+  const updateColumnWidth = React$1.useCallback(newWidth => {
     if (!activeCell) {
       throw new Error('TableCellResizer: Expected active cell.');
     }
@@ -10421,7 +10511,7 @@ function TableCellResizer({
       }
     });
   }, [activeCell, editor]);
-  const toggleResize = React.useCallback(direction => event => {
+  const toggleResize = React$1.useCallback(direction => event => {
     event.preventDefault();
     event.stopPropagation();
 
@@ -10464,7 +10554,7 @@ function TableCellResizer({
       updateDraggingDirection(direction);
     }
   }, [activeCell, draggingDirection, resetState, updateColumnWidth, updateRowHeight]);
-  const getResizers = React.useCallback(() => {
+  const getResizers = React$1.useCallback(() => {
     if (activeCell) {
       const {
         height,
@@ -10519,14 +10609,14 @@ function TableCellResizer({
     };
   }, [activeCell, draggingDirection, mouseCurrentPos]);
   const resizerStyles = getResizers();
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", {
     ref: resizerRef
-  }, activeCell != null && !isSelectingGrid && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  }, activeCell != null && !isSelectingGrid && /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("div", {
     className: "TableCellResizer__resizer TableCellResizer__ui",
     style: resizerStyles.right || undefined,
     onMouseDown: toggleResize('right'),
     onMouseUp: toggleResize('right')
-  }), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React$1.createElement("div", {
     className: "TableCellResizer__resizer TableCellResizer__ui",
     style: resizerStyles.bottom || undefined,
     onMouseDown: toggleResize('bottom'),
@@ -10537,7 +10627,7 @@ function TableCellResizer({
 function TableCellResizerPlugin() {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
   const isEditable = useLexicalEditable();
-  return React.useMemo(() => isEditable ? /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React.createElement(TableCellResizer, {
+  return React$1.useMemo(() => isEditable ? /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React$1.createElement(TableCellResizer, {
     editor: editor
   }), document.body) : null, [editor, isEditable]);
 }
@@ -10578,8 +10668,8 @@ function isHeadingBelowTheTopOfThePage(element) {
 function TableOfContentsList({
   tableOfContents
 }) {
-  const [selectedKey, setSelectedKey] = React.useState('');
-  const selectedIndex = React.useRef(0);
+  const [selectedKey, setSelectedKey] = React$1.useState('');
+  const selectedIndex = React$1.useRef(0);
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
 
   function scrollToNode(key, currIndex) {
@@ -10594,7 +10684,7 @@ function TableOfContentsList({
     });
   }
 
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     function scrollCallback() {
       if (tableOfContents.length !== 0 && selectedIndex.current < tableOfContents.length - 1) {
         let currentHeading = editor.getElementByKey(tableOfContents[selectedIndex.current][0]);
@@ -10649,31 +10739,31 @@ function TableOfContentsList({
     document.addEventListener('scroll', onScroll);
     return () => document.removeEventListener('scroll', onScroll);
   }, [tableOfContents, editor]);
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", {
     className: "table-of-contents"
-  }, /*#__PURE__*/React.createElement("ul", {
+  }, /*#__PURE__*/React$1.createElement("ul", {
     className: "headings"
   }, tableOfContents.map(([key, text, tag], index) => {
     if (index === 0) {
-      return /*#__PURE__*/React.createElement("div", {
+      return /*#__PURE__*/React$1.createElement("div", {
         className: "normal-heading-wrapper",
         key: key
-      }, /*#__PURE__*/React.createElement("div", {
+      }, /*#__PURE__*/React$1.createElement("div", {
         className: "first-heading",
         onClick: () => scrollToNode(key, index),
         role: "button",
         tabIndex: 0
-      }, ('' + text).length > 20 ? text.substring(0, 20) + '...' : text), /*#__PURE__*/React.createElement("br", null));
+      }, ('' + text).length > 20 ? text.substring(0, 20) + '...' : text), /*#__PURE__*/React$1.createElement("br", null));
     } else {
-      return /*#__PURE__*/React.createElement("div", {
+      return /*#__PURE__*/React$1.createElement("div", {
         className: `normal-heading-wrapper ${selectedKey === key ? 'selected-heading-wrapper' : ''}`,
         key: key
-      }, /*#__PURE__*/React.createElement("div", {
+      }, /*#__PURE__*/React$1.createElement("div", {
         onClick: () => scrollToNode(key, index),
         role: "button",
         className: indent(tag),
         tabIndex: 0
-      }, /*#__PURE__*/React.createElement("li", {
+      }, /*#__PURE__*/React$1.createElement("li", {
         className: `normal-heading ${selectedKey === key ? 'selected-heading' : ''}
                     `
       }, ('' + text).length > 27 ? text.substring(0, 27) + '...' : text)));
@@ -10682,8 +10772,8 @@ function TableOfContentsList({
 }
 
 function TableOfContentsPlugin() {
-  return /*#__PURE__*/React.createElement(LexicalTableOfContents__EXPERIMENTAL, null, tableOfContents => {
-    return /*#__PURE__*/React.createElement(TableOfContentsList, {
+  return /*#__PURE__*/React$1.createElement(LexicalTableOfContents__EXPERIMENTAL, null, tableOfContents => {
+    return /*#__PURE__*/React$1.createElement(TableOfContentsList, {
       tableOfContents: tableOfContents
     });
   });
@@ -10698,7 +10788,7 @@ function TableOfContentsPlugin() {
  */
 function TreeViewPlugin() {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  return /*#__PURE__*/React.createElement(LexicalTreeView.TreeView, {
+  return /*#__PURE__*/React$1.createElement(LexicalTreeView.TreeView, {
     viewClassName: "tree-view-output",
     timeTravelPanelClassName: "debug-timetravel-panel",
     timeTravelButtonClassName: "debug-timetravel-button",
@@ -10782,8 +10872,8 @@ function Editor({
   } = useSharedHistoryContext();
   const text = isCollab ? 'Enter some collaborative rich text...' : isRichText ? 'Write something or type / for commands and @ to mention person' : 'Enter some plain text...';
   const placeholder = /*#__PURE__*/React.createElement(Placeholder, null, text);
-  const [floatingAnchorElem, setFloatingAnchorElem] = React.useState(null);
-  const [isSmallWidthViewport, setIsSmallWidthViewport] = React.useState(false);
+  const [floatingAnchorElem, setFloatingAnchorElem] = React$1.useState(null);
+  const [isSmallWidthViewport, setIsSmallWidthViewport] = React$1.useState(false);
 
   const onRef = _floatingAnchorElem => {
     if (_floatingAnchorElem !== null) {
@@ -10793,11 +10883,11 @@ function Editor({
 
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
   const editorContext = useEditorComposerContext();
-  let toolbarConfigdata = JSON.parse(JSON.stringify(localStorage.getItem("toolbarConfig"))) || toolbarConfig;
-  const normToolbarConfig = React.useMemo(() => ({ ...defaultToolbarConfig,
+  let toolbarConfigdata = JSON.parse(JSON.stringify(localStorage.getItem('toolbarConfig'))) || toolbarConfig;
+  const normToolbarConfig = React$1.useMemo(() => ({ ...defaultToolbarConfig,
     ...toolbarConfigdata
   }), [toolbarConfig]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     const updateViewPortWidth = () => {
       const isNextSmallWidthViewport = CAN_USE_DOM && window.matchMedia('(max-width: 1025px)').matches;
 
@@ -10857,7 +10947,7 @@ function Editor({
     className: `editor-container ${containerClassName ?? ''} ${showTreeView ? 'tree-view' : ''} ${!isRichText ? 'plain-text' : ''}`
   }, isMaxLength && /*#__PURE__*/React.createElement(MaxLengthPlugin, {
     maxLength: 30
-  }), /*#__PURE__*/React.createElement(DragOnly, null), /*#__PURE__*/React.createElement(LexicalAutoFocusPlugin.AutoFocusPlugin, null), /*#__PURE__*/React.createElement(LexicalClearEditorPlugin.ClearEditorPlugin, null), /*#__PURE__*/React.createElement(CommentPlugin, null), /*#__PURE__*/React.createElement(ComponentPickerMenuPlugin, {
+  }), /*#__PURE__*/React.createElement(DragOnly, null), /*#__PURE__*/React.createElement(LexicalAutoFocusPlugin.AutoFocusPlugin, null), /*#__PURE__*/React.createElement(EnsureTrailingParagraphOnUpdatePlugin, null), /*#__PURE__*/React.createElement(LexicalClearEditorPlugin.ClearEditorPlugin, null), /*#__PURE__*/React.createElement(CommentPlugin, null), /*#__PURE__*/React.createElement(ComponentPickerMenuPlugin, {
     handleClickUpload: handleFileUpload,
     config: normToolbarConfig
   }), /*#__PURE__*/React.createElement(EmojiPickerPlugin, null), /*#__PURE__*/React.createElement(AutoEmbedPlugin, null), /*#__PURE__*/React.createElement(MentionsPlugin, {
@@ -11168,7 +11258,7 @@ function generateStyleString(styles) {
   return styleEntries.join('; ');
 }
 
-const StickyComponent$2 = /*#__PURE__*/React.lazy( // @ts-ignore
+const StickyComponent$2 = /*#__PURE__*/React$1.lazy( // @ts-ignore
 () => Promise.resolve().then(function () { return StickyComponent$1; }));
 class StickyNode extends lexical.DecoratorNode {
   static getType() {
@@ -11243,9 +11333,9 @@ class StickyNode extends lexical.DecoratorNode {
   }
 
   decorate(editor, config) {
-    return /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React.createElement(React.Suspense, {
+    return /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React$1.createElement(React$1.Suspense, {
       fallback: null
-    }, /*#__PURE__*/React.createElement(StickyComponent$2, {
+    }, /*#__PURE__*/React$1.createElement(StickyComponent$2, {
       color: this.__color,
       x: this.__x,
       y: this.__y,
@@ -11269,7 +11359,7 @@ const emptyEditorJSON = '{"root":{"children":[{"children":[],"direction":null,"f
 
 const plainTextEditorJSON = text => text === '' ? emptyEditorJSON : `{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":${text},"type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}`;
 
-const TableComponent$2 = /*#__PURE__*/React.lazy( // @ts-ignore
+const TableComponent$2 = /*#__PURE__*/React$1.lazy( // @ts-ignore
 () => Promise.resolve().then(function () { return TableComponent$1; }));
 function createUID() {
   return Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
@@ -11615,7 +11705,7 @@ class TableNode extends lexical.DecoratorNode {
   }
 
   decorate(_, config) {
-    return /*#__PURE__*/React.createElement(React.Suspense, null, /*#__PURE__*/React.createElement(TableComponent$2, {
+    return /*#__PURE__*/React$1.createElement(React$1.Suspense, null, /*#__PURE__*/React$1.createElement(TableComponent$2, {
       nodeKey: this.__key,
       theme: config.theme,
       rows: this.__rows
@@ -11650,7 +11740,7 @@ function EditorComposer({
   initialConfig,
   extensions
 }) {
-  const editorContextValue = React.useMemo(() => ({
+  const editorContextValue = React$1.useMemo(() => ({
     extensions: (extensions ?? []).reduce((acc, extension) => {
       if (extension.node) acc.nodes.push(extension.node);
       if (extension.plugin) acc.plugins.push([extension.name, extension.plugin]);
@@ -11674,9 +11764,9 @@ function EditorComposer({
     ...initialConfig,
     nodes: [...PlaygroundNodes$1, ...(initialConfig?.nodes ?? []), ...editorContextValue.extensions.nodes]
   };
-  return /*#__PURE__*/React.createElement(EditorComposerContext.Provider, {
+  return /*#__PURE__*/React$1.createElement(EditorComposerContext.Provider, {
     value: editorContextValue
-  }, /*#__PURE__*/React.createElement(LexicalComposer.LexicalComposer, {
+  }, /*#__PURE__*/React$1.createElement(LexicalComposer.LexicalComposer, {
     initialConfig: config
   }, children));
 }
@@ -11804,9 +11894,9 @@ var useSyncWithInputJson$1 = useSyncWithInputJson;
  */
 function PasteLogPlugin() {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  const [isActive, setIsActive] = React.useState(false);
-  const [lastClipboardData, setLastClipboardData] = React.useState(null);
-  React.useEffect(() => {
+  const [isActive, setIsActive] = React$1.useState(false);
+  const [lastClipboardData, setLastClipboardData] = React$1.useState(null);
+  React$1.useEffect(() => {
     if (isActive) {
       return editor.registerCommand(lexical.PASTE_COMMAND, e => {
         const {
@@ -11825,14 +11915,14 @@ function PasteLogPlugin() {
       }, lexical.COMMAND_PRIORITY_NORMAL);
     }
   }, [editor, isActive]);
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+  return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("button", {
     id: "paste-log-buttons",
     className: `editor-dev-buttons ${isActive ? 'active' : ''}`,
     onClick: () => {
       setIsActive(!isActive);
     },
     title: isActive ? 'Disable paste log' : 'Enable paste log'
-  }), isActive && lastClipboardData !== null ? /*#__PURE__*/React.createElement("pre", null, lastClipboardData) : null);
+  }), isActive && lastClipboardData !== null ? /*#__PURE__*/React$1.createElement("pre", null, lastClipboardData) : null);
 }
 
 /**
@@ -11987,17 +12077,17 @@ function getPathFromNodeToEditor(node, rootElement) {
 const keyPresses = new Set(['Enter', 'Backspace', 'Delete', 'Escape', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']);
 
 function useTestRecorder(editor) {
-  const [steps, setSteps] = React.useState([]);
-  const [isRecording, setIsRecording] = React.useState(false);
-  const [, setCurrentInnerHTML] = React.useState('');
-  const [templatedTest, setTemplatedTest] = React.useState('');
-  const previousSelectionRef = React.useRef(null);
-  const skipNextSelectionChangeRef = React.useRef(false);
-  const preRef = React.useRef(null);
-  const getCurrentEditor = React.useCallback(() => {
+  const [steps, setSteps] = React$1.useState([]);
+  const [isRecording, setIsRecording] = React$1.useState(false);
+  const [, setCurrentInnerHTML] = React$1.useState('');
+  const [templatedTest, setTemplatedTest] = React$1.useState('');
+  const previousSelectionRef = React$1.useRef(null);
+  const skipNextSelectionChangeRef = React$1.useRef(false);
+  const preRef = React$1.useRef(null);
+  const getCurrentEditor = React$1.useCallback(() => {
     return editor;
   }, [editor]);
-  const generateTestContent = React.useCallback(() => {
+  const generateTestContent = React$1.useCallback(() => {
     const rootElement = editor.getRootElement();
     const browserSelection = window.getSelection();
 
@@ -12037,7 +12127,7 @@ ${steps.map(formatStep).join(`\n`)}
   }, [editor, steps]); // just a wrapper around inserting new actions so that we can
   // coalesce some actions like insertText/moveNativeSelection
 
-  const pushStep = React.useCallback((name, value) => {
+  const pushStep = React$1.useCallback((name, value) => {
     setSteps(currentSteps => {
       // trying to group steps
       const currentIndex = steps.length - 1;
@@ -12117,7 +12207,7 @@ ${steps.map(formatStep).join(`\n`)}
       preRef.current.scrollTo(0, preRef.current.scrollHeight);
     }
   }, [generateTestContent]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (steps) {
       const testContent = generateTestContent();
 
@@ -12130,7 +12220,7 @@ ${steps.map(formatStep).join(`\n`)}
       }
     }
   }, [generateTestContent, steps]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     const removeUpdateListener = editor.registerUpdateListener(({
       editorState,
       dirtyLeaves,
@@ -12166,7 +12256,7 @@ ${steps.map(formatStep).join(`\n`)}
     return removeUpdateListener;
   }, [editor, generateTestContent, isRecording, pushStep]); // save innerHTML
 
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (!isRecording) {
       return;
     }
@@ -12181,7 +12271,7 @@ ${steps.map(formatStep).join(`\n`)}
     return removeUpdateListener;
   }, [editor, isRecording]); // clear editor and start recording
 
-  const toggleEditorSelection = React.useCallback(currentEditor => {
+  const toggleEditorSelection = React$1.useCallback(currentEditor => {
     if (!isRecording) {
       currentEditor.update(() => {
         const root = lexical.$getRoot();
@@ -12195,7 +12285,7 @@ ${steps.map(formatStep).join(`\n`)}
 
     setIsRecording(currentIsRecording => !currentIsRecording);
   }, [isRecording]);
-  const onSnapshotClick = React.useCallback(() => {
+  const onSnapshotClick = React$1.useCallback(() => {
     if (!isRecording) {
       return;
     }
@@ -12234,38 +12324,38 @@ ${steps.map(formatStep).join(`\n`)}
       focusPath
     });
   }, [pushStep, isRecording, getCurrentEditor]);
-  const onCopyClick = React.useCallback(() => {
+  const onCopyClick = React$1.useCallback(() => {
     copy(generateTestContent());
   }, [generateTestContent]);
-  const onDownloadClick = React.useCallback(() => {
+  const onDownloadClick = React$1.useCallback(() => {
     download('test.js', generateTestContent());
   }, [generateTestContent]);
-  const button = /*#__PURE__*/React.createElement("button", {
+  const button = /*#__PURE__*/React$1.createElement("button", {
     id: "test-recorder-buttons",
     className: `editor-dev-buttons ${isRecording ? 'active' : ''}`,
     onClick: () => toggleEditorSelection(getCurrentEditor()),
     title: isRecording ? 'Disable test recorder' : 'Enable test recorder'
   });
-  const output = isRecording ? /*#__PURE__*/React.createElement("div", {
+  const output = isRecording ? /*#__PURE__*/React$1.createElement("div", {
     className: "test-recorder-output"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React$1.createElement("div", {
     className: "test-recorder-toolbars"
-  }, /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React$1.createElement("button", {
     className: "test-recorder-buttons",
     id: "test-recorder-buttons-snapshot",
     title: "Insert snapshot",
     onClick: onSnapshotClick
-  }), /*#__PURE__*/React.createElement("button", {
+  }), /*#__PURE__*/React$1.createElement("button", {
     className: "test-recorder-buttons",
     id: "test-recorder-buttons-copy",
     title: "Copy to clipboard",
     onClick: onCopyClick
-  }), /*#__PURE__*/React.createElement("button", {
+  }), /*#__PURE__*/React$1.createElement("button", {
     className: "test-recorder-buttons",
     id: "test-recorder-buttons-download",
     title: "Download as a file",
     onClick: onDownloadClick
-  })), /*#__PURE__*/React.createElement("pre", {
+  })), /*#__PURE__*/React$1.createElement("pre", {
     id: "test-recorder",
     ref: preRef
   }, templatedTest)) : null;
@@ -12275,7 +12365,7 @@ ${steps.map(formatStep).join(`\n`)}
 function TestRecorderPlugin() {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
   const [testRecorderButton, testRecorderOutput] = useTestRecorder(editor);
-  return /*#__PURE__*/React.createElement(React.Fragment, null, testRecorderButton, testRecorderOutput);
+  return /*#__PURE__*/React$1.createElement(React$1.Fragment, null, testRecorderButton, testRecorderOutput);
 }
 
 /**
@@ -12288,7 +12378,7 @@ function TestRecorderPlugin() {
 const validInputTypes = new Set(['insertText', 'insertCompositionText', 'insertFromComposition', 'insertLineBreak', 'insertParagraph', 'deleteCompositionText', 'deleteContentBackward', 'deleteByComposition', 'deleteContent', 'deleteContentForward', 'deleteWordBackward', 'deleteWordForward', 'deleteHardLineBackward', 'deleteSoftLineBackward', 'deleteHardLineForward', 'deleteSoftLineForward']);
 function TypingPerfPlugin() {
   const report = useReport();
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     let start = 0;
     let timerId;
     let keyPressTimerId;
@@ -12401,14 +12491,14 @@ const DEFAULT_SETTINGS = {
  * LICENSE file in the root directory of this source tree.
  *
  */
-const Context = /*#__PURE__*/React.createContext({
+const Context = /*#__PURE__*/React$1.createContext({
   setOption: (name, value) => {
     return;
   },
   settings: DEFAULT_SETTINGS
 });
 const useSettings = () => {
-  return React.useContext(Context);
+  return React$1.useContext(Context);
 };
 
 /**
@@ -12440,12 +12530,12 @@ function ImageResizer({
   setShowCaption,
   captionsEnabled
 }) {
-  const controlWrapperRef = React.useRef(null);
-  const userSelect = React.useRef({
+  const controlWrapperRef = React$1.useRef(null);
+  const userSelect = React$1.useRef({
     priority: '',
     value: 'default'
   });
-  const positioningRef = React.useRef({
+  const positioningRef = React$1.useRef({
     currentHeight: 0,
     currentWidth: 0,
     direction: 0,
@@ -12582,50 +12672,50 @@ function ImageResizer({
     }
   };
 
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", {
     ref: controlWrapperRef
-  }, !showCaption && captionsEnabled && /*#__PURE__*/React.createElement("button", {
+  }, !showCaption && captionsEnabled && /*#__PURE__*/React$1.createElement("button", {
     className: "image-caption-button",
     ref: buttonRef,
     onClick: () => {
       setShowCaption(!showCaption);
     }
-  }, "Add Caption"), /*#__PURE__*/React.createElement("div", {
+  }, "Add Caption"), /*#__PURE__*/React$1.createElement("div", {
     className: "image-resizer image-resizer-n",
     onPointerDown: event => {
       handlePointerDown(event, Direction.north);
     }
-  }), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React$1.createElement("div", {
     className: "image-resizer image-resizer-ne",
     onPointerDown: event => {
       handlePointerDown(event, Direction.north | Direction.east);
     }
-  }), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React$1.createElement("div", {
     className: "image-resizer image-resizer-e",
     onPointerDown: event => {
       handlePointerDown(event, Direction.east);
     }
-  }), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React$1.createElement("div", {
     className: "image-resizer image-resizer-se",
     onPointerDown: event => {
       handlePointerDown(event, Direction.south | Direction.east);
     }
-  }), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React$1.createElement("div", {
     className: "image-resizer image-resizer-s",
     onPointerDown: event => {
       handlePointerDown(event, Direction.south);
     }
-  }), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React$1.createElement("div", {
     className: "image-resizer image-resizer-sw",
     onPointerDown: event => {
       handlePointerDown(event, Direction.south | Direction.west);
     }
-  }), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React$1.createElement("div", {
     className: "image-resizer image-resizer-w",
     onPointerDown: event => {
       handlePointerDown(event, Direction.west);
     }
-  }), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React$1.createElement("div", {
     className: "image-resizer image-resizer-nw",
     onPointerDown: event => {
       handlePointerDown(event, Direction.north | Direction.west);
@@ -12666,7 +12756,7 @@ function LazyImage({
   maxWidth
 }) {
   useSuspenseImage(src);
-  return /*#__PURE__*/React.createElement("img", {
+  return /*#__PURE__*/React$1.createElement("img", {
     className: className || undefined,
     src: src,
     alt: altText,
@@ -12692,17 +12782,17 @@ function ImageComponent({
   caption,
   captionsEnabled
 }) {
-  const imageRef = React.useRef(null);
-  const buttonRef = React.useRef(null);
+  const imageRef = React$1.useRef(null);
+  const buttonRef = React$1.useRef(null);
   const [isSelected, setSelected, clearSelection] = useLexicalNodeSelection.useLexicalNodeSelection(nodeKey);
-  const [isResizing, setIsResizing] = React.useState(false);
+  const [isResizing, setIsResizing] = React$1.useState(false);
   const {
     isCollabActive
   } = LexicalCollaborationContext.useCollaborationContext();
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  const [selection, setSelection] = React.useState(null);
-  const activeEditorRef = React.useRef(null);
-  const onDelete = React.useCallback(payload => {
+  const [selection, setSelection] = React$1.useState(null);
+  const activeEditorRef = React$1.useRef(null);
+  const onDelete = React$1.useCallback(payload => {
     if (isSelected && lexical.$isNodeSelection(lexical.$getSelection())) {
       const event = payload;
       event.preventDefault();
@@ -12717,7 +12807,7 @@ function ImageComponent({
 
     return false;
   }, [isSelected, nodeKey, setSelected]);
-  const onEnter = React.useCallback(event => {
+  const onEnter = React$1.useCallback(event => {
     const latestSelection = lexical.$getSelection();
     const buttonElem = buttonRef.current;
 
@@ -12737,7 +12827,7 @@ function ImageComponent({
 
     return false;
   }, [caption, isSelected, showCaption]);
-  const onEscape = React.useCallback(event => {
+  const onEscape = React$1.useCallback(event => {
     if (activeEditorRef.current === caption || buttonRef.current === event.target) {
       lexical.$setSelection(null);
       editor.update(() => {
@@ -12753,7 +12843,7 @@ function ImageComponent({
 
     return false;
   }, [caption, editor, setSelected]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     let isMounted = true;
     const unregister = utils.mergeRegister(editor.registerUpdateListener(({
       editorState
@@ -12837,11 +12927,11 @@ function ImageComponent({
   } = useSettings();
   const draggable = isSelected && lexical.$isNodeSelection(selection) && !isResizing;
   const isFocused = isSelected || isResizing;
-  return /*#__PURE__*/React.createElement(React.Suspense, {
+  return /*#__PURE__*/React$1.createElement(React$1.Suspense, {
     fallback: null
-  }, /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("div", {
     draggable: draggable
-  }, /*#__PURE__*/React.createElement(LazyImage, {
+  }, /*#__PURE__*/React$1.createElement(LazyImage, {
     className: isFocused ? `focused ${lexical.$isNodeSelection(selection) ? 'draggable' : ''}` : null,
     src: src,
     altText: altText,
@@ -12849,25 +12939,25 @@ function ImageComponent({
     width: width,
     height: height,
     maxWidth: maxWidth
-  })), showCaption && /*#__PURE__*/React.createElement("div", {
+  })), showCaption && /*#__PURE__*/React$1.createElement("div", {
     className: "image-caption-container"
-  }, /*#__PURE__*/React.createElement(LexicalNestedComposer.LexicalNestedComposer, {
+  }, /*#__PURE__*/React$1.createElement(LexicalNestedComposer.LexicalNestedComposer, {
     initialEditor: caption
-  }, /*#__PURE__*/React.createElement(LexicalAutoFocusPlugin.AutoFocusPlugin, null), /*#__PURE__*/React.createElement(MentionsPlugin, null), /*#__PURE__*/React.createElement(LinkPlugin, null), /*#__PURE__*/React.createElement(EmojisPlugin, null), /*#__PURE__*/React.createElement(LexicalHashtagPlugin.HashtagPlugin, null), /*#__PURE__*/React.createElement(KeywordsPlugin, null), isCollabActive ? /*#__PURE__*/React.createElement(LexicalCollaborationPlugin.CollaborationPlugin, {
+  }, /*#__PURE__*/React$1.createElement(LexicalAutoFocusPlugin.AutoFocusPlugin, null), /*#__PURE__*/React$1.createElement(MentionsPlugin, null), /*#__PURE__*/React$1.createElement(LinkPlugin, null), /*#__PURE__*/React$1.createElement(EmojisPlugin, null), /*#__PURE__*/React$1.createElement(LexicalHashtagPlugin.HashtagPlugin, null), /*#__PURE__*/React$1.createElement(KeywordsPlugin, null), isCollabActive ? /*#__PURE__*/React$1.createElement(LexicalCollaborationPlugin.CollaborationPlugin, {
     id: caption.getKey(),
     providerFactory: createWebsocketProvider,
     shouldBootstrap: true
-  }) : /*#__PURE__*/React.createElement(LexicalHistoryPlugin.HistoryPlugin, {
+  }) : /*#__PURE__*/React$1.createElement(LexicalHistoryPlugin.HistoryPlugin, {
     externalHistoryState: historyState
-  }), /*#__PURE__*/React.createElement(LexicalRichTextPlugin.RichTextPlugin, {
-    contentEditable: /*#__PURE__*/React.createElement(LexicalContentEditable, {
+  }), /*#__PURE__*/React$1.createElement(LexicalRichTextPlugin.RichTextPlugin, {
+    contentEditable: /*#__PURE__*/React$1.createElement(LexicalContentEditable, {
       className: "ImageNode__contentEditable"
     }),
-    placeholder: /*#__PURE__*/React.createElement(Placeholder, {
+    placeholder: /*#__PURE__*/React$1.createElement(Placeholder, {
       className: "ImageNode__placeholder"
     }, "Enter a caption..."),
     ErrorBoundary: LexicalErrorBoundary
-  }), showNestedEditorTreeView === true ? /*#__PURE__*/React.createElement(TreeViewPlugin, null) : null)), resizable && lexical.$isNodeSelection(selection) && isFocused && /*#__PURE__*/React.createElement(ImageResizer, {
+  }), showNestedEditorTreeView === true ? /*#__PURE__*/React$1.createElement(TreeViewPlugin, null) : null)), resizable && lexical.$isNodeSelection(selection) && isFocused && /*#__PURE__*/React$1.createElement(ImageResizer, {
     showCaption: showCaption,
     setShowCaption: setShowCaption,
     editor: editor,
@@ -27715,17 +27805,17 @@ function PollOptionComponent({
   const {
     clientID
   } = LexicalCollaborationContext.useCollaborationContext();
-  const checkboxRef = React.useRef(null);
+  const checkboxRef = React$1.useRef(null);
   const votesArray = option.votes;
   const checkedIndex = votesArray.indexOf(clientID);
   const checked = checkedIndex !== -1;
   const votes = votesArray.length;
   const text = option.text;
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", {
     className: "PollNode__optionContainer"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React$1.createElement("div", {
     className: joinClasses('PollNode__optionCheckboxWrapper', checked && 'PollNode__optionCheckboxChecked')
-  }, /*#__PURE__*/React.createElement("input", {
+  }, /*#__PURE__*/React$1.createElement("input", {
     ref: checkboxRef,
     className: "PollNode__optionCheckbox",
     type: "checkbox",
@@ -27735,16 +27825,16 @@ function PollOptionComponent({
       });
     },
     checked: checked
-  })), /*#__PURE__*/React.createElement("div", {
+  })), /*#__PURE__*/React$1.createElement("div", {
     className: "PollNode__optionInputWrapper"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React$1.createElement("div", {
     className: "PollNode__optionInputVotes",
     style: {
       width: `${votes === 0 ? 0 : votes / totalVotes * 100}%`
     }
-  }), /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React$1.createElement("span", {
     className: "PollNode__optionInputVotesCount"
-  }, votes > 0 && (votes === 1 ? '1 vote' : `${votes} votes`)), /*#__PURE__*/React.createElement("input", {
+  }, votes > 0 && (votes === 1 ? '1 vote' : `${votes} votes`)), /*#__PURE__*/React$1.createElement("input", {
     className: "PollNode__optionInput",
     type: "text",
     value: text,
@@ -27761,7 +27851,7 @@ function PollOptionComponent({
       });
     },
     placeholder: `Option ${index + 1}`
-  })), /*#__PURE__*/React.createElement("button", {
+  })), /*#__PURE__*/React$1.createElement("button", {
     disabled: options.length < 3,
     className: joinClasses('PollNode__optionDelete', options.length < 3 && 'PollNode__optionDeleteDisabled'),
     "arial-label": "Remove",
@@ -27779,11 +27869,11 @@ function PollComponent({
   nodeKey
 }) {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  const totalVotes = React.useMemo(() => getTotalVotes(options), [options]);
+  const totalVotes = React$1.useMemo(() => getTotalVotes(options), [options]);
   const [isSelected, setSelected, clearSelection] = useLexicalNodeSelection.useLexicalNodeSelection(nodeKey);
-  const [selection, setSelection] = React.useState(null);
-  const ref = React.useRef(null);
-  const onDelete = React.useCallback(payload => {
+  const [selection, setSelection] = React$1.useState(null);
+  const ref = React$1.useRef(null);
+  const onDelete = React$1.useCallback(payload => {
     if (isSelected && lexical.$isNodeSelection(lexical.$getSelection())) {
       const event = payload;
       event.preventDefault();
@@ -27798,7 +27888,7 @@ function PollComponent({
 
     return false;
   }, [isSelected, nodeKey, setSelected]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     return utils.mergeRegister(editor.registerUpdateListener(({
       editorState
     }) => {
@@ -27838,16 +27928,16 @@ function PollComponent({
   };
 
   const isFocused = lexical.$isNodeSelection(selection) && isSelected;
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", {
     className: `PollNode__container ${isFocused ? 'focused' : ''}`,
     ref: ref
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React$1.createElement("div", {
     className: "PollNode__inner"
-  }, /*#__PURE__*/React.createElement("h2", {
+  }, /*#__PURE__*/React$1.createElement("h2", {
     className: "PollNode__heading"
   }, question), options.map((option, index) => {
     const key = option.uid;
-    return /*#__PURE__*/React.createElement(PollOptionComponent, {
+    return /*#__PURE__*/React$1.createElement(PollOptionComponent, {
       key: key,
       withPollNode: withPollNode,
       option: option,
@@ -27855,9 +27945,9 @@ function PollComponent({
       options: options,
       totalVotes: totalVotes
     });
-  }), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React$1.createElement("div", {
     className: "PollNode__footer"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, /*#__PURE__*/React$1.createElement(Button, {
     onClick: addOption,
     small: true
   }, "Add Option"))));
@@ -27905,8 +27995,8 @@ function StickyComponent({
   caption
 }) {
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  const stickyContainerRef = React.useRef(null);
-  const positioningRef = React.useRef({
+  const stickyContainerRef = React$1.useRef(null);
+  const positioningRef = React$1.useRef({
     isDragging: false,
     offsetX: 0,
     offsetY: 0,
@@ -27917,7 +28007,7 @@ function StickyComponent({
   const {
     isCollabActive
   } = LexicalCollaborationContext.useCollaborationContext();
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     const position = positioningRef.current;
     position.x = x;
     position.y = y;
@@ -27969,7 +28059,7 @@ function StickyComponent({
       removeRootListener();
     };
   }, [editor]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     const stickyContainer = stickyContainerRef.current;
 
     if (stickyContainer !== null) {
@@ -28036,10 +28126,10 @@ function StickyComponent({
   const {
     historyState
   } = useSharedHistoryContext();
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", {
     ref: stickyContainerRef,
     className: "sticky-note-container"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React$1.createElement("div", {
     className: `sticky-note ${color}`,
     onPointerDown: event => {
       const stickyContainer = stickyContainerRef.current;
@@ -28066,32 +28156,32 @@ function StickyComponent({
         event.preventDefault();
       }
     }
-  }, /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React$1.createElement("button", {
     onClick: handleDelete,
     className: "delete",
     "aria-label": "Delete sticky note",
     title: "Delete"
-  }, "X"), /*#__PURE__*/React.createElement("button", {
+  }, "X"), /*#__PURE__*/React$1.createElement("button", {
     onClick: handleColorChange,
     className: "color",
     "aria-label": "Change sticky note color",
     title: "Color"
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "bucket"
-  })), /*#__PURE__*/React.createElement(LexicalNestedComposer.LexicalNestedComposer, {
+  })), /*#__PURE__*/React$1.createElement(LexicalNestedComposer.LexicalNestedComposer, {
     initialEditor: caption,
     initialTheme: StickyEditorTheme
-  }, isCollabActive ? /*#__PURE__*/React.createElement(LexicalCollaborationPlugin.CollaborationPlugin, {
+  }, isCollabActive ? /*#__PURE__*/React$1.createElement(LexicalCollaborationPlugin.CollaborationPlugin, {
     id: caption.getKey(),
     providerFactory: createWebsocketProvider,
     shouldBootstrap: true
-  }) : /*#__PURE__*/React.createElement(LexicalHistoryPlugin.HistoryPlugin, {
+  }) : /*#__PURE__*/React$1.createElement(LexicalHistoryPlugin.HistoryPlugin, {
     externalHistoryState: historyState
-  }), /*#__PURE__*/React.createElement(LexicalPlainTextPlugin.PlainTextPlugin, {
-    contentEditable: /*#__PURE__*/React.createElement(LexicalContentEditable, {
+  }), /*#__PURE__*/React$1.createElement(LexicalPlainTextPlugin.PlainTextPlugin, {
+    contentEditable: /*#__PURE__*/React$1.createElement(LexicalContentEditable, {
       className: "StickyNode__contentEditable"
     }),
-    placeholder: /*#__PURE__*/React.createElement(Placeholder, {
+    placeholder: /*#__PURE__*/React$1.createElement(Placeholder, {
       className: "StickyNode__placeholder"
     }, "What's up?"),
     ErrorBoundary: LexicalErrorBoundary
@@ -28111,7 +28201,7 @@ var StickyComponent$1 = {
  *
  */
 lexical.createCommand('INSERT_NEW_TABLE_COMMAND');
-const CellContext = /*#__PURE__*/React.createContext({
+const CellContext = /*#__PURE__*/React$1.createContext({
   cellEditorConfig: null,
   cellEditorPlugins: null,
   set: () => {// Empty
@@ -28350,13 +28440,13 @@ function TableCellEditor({
   const {
     cellEditorConfig,
     cellEditorPlugins
-  } = React.useContext(CellContext);
+  } = React$1.useContext(CellContext);
 
   if (cellEditorPlugins === null || cellEditorConfig === null) {
     return null;
   }
 
-  return /*#__PURE__*/React.createElement(LexicalNestedComposer.LexicalNestedComposer, {
+  return /*#__PURE__*/React$1.createElement(LexicalNestedComposer.LexicalNestedComposer, {
     initialEditor: cellEditor,
     initialTheme: cellEditorConfig.theme,
     initialNodes: cellEditorConfig.nodes,
@@ -28387,8 +28477,8 @@ function TableActionMenu({
   setSortingOptions,
   sortingOptions
 }) {
-  const dropDownRef = React.useRef(null);
-  React.useEffect(() => {
+  const dropDownRef = React$1.useRef(null);
+  React$1.useEffect(() => {
     const dropdownElem = dropDownRef.current;
 
     if (dropdownElem !== null) {
@@ -28397,7 +28487,7 @@ function TableActionMenu({
       dropdownElem.style.left = `${rect.x}px`;
     }
   }, [menuElem]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     const handleClickOutside = event => {
       const dropdownElem = dropDownRef.current;
 
@@ -28419,7 +28509,7 @@ function TableActionMenu({
   return (
     /*#__PURE__*/
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-    React.createElement("div", {
+    React$1.createElement("div", {
       className: "dropdowns Tabledropdown",
       ref: dropDownRef,
       onPointerMove: e => {
@@ -28434,7 +28524,7 @@ function TableActionMenu({
       onClick: e => {
         e.stopPropagation();
       }
-    }, /*#__PURE__*/React.createElement("button", {
+    }, /*#__PURE__*/React$1.createElement("button", {
       className: "item",
       onClick: () => {
         updateTableNode(tableNode => {
@@ -28443,9 +28533,9 @@ function TableActionMenu({
         });
         onClose();
       }
-    }, /*#__PURE__*/React.createElement("span", {
+    }, /*#__PURE__*/React$1.createElement("span", {
       className: "text"
-    }, cell.type === 'normal' ? 'Make header' : 'Remove header')), /*#__PURE__*/React.createElement("button", {
+    }, cell.type === 'normal' ? 'Make header' : 'Remove header')), /*#__PURE__*/React$1.createElement("button", {
       className: "item",
       onClick: () => {
         updateCellsByID([cell.id], () => {
@@ -28455,17 +28545,17 @@ function TableActionMenu({
         });
         onClose();
       }
-    }, /*#__PURE__*/React.createElement("span", {
+    }, /*#__PURE__*/React$1.createElement("span", {
       className: "text"
-    }, "Clear cell")), /*#__PURE__*/React.createElement("hr", null), cell.type === 'header' && y === 0 && /*#__PURE__*/React.createElement(React.Fragment, null, sortingOptions !== null && sortingOptions.x === x && /*#__PURE__*/React.createElement("button", {
+    }, "Clear cell")), /*#__PURE__*/React$1.createElement("hr", null), cell.type === 'header' && y === 0 && /*#__PURE__*/React$1.createElement(React$1.Fragment, null, sortingOptions !== null && sortingOptions.x === x && /*#__PURE__*/React$1.createElement("button", {
       className: "item",
       onClick: () => {
         setSortingOptions(null);
         onClose();
       }
-    }, /*#__PURE__*/React.createElement("span", {
+    }, /*#__PURE__*/React$1.createElement("span", {
       className: "text"
-    }, "Remove sorting")), (sortingOptions === null || sortingOptions.x !== x || sortingOptions.type === 'descending') && /*#__PURE__*/React.createElement("button", {
+    }, "Remove sorting")), (sortingOptions === null || sortingOptions.x !== x || sortingOptions.type === 'descending') && /*#__PURE__*/React$1.createElement("button", {
       className: "item",
       onClick: () => {
         setSortingOptions({
@@ -28474,9 +28564,9 @@ function TableActionMenu({
         });
         onClose();
       }
-    }, /*#__PURE__*/React.createElement("span", {
+    }, /*#__PURE__*/React$1.createElement("span", {
       className: "text"
-    }, "Sort ascending")), (sortingOptions === null || sortingOptions.x !== x || sortingOptions.type === 'ascending') && /*#__PURE__*/React.createElement("button", {
+    }, "Sort ascending")), (sortingOptions === null || sortingOptions.x !== x || sortingOptions.type === 'ascending') && /*#__PURE__*/React$1.createElement("button", {
       className: "item",
       onClick: () => {
         setSortingOptions({
@@ -28485,9 +28575,9 @@ function TableActionMenu({
         });
         onClose();
       }
-    }, /*#__PURE__*/React.createElement("span", {
+    }, /*#__PURE__*/React$1.createElement("span", {
       className: "text"
-    }, "Sort descending")), /*#__PURE__*/React.createElement("hr", null)), /*#__PURE__*/React.createElement("button", {
+    }, "Sort descending")), /*#__PURE__*/React$1.createElement("hr", null)), /*#__PURE__*/React$1.createElement("button", {
       className: "item",
       onClick: () => {
         updateTableNode(tableNode => {
@@ -28496,9 +28586,9 @@ function TableActionMenu({
         });
         onClose();
       }
-    }, /*#__PURE__*/React.createElement("span", {
+    }, /*#__PURE__*/React$1.createElement("span", {
       className: "text"
-    }, "Insert row above")), /*#__PURE__*/React.createElement("button", {
+    }, "Insert row above")), /*#__PURE__*/React$1.createElement("button", {
       className: "item",
       onClick: () => {
         updateTableNode(tableNode => {
@@ -28507,9 +28597,9 @@ function TableActionMenu({
         });
         onClose();
       }
-    }, /*#__PURE__*/React.createElement("span", {
+    }, /*#__PURE__*/React$1.createElement("span", {
       className: "text"
-    }, "Insert row below")), /*#__PURE__*/React.createElement("hr", null), /*#__PURE__*/React.createElement("button", {
+    }, "Insert row below")), /*#__PURE__*/React$1.createElement("hr", null), /*#__PURE__*/React$1.createElement("button", {
       className: "item",
       onClick: () => {
         updateTableNode(tableNode => {
@@ -28518,9 +28608,9 @@ function TableActionMenu({
         });
         onClose();
       }
-    }, /*#__PURE__*/React.createElement("span", {
+    }, /*#__PURE__*/React$1.createElement("span", {
       className: "text"
-    }, "Insert column left")), /*#__PURE__*/React.createElement("button", {
+    }, "Insert column left")), /*#__PURE__*/React$1.createElement("button", {
       className: "item",
       onClick: () => {
         updateTableNode(tableNode => {
@@ -28529,9 +28619,9 @@ function TableActionMenu({
         });
         onClose();
       }
-    }, /*#__PURE__*/React.createElement("span", {
+    }, /*#__PURE__*/React$1.createElement("span", {
       className: "text"
-    }, "Insert column right")), /*#__PURE__*/React.createElement("hr", null), rows[0].cells.length !== 1 && /*#__PURE__*/React.createElement("button", {
+    }, "Insert column right")), /*#__PURE__*/React$1.createElement("hr", null), rows[0].cells.length !== 1 && /*#__PURE__*/React$1.createElement("button", {
       className: "item",
       onClick: () => {
         updateTableNode(tableNode => {
@@ -28540,9 +28630,9 @@ function TableActionMenu({
         });
         onClose();
       }
-    }, /*#__PURE__*/React.createElement("span", {
+    }, /*#__PURE__*/React$1.createElement("span", {
       className: "text"
-    }, "Delete column")), rows.length !== 1 && /*#__PURE__*/React.createElement("button", {
+    }, "Delete column")), rows.length !== 1 && /*#__PURE__*/React$1.createElement("button", {
       className: "item",
       onClick: () => {
         updateTableNode(tableNode => {
@@ -28551,9 +28641,9 @@ function TableActionMenu({
         });
         onClose();
       }
-    }, /*#__PURE__*/React.createElement("span", {
+    }, /*#__PURE__*/React$1.createElement("span", {
       className: "text"
-    }, "Delete row")), /*#__PURE__*/React.createElement("button", {
+    }, "Delete row")), /*#__PURE__*/React$1.createElement("button", {
       className: "item",
       onClick: () => {
         updateTableNode(tableNode => {
@@ -28563,7 +28653,7 @@ function TableActionMenu({
         });
         onClose();
       }
-    }, /*#__PURE__*/React.createElement("span", {
+    }, /*#__PURE__*/React$1.createElement("span", {
       className: "text"
     }, "Delete table")))
   );
@@ -28583,8 +28673,8 @@ function TableCell({
   setSortingOptions,
   sortingOptions
 }) {
-  const [showMenu, setShowMenu] = React.useState(false);
-  const menuRootRef = React.useRef(null);
+  const [showMenu, setShowMenu] = React$1.useState(false);
+  const menuRootRef = React$1.useRef(null);
   const isHeader = cell.type !== 'normal';
   const editorStateJSON = cell.json;
   const CellComponent = isHeader ? 'th' : 'td';
@@ -28592,41 +28682,41 @@ function TableCell({
   const menuElem = menuRootRef.current;
   const coords = cellCoordMap.get(cell.id);
   const isSorted = sortingOptions !== null && coords !== undefined && coords[0] === sortingOptions.x && coords[1] === 0;
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (isEditing || !isPrimarySelected) {
       setShowMenu(false);
     }
   }, [isEditing, isPrimarySelected]);
-  return /*#__PURE__*/React.createElement(CellComponent, {
+  return /*#__PURE__*/React$1.createElement(CellComponent, {
     className: `${theme.tableCell} ${isHeader ? theme.tableCellHeader : ''} ${isSelected ? theme.tableCellSelected : ''}`,
     "data-id": cell.id,
     tabIndex: -1,
     style: {
       width: cellWidth !== null ? cellWidth : undefined
     }
-  }, isPrimarySelected && /*#__PURE__*/React.createElement("div", {
+  }, isPrimarySelected && /*#__PURE__*/React$1.createElement("div", {
     className: `${theme.tableCellPrimarySelected} ${isEditing ? theme.tableCellEditing : ''}`
-  }), isPrimarySelected && isEditing ? /*#__PURE__*/React.createElement(TableCellEditor, {
+  }), isPrimarySelected && isEditing ? /*#__PURE__*/React$1.createElement(TableCellEditor, {
     cellEditor: cellEditor
-  }) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+  }) : /*#__PURE__*/React$1.createElement(React$1.Fragment, null, /*#__PURE__*/React$1.createElement("div", {
     dangerouslySetInnerHTML: {
       __html: editorStateJSON === '' ? createEmptyParagraphHTML(theme) : generateHTMLFromJSON(editorStateJSON, cellEditor)
     }
-  }), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React$1.createElement("div", {
     className: theme.tableCellResizer,
     "data-table-resize": "true"
-  })), isPrimarySelected && !isEditing && /*#__PURE__*/React.createElement("div", {
+  })), isPrimarySelected && !isEditing && /*#__PURE__*/React$1.createElement("div", {
     className: theme.tableCellActionButtonContainer,
     ref: menuRootRef
-  }, /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React$1.createElement("button", {
     className: theme.tableCellActionButton,
     onClick: e => {
       setShowMenu(!showMenu);
       e.stopPropagation();
     }
-  }, /*#__PURE__*/React.createElement("i", {
+  }, /*#__PURE__*/React$1.createElement("i", {
     className: "chevron-down"
-  }))), showMenu && menuElem !== null && /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React.createElement(TableActionMenu, {
+  }))), showMenu && menuElem !== null && /*#__PURE__*/ReactDOM.createPortal( /*#__PURE__*/React$1.createElement(TableActionMenu, {
     cell: cell,
     menuElem: menuElem,
     updateCellsByID: updateCellsByID,
@@ -28636,7 +28726,7 @@ function TableCell({
     rows: rows,
     setSortingOptions: setSortingOptions,
     sortingOptions: sortingOptions
-  }), document.body), isSorted && /*#__PURE__*/React.createElement("div", {
+  }), document.body), isSorted && /*#__PURE__*/React$1.createElement("div", {
     className: theme.tableCellSortedIndicator
   }));
 }
@@ -28647,25 +28737,25 @@ function TableComponent({
   theme
 }) {
   const [isSelected, setSelected, clearSelection] = useLexicalNodeSelection.useLexicalNodeSelection(nodeKey);
-  const resizeMeasureRef = React.useRef({
+  const resizeMeasureRef = React$1.useRef({
     point: 0,
     size: 0
   });
-  const [sortingOptions, setSortingOptions] = React.useState(null);
-  const addRowsRef = React.useRef(null);
-  const lastCellIDRef = React.useRef(null);
-  const tableResizerRulerRef = React.useRef(null);
+  const [sortingOptions, setSortingOptions] = React$1.useState(null);
+  const addRowsRef = React$1.useRef(null);
+  const lastCellIDRef = React$1.useRef(null);
+  const tableResizerRulerRef = React$1.useRef(null);
   const {
     cellEditorConfig
-  } = React.useContext(CellContext);
-  const [isEditing, setIsEditing] = React.useState(false);
-  const [showAddColumns, setShowAddColumns] = React.useState(false);
-  const [showAddRows, setShowAddRows] = React.useState(false);
+  } = React$1.useContext(CellContext);
+  const [isEditing, setIsEditing] = React$1.useState(false);
+  const [showAddColumns, setShowAddColumns] = React$1.useState(false);
+  const [showAddRows, setShowAddRows] = React$1.useState(false);
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
-  const mouseDownRef = React.useRef(false);
-  const [resizingID, setResizingID] = React.useState(null);
-  const tableRef = React.useRef(null);
-  const cellCoordMap = React.useMemo(() => {
+  const mouseDownRef = React$1.useRef(false);
+  const [resizingID, setResizingID] = React$1.useState(null);
+  const tableRef = React$1.useRef(null);
+  const cellCoordMap = React$1.useMemo(() => {
     const map = new Map();
 
     for (let y = 0; y < rawRows.length; y++) {
@@ -28680,7 +28770,7 @@ function TableComponent({
 
     return map;
   }, [rawRows]);
-  const rows = React.useMemo(() => {
+  const rows = React$1.useMemo(() => {
     if (sortingOptions === null) {
       return rawRows;
     }
@@ -28709,8 +28799,8 @@ function TableComponent({
 
     return _rows;
   }, [rawRows, sortingOptions]);
-  const [primarySelectedCellID, setPrimarySelectedCellID] = React.useState(null);
-  const cellEditor = React.useMemo(() => {
+  const [primarySelectedCellID, setPrimarySelectedCellID] = React$1.useState(null);
+  const cellEditor = React$1.useMemo(() => {
     if (cellEditorConfig === null) {
       return null;
     }
@@ -28724,16 +28814,16 @@ function TableComponent({
 
     return _cellEditor;
   }, [cellEditorConfig]);
-  const [selectedCellIDs, setSelectedCellIDs] = React.useState([]);
-  const selectedCellSet = React.useMemo(() => new Set(selectedCellIDs), [selectedCellIDs]);
-  React.useEffect(() => {
+  const [selectedCellIDs, setSelectedCellIDs] = React$1.useState([]);
+  const selectedCellSet = React$1.useMemo(() => new Set(selectedCellIDs), [selectedCellIDs]);
+  React$1.useEffect(() => {
     const tableElem = tableRef.current;
 
     if (isSelected && document.activeElement === document.body && tableElem !== null) {
       tableElem.focus();
     }
   }, [isSelected]);
-  const updateTableNode = React.useCallback(fn => {
+  const updateTableNode = React$1.useCallback(fn => {
     editor.update(() => {
       const tableNode = lexical.$getNodeByKey(nodeKey);
 
@@ -28757,7 +28847,7 @@ function TableComponent({
     });
   };
 
-  const modifySelectedCells = React.useCallback((x, y, extend) => {
+  const modifySelectedCells = React$1.useCallback((x, y, extend) => {
     const id = rows[y].cells[x].id;
     lastCellIDRef.current = id;
 
@@ -28770,7 +28860,7 @@ function TableComponent({
       focusCell(tableRef.current, id);
     }
   }, [cellCoordMap, primarySelectedCellID, rows]);
-  const saveEditorToJSON = React.useCallback(() => {
+  const saveEditorToJSON = React$1.useCallback(() => {
     if (cellEditor !== null && primarySelectedCellID !== null) {
       const json = JSON.stringify(cellEditor.getEditorState());
       updateTableNode(tableNode => {
@@ -28786,7 +28876,7 @@ function TableComponent({
       });
     }
   }, [cellCoordMap, cellEditor, primarySelectedCellID, updateTableNode]);
-  const selectTable = React.useCallback(() => {
+  const selectTable = React$1.useCallback(() => {
     setTimeout(() => {
       const parentRootElement = editor.getRootElement();
 
@@ -28798,7 +28888,7 @@ function TableComponent({
       }
     }, 20);
   }, [editor]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     const tableElem = tableRef.current;
 
     if (tableElem === null) {
@@ -28973,7 +29063,7 @@ function TableComponent({
       doc.removeEventListener('pointerup', handlePointerUp);
     };
   }, [cellEditor, editor, isEditing, rows, saveEditorToJSON, primarySelectedCellID, selectedCellSet, selectedCellIDs, cellCoordMap, resizingID, updateTableNode, setSelected, selectTable]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     if (!isEditing && primarySelectedCellID !== null) {
       const doc = getCurrentDocument(editor);
 
@@ -29043,10 +29133,10 @@ function TableComponent({
       };
     }
   }, [cellEditor, editor, isEditing, rows, primarySelectedCellID, cellCoordMap]);
-  const updateCellsByID = React.useCallback((ids, fn) => {
+  const updateCellsByID = React$1.useCallback((ids, fn) => {
     $updateCells(rows, ids, cellCoordMap, cellEditor, updateTableNode, fn);
   }, [cellCoordMap, cellEditor, rows, updateTableNode]);
-  const clearCellsCommand = React.useCallback(() => {
+  const clearCellsCommand = React$1.useCallback(() => {
     if (primarySelectedCellID !== null && !isEditing) {
       updateCellsByID([primarySelectedCellID, ...selectedCellIDs], () => {
         const root = lexical.$getRoot();
@@ -29064,7 +29154,7 @@ function TableComponent({
 
     return false;
   }, [isEditing, isSelected, primarySelectedCellID, selectedCellIDs, updateCellsByID, updateTableNode]);
-  React.useEffect(() => {
+  React$1.useEffect(() => {
     const tableElem = tableRef.current;
 
     if (tableElem === null) {
@@ -29491,22 +29581,22 @@ function TableComponent({
     return;
   }
 
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React$1.createElement("div", {
     style: {
       position: 'relative'
     }
-  }, /*#__PURE__*/React.createElement("table", {
+  }, /*#__PURE__*/React$1.createElement("table", {
     className: `${theme.table} ${isSelected ? theme.tableSelected : ''}`,
     ref: tableRef,
     tabIndex: -1
-  }, /*#__PURE__*/React.createElement("tbody", null, rows.map(row => /*#__PURE__*/React.createElement("tr", {
+  }, /*#__PURE__*/React$1.createElement("tbody", null, rows.map(row => /*#__PURE__*/React$1.createElement("tr", {
     key: row.id,
     className: theme.tableRow
   }, row.cells.map(cell => {
     const {
       id
     } = cell;
-    return /*#__PURE__*/React.createElement(TableCell, {
+    return /*#__PURE__*/React$1.createElement(TableCell, {
       key: id,
       cell: cell,
       theme: theme,
@@ -29521,14 +29611,14 @@ function TableComponent({
       rows: rows,
       setSortingOptions: setSortingOptions
     });
-  }))))), showAddColumns && /*#__PURE__*/React.createElement("button", {
+  }))))), showAddColumns && /*#__PURE__*/React$1.createElement("button", {
     className: theme.tableAddColumns,
     onClick: addColumns
-  }), showAddRows && /*#__PURE__*/React.createElement("button", {
+  }), showAddRows && /*#__PURE__*/React$1.createElement("button", {
     className: theme.tableAddRows,
     onClick: addRows,
     ref: addRowsRef
-  }), resizingID !== null && /*#__PURE__*/React.createElement("div", {
+  }), resizingID !== null && /*#__PURE__*/React$1.createElement("div", {
     className: theme.tableResizeRuler,
     ref: tableResizerRulerRef
   }));
