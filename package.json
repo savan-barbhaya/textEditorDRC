@@ -46,7 +46,7 @@
       "AI Based editor",
       "AI Based rich text editor"
     ],
-    "version": "0.0.5",
+    "version": "0.0.8",
     "private": false,
     "main": "LexicalPlayground.js",
     "scripts": {
