@@ -9357,8 +9357,8 @@ const removeNode = (editor, node) => {
     editor.update(() => {
       node.remove();
     });
-  } catch (e) {} // eslint-disable-line no-empty
-
+  } catch {// silent fail
+  }
 };
 
 function OnImageUploadPlugin({
@@ -9367,89 +9367,88 @@ function OnImageUploadPlugin({
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
   React.useEffect(() => {
     if (!onUpload) return;
-    const unregisterMutationListener = editor.registerMutationListener(ImageNode, nodeMutations => {
-      for (const [nodeKey, mutation] of nodeMutations) {
+
+    const handleUpload = async (imageNode, file, altText) => {
+      try {
+        const imgUrl = await onUpload(file, altText);
+        const parts = imgUrl.url.split('.');
+        const extension = parts[parts.length - 1].toLowerCase();
+        const validImageTypes = ['jpg', 'jpeg', 'png'];
+
+        if (!validImageTypes.includes(extension)) {
+          removeNode(editor, imageNode);
+          return;
+        }
+
+        const preloadImage = new Image();
+
+        preloadImage.onload = () => {
+          editor.update(() => {
+            imageNode.setFile?.(undefined);
+            imageNode.setSrc?.(imgUrl.url);
+            imageNode.setId?.(String(imgUrl.id)); // Assuming setId exists
+          });
+        };
+
+        preloadImage.onerror = () => {
+          removeNode(editor, imageNode);
+        };
+
+        preloadImage.src = imgUrl.url;
+      } catch {
+        removeNode(editor, imageNode);
+      }
+    }; // 🔁 Mutation listener: handle file upload
+
+
+    const unregisterMutationListener = editor.registerMutationListener(ImageNode, mutations => {
+      for (const [nodeKey, mutation] of mutations) {
         if (mutation === 'created') {
           editor.getEditorState().read(() => {
             const imageNode = lexical.$getNodeByKey(nodeKey);
 
             if ($isImageNode(imageNode)) {
-              const file = imageNode.getFile();
-              const altText = imageNode.getAltText();
+              const file = imageNode.getFile?.();
+              const altText = imageNode.getAltText?.();
 
               if (file) {
-                (async () => {
-                  try {
-                    const imgUrl = await onUpload(file, altText);
-
-                    if (imgUrl.url) {
-                      const parts = imgUrl.url.split('.');
-                      const extension = parts[parts.length - 1].toLowerCase();
-                      const validImageTypes = ['jpg', 'jpeg', 'png'];
-
-                      if (validImageTypes.includes(extension)) {
-                        const preloadImage = new Image();
-
-                        preloadImage.onload = () => {
-                          editor.update(() => {
-                            imageNode.setFile(undefined);
-                            imageNode.setSrc(imgUrl.url);
-                            imageNode.settext(String(imgUrl.id));
-                          });
-                        };
-
-                        preloadImage.onerror = () => {
-                          removeNode(editor, imageNode);
-                        };
-
-                        preloadImage.src = imgUrl.url;
-                        return;
-                      }
-                    } else {
-                      return;
-                    }
-                  } catch (e) {
-                    removeNode(editor, imageNode);
-                  }
-                })();
+                void handleUpload(imageNode, file, altText);
               }
             }
           });
         }
       }
-    }); // Handle paste events for images
+    }); // 📋 Paste handler: insert image node with file
 
-    const unregisterPaste = editor.registerCommand(lexical.PASTE_COMMAND, event => {
+    const unregisterPasteCommand = editor.registerCommand(lexical.PASTE_COMMAND, event => {
       const clipboardData = event.clipboardData;
+      if (!clipboardData) return false;
+      const files = Array.from(clipboardData.files || []);
+      const imageFiles = files.filter(file => file.type.startsWith('image/'));
+      if (imageFiles.length === 0) return false;
+      event.preventDefault(); // prevent default paste behavior
 
-      if (clipboardData) {
-        const files = Array.from(clipboardData.files || []);
-        files.forEach(async file => {
-          if (file.type.startsWith('image/')) {
-            const result = await onUpload(file, "1");
-            editor.update(() => {
-              const imageNode = $createImageNode({
-                src: result.url,
-                altText: file.name
-              }); // Use Lexical API to get the current selection
+      editor.update(() => {
+        imageFiles.forEach(file => {
+          const imageNode = $createImageNode({
+            src: '',
+            // empty for now, will be filled after upload
+            altText: file.name,
+            file
+          });
+          const selection = lexical.$getSelection();
 
-              const selection = lexical.$getSelection();
-
-              if (selection !== null) {
-                // Insert the image node at cursor
-                // @ts-ignore
-                selection.insertNodes([imageNode]);
-              }
-            });
+          if (selection) {
+            // @ts-ignore
+            selection.insertNodes([imageNode]);
           }
         });
-      }
-
-      return false;
+      });
+      return true;
     }, lexical.COMMAND_PRIORITY_CRITICAL);
     return () => {
       unregisterMutationListener();
-      unregisterPaste();
+      unregisterPasteCommand();
     };
   }, [editor, onUpload]);
   return null;
