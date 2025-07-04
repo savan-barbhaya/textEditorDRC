@@ -5,4 +5,4 @@ export declare type OnImageUpload = (img: File, altText: string) => Promise<{
 export declare type DragDropPasteProps = {
     onUpload?: OnImageUpload;
 };
-export default function OnImageUploadPlugin({ onUpload, }: DragDropPasteProps): null;
+export default function OnImageUploadPlugin({ onUpload }: DragDropPasteProps): null;
