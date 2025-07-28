@@ -1475,13 +1475,6 @@ const DICTIONARY = ['information', 'available', 'copyright', 'university', 'mana
  * LICENSE file in the root directory of this source tree.
  *
  */
-function DialogButtonsList({
-  children
-}) {
-  return /*#__PURE__*/React.createElement("div", {
-    className: "DialogButtonsList"
-  }, children);
-}
 function DialogActions({
   'data-test-id': dataTestId,
   children
@@ -4712,32 +4705,6 @@ function CommentPlugin({
  * LICENSE file in the root directory of this source tree.
  *
  */
-function FileInput({
-  accept,
-  label,
-  onChange,
-  'data-test-id': dataTestId
-}) {
-  return /*#__PURE__*/React.createElement("div", {
-    className: "Input__wrapper"
-  }, /*#__PURE__*/React.createElement("label", {
-    className: "Input__label"
-  }, label), /*#__PURE__*/React.createElement("input", {
-    type: "file",
-    accept: accept,
-    className: "Input__input",
-    onChange: e => onChange(e.target.files),
-    "data-test-id": dataTestId
-  }));
-}
-
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
 function TextInput({
   label,
   value,
@@ -4788,128 +4755,6 @@ function TextInput({
 const getDOMSelection = targetWindow => CAN_USE_DOM ? (targetWindow || window).getSelection() : null;
 
 const INSERT_IMAGE_COMMAND = lexical.createCommand('INSERT_IMAGE_COMMAND');
-function InsertImageUriDialogBody({
-  onClick
-}) {
-  const [src, setSrc] = React.useState('');
-  const [altText, setAltText] = React.useState('');
-  const isDisabled = src === '';
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(TextInput, {
-    label: "Image URL",
-    placeholder: "i.e. https://source.unsplash.com/random",
-    onChange: setSrc,
-    value: src,
-    "data-test-id": "image-modal-url-input"
-  }), /*#__PURE__*/React.createElement(TextInput, {
-    label: "Alt Text",
-    placeholder: "Random unsplash image",
-    onChange: setAltText,
-    value: altText,
-    "data-test-id": "image-modal-alt-text-input"
-  }), /*#__PURE__*/React.createElement(DialogActions, null, /*#__PURE__*/React.createElement(Button, {
-    "data-test-id": "image-modal-confirm-btn",
-    disabled: isDisabled,
-    onClick: () => onClick({
-      altText,
-      src
-    })
-  }, "Confirm")));
-}
-function InsertImageUploadedDialogBody({
-  onClick
-}) {
-  const [file, setFile] = React.useState();
-  const [src, setSrc] = React.useState('');
-  const [altText, setAltText] = React.useState('');
-  const isDisabled = file === undefined;
-
-  const loadImage = files => {
-    const reader = new FileReader();
-
-    reader.onload = function () {
-      if (typeof reader.result === 'string') {
-        setSrc(reader.result);
-      }
-
-      return '';
-    };
-
-    if (files !== null && files[0]) {
-      setFile(files[0]);
-      reader.readAsDataURL(files[0]);
-    }
-  };
-
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(FileInput, {
-    label: "Upload Document",
-    onChange: loadImage,
-    accept: "image/jpeg,image/jpg,image/png,video/mp4,video/webm,video/mov,video/avi,video/flv,video/mkv,video/wmv,application/pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/csv,application/vnd.oasis.opendocument.spreadsheet",
-    "data-test-id": "image-modal-file-upload"
-  }), /*#__PURE__*/React.createElement(DialogActions, null, /*#__PURE__*/React.createElement(Button, {
-    "data-test-id": "image-modal-file-upload-btn",
-    disabled: isDisabled,
-    onClick: () => {
-      if (file) onClick({
-        altText,
-        file,
-        src
-      });
-    }
-  }, "Confirm")));
-}
-function InsertImageDialog({
-  activeEditor,
-  onClose,
-  handleClick
-}) {
-  const [mode, setMode] = React.useState(null);
-  const hasModifier = React.useRef(false);
-  React.useEffect(() => {
-    hasModifier.current = false;
-
-    const handler = e => {
-      hasModifier.current = e.altKey;
-    };
-
-    document.addEventListener('keydown', handler);
-    return () => {
-      document.removeEventListener('keydown', handler);
-    };
-  }, [activeEditor]);
-
-  const onClick = payload => {
-    if (!payload.file) {
-      console.log('No file provided.');
-      return;
-    }
-
-    const validImageTypes = ['jpg', 'jpeg', 'png'];
-    const fileExtension = payload.file.name.split('.').pop()?.toLowerCase() ?? '';
-
-    if (validImageTypes.includes(fileExtension)) {
-      activeEditor.dispatchCommand(INSERT_IMAGE_COMMAND, payload);
-      onClose();
-    } else {
-      if (handleClick) {
-        if (payload.file) {
-          handleClick(payload.file);
-          onClose();
-        }
-      }
-    }
-
-    onClose();
-  };
-
-  return /*#__PURE__*/React.createElement(React.Fragment, null, !mode && /*#__PURE__*/React.createElement(DialogButtonsList, null, /*#__PURE__*/React.createElement(Button, {
-    "data-test-id": "image-modal-option-file",
-    onClick: () => setMode('file')
-  }, "File")), mode === 'url' && /*#__PURE__*/React.createElement(InsertImageUriDialogBody, {
-    onClick: onClick
-  }), mode === 'file' && /*#__PURE__*/React.createElement(InsertImageUploadedDialogBody, {
-    onClick: onClick
-  }));
-}
 function ImagesPlugin({
   captionsEnabled
 }) {
@@ -5150,6 +4995,46 @@ function ComponentPickerMenuPlugin({
     }
   };
 
+  const loadImage = files => {
+    if (files !== null && files[0]) {
+      const file = files[0];
+      const reader = new FileReader();
+
+      reader.onload = function () {
+        if (typeof reader.result === 'string') {
+          const result = reader.result;
+          onClick({
+            altText: '',
+            file,
+            src: result
+          });
+        }
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const onClick = payload => {
+    if (!payload.file) {
+      console.log('No file provided.');
+      return;
+    }
+
+    const validImageTypes = ['jpg', 'jpeg', 'png'];
+    const fileExtension = payload.file.name.split('.').pop()?.toLowerCase() ?? '';
+
+    if (validImageTypes.includes(fileExtension)) {
+      editor.dispatchCommand(INSERT_IMAGE_COMMAND, payload);
+    } else {
+      if (uploadData) {
+        if (payload.file) {
+          uploadData(payload.file);
+        }
+      }
+    }
+  };
+
   const checkForTriggerMatch = LexicalTypeaheadMenuPlugin.useBasicTypeaheadTriggerMatch('/', {
     minLength: 0
   });
@@ -5349,16 +5234,54 @@ function ComponentPickerMenuPlugin({
     //       src: '',
     //     }),
     // }),
+    // ...(config.UploadDocuments
+    //   ? [
+    //       new ComponentPickerOption('Upload Documents', {
+    //         icon: <i className="icon image" />,
+    //         keywords: [
+    //           'image',
+    //           'photo',
+    //           'picture',
+    //           'file',
+    //           'ppt',
+    //           'mp4',
+    //           'pdf',
+    //           'docux',
+    //           'word file',
+    //           'Upload Document',
+    //           'Document',
+    //         ],
+    //         onSelect: () =>
+    //           showModal('Upload Document', (onClose) => (
+    //             <InsertImageDialog
+    //               activeEditor={editor}
+    //               onClose={onClose}
+    //               handleClick={uploadData}
+    //             />
+    //           )),
+    //       }),
+    //     ]
+    //   : []),
     ...(config.UploadDocuments ? [new ComponentPickerOption('Upload Documents', {
       icon: /*#__PURE__*/React.createElement("i", {
         className: "icon image"
       }),
       keywords: ['image', 'photo', 'picture', 'file', 'ppt', 'mp4', 'pdf', 'docux', 'word file', 'Upload Document', 'Document'],
-      onSelect: () => showModal('Upload Document', onClose => /*#__PURE__*/React.createElement(InsertImageDialog, {
-        activeEditor: editor,
-        onClose: onClose,
-        handleClick: uploadData
-      }))
+      onSelect: () => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/jpeg,image/jpg,image/png,video/mp4,video/webm,video/mov,video/avi,video/flv,video/mkv,video/wmv,application/pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/csv,application/vnd.oasis.opendocument.spreadsheet';
+        input.style.display = 'none';
+
+        input.onchange = event => {
+          const target = event.target;
+          loadImage(target.files);
+        };
+
+        document.body.appendChild(input);
+        input.click();
+        document.body.removeChild(input);
+      }
     })] : []), // new ComponentPickerOption('Collapsible', {
     //   icon: <i className="icon caret-right" />,
     //   keywords: ['collapse', 'collapsible', 'toggle'],
@@ -7953,6 +7876,46 @@ function ToolbarPlugin({
     });
   };
 
+  const loadImage = files => {
+    if (files !== null && files[0]) {
+      const file = files[0];
+      const reader = new FileReader();
+
+      reader.onload = function () {
+        if (typeof reader.result === 'string') {
+          const result = reader.result;
+          onClick({
+            altText: '',
+            file,
+            src: result
+          });
+        }
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const onClick = payload => {
+    if (!payload.file) {
+      console.log('No file provided.');
+      return;
+    }
+
+    const validImageTypes = ['jpg', 'jpeg', 'png'];
+    const fileExtension = payload.file.name.split('.').pop()?.toLowerCase() ?? '';
+
+    if (validImageTypes.includes(fileExtension)) {
+      editor.dispatchCommand(INSERT_IMAGE_COMMAND, payload);
+    } else {
+      if (handleClick) {
+        if (payload.file) {
+          handleClick(payload.file);
+        }
+      }
+    }
+  };
+
   return /*#__PURE__*/React.createElement("div", {
     className: "toolbar"
   }, floatingText ? /*#__PURE__*/React.createElement(React.Fragment, null, blockType === 'code' ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(DropDown, {
@@ -8441,27 +8404,29 @@ function ToolbarPlugin({
     value: fontSize,
     editor: editor,
     options: FONT_SIZE_OPTIONS
-  }), config?.insertOptions && /*#__PURE__*/React.createElement(DropDown, {
-    anchorElem: anchorElem,
-    disabled: !isEditable,
-    buttonClassName: "toolbar-item spaced" // buttonLabel="Insert"
-    ,
-    buttonAriaLabel: "Insert specialized editor node",
-    buttonIconClassName: "icon plus"
-  }, handleClick && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(DropDownItem, {
+  }), config?.insertOptions && /*#__PURE__*/React.createElement("button", {
     onClick: () => {
-      showModal('Upload Document', onClose => /*#__PURE__*/React.createElement(InsertImageDialog, {
-        activeEditor: activeEditor,
-        onClose: onClose,
-        handleClick: handleClick
-      }));
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/jpeg,image/jpg,image/png,video/mp4,video/webm,video/mov,video/avi,video/flv,video/mkv,video/wmv,application/pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/csv,application/vnd.oasis.opendocument.spreadsheet';
+      input.style.display = 'none';
+
+      input.onchange = event => {
+        const target = event.target;
+        loadImage(target.files);
+      };
+
+      document.body.appendChild(input);
+      input.click();
+      document.body.removeChild(input);
     },
-    className: "item"
+    type: "button",
+    className: "toolbar-item",
+    title: "Upload Documents",
+    "aria-label": "Insert specialized editor node"
   }, /*#__PURE__*/React.createElement("i", {
-    className: "icon image"
-  }), /*#__PURE__*/React.createElement("span", {
-    className: "text"
-  }, "Upload Document")))), config.formatTextOptions && /*#__PURE__*/React.createElement(DropDown, {
+    className: "icon paperclip"
+  })), config.formatTextOptions && /*#__PURE__*/React.createElement(DropDown, {
     anchorElem: anchorElem,
     disabled: !isEditable,
     buttonClassName: "toolbar-item spaced",

@@ -441,3 +441,7 @@
   border-radius: 50%;
   align-items: center;
 }
+
+.toolbar .toolbar-item .icon.paperclip {
+  margin: 0
+}

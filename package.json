@@ -10,6 +10,7 @@
       "rich-text",
       "wysiwyg",
       "clickup text editer",
+      "Kush Patel",
       "HarshVardhan",
       "Dhrupad patel",
       "Brijesh Padsala",
@@ -46,7 +47,7 @@
       "AI Based editor",
       "AI Based rich text editor"
     ],
-    "version": "0.0.9",
+    "version": "0.0.10",
     "private": false,
     "main": "LexicalPlayground.js",
     "scripts": {
