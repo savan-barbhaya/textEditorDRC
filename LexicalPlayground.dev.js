@@ -6966,7 +6966,21 @@ function DropDown({
         document.removeEventListener('click', handle);
       };
     }
-  }, [dropDownRef, buttonRef, showDropDown, anchorElem.parentElement?.scrollTop, stopCloseOnClickSelf]); // useEffect(() => {
+  }, [dropDownRef, buttonRef, showDropDown, anchorElem.parentElement?.scrollTop, stopCloseOnClickSelf]);
+  React.useEffect(() => {
+    if (!showDropDown) return;
+
+    const handleKeyDown = event => {
+      if (event.key === 'Escape') {
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        setShowDropDown(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown, true);
+    return () => document.removeEventListener('keydown', handleKeyDown, true);
+  }, [showDropDown]); // useEffect(() => {
   //   const scrollerElem = anchorElem.parentElement;
   //   const update = () => {
   //     const scrollPosition = scrollerElem?.scrollTop;
