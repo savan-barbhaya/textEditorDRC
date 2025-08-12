@@ -9365,7 +9365,7 @@ function OnImageUploadPlugin({
           editor.update(() => {
             imageNode.setFile?.(undefined);
             imageNode.setSrc?.(imgUrl.url);
-            imageNode.setId?.(String(imgUrl.id)); // Assuming setId exists
+            imageNode.settext?.(String(imgUrl.id));
           });
         };
 
