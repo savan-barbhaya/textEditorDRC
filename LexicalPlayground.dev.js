@@ -1798,7 +1798,7 @@ function OfficePlugin() {
       editor.update(() => {
         const officeNode = $createOfficeNode(payload);
         const selection = lexical.$getSelection();
-        const root = lexical.$getRoot();
+        lexical.$getRoot();
         const selectedNodes = selection?.getNodes(); // Remove initial empty paragraph if it exists
 
         if (selectedNodes?.length === 1 && lexical.$isParagraphNode(selectedNodes[0]) && selectedNodes[0].getTextContent() === '') {
@@ -1807,14 +1807,13 @@ function OfficePlugin() {
 
 
         utils.$insertNodeToNearestRoot(officeNode); // Insert a new paragraph after the video
-
-        const paragraph = lexical.$createParagraphNode();
-        root.append(paragraph); // Move cursor into the new paragraph
-
-        const newSelection = lexical.$createRangeSelection();
-        newSelection.anchor.set(paragraph.getKey(), 0, 'element');
-        newSelection.focus.set(paragraph.getKey(), 0, 'element');
-        lexical.$setSelection(newSelection);
+        // const paragraph = $createParagraphNode();
+        // root.append(paragraph);
+        // // Move cursor into the new paragraph
+        // const newSelection = $createRangeSelection();
+        // newSelection.anchor.set(paragraph.getKey(), 0, 'element');
+        // newSelection.focus.set(paragraph.getKey(), 0, 'element');
+        // $setSelection(newSelection);
       });
       return true;
     }, lexical.COMMAND_PRIORITY_EDITOR);
@@ -2022,7 +2021,7 @@ function PdfPlugin() {
       editor.update(() => {
         const pdfNode = $createPdfNode(payload);
         const selection = lexical.$getSelection();
-        const root = lexical.$getRoot();
+        lexical.$getRoot();
         const selectedNodes = selection?.getNodes(); // Remove initial empty paragraph if it exists
 
         if (selectedNodes?.length === 1 && lexical.$isParagraphNode(selectedNodes[0]) && selectedNodes[0].getTextContent() === '') {
@@ -2031,14 +2030,13 @@ function PdfPlugin() {
 
 
         utils.$insertNodeToNearestRoot(pdfNode); // Insert a new paragraph after the video
-
-        const paragraph = lexical.$createParagraphNode();
-        root.append(paragraph); // Move cursor into the new paragraph
-
-        const newSelection = lexical.$createRangeSelection();
-        newSelection.anchor.set(paragraph.getKey(), 0, 'element');
-        newSelection.focus.set(paragraph.getKey(), 0, 'element');
-        lexical.$setSelection(newSelection);
+        // const paragraph = $createParagraphNode();
+        // root.append(paragraph);
+        // // Move cursor into the new paragraph
+        // const newSelection = $createRangeSelection();
+        // newSelection.anchor.set(paragraph.getKey(), 0, 'element');
+        // newSelection.focus.set(paragraph.getKey(), 0, 'element');
+        // $setSelection(newSelection);
       });
       return true;
     }, lexical.COMMAND_PRIORITY_EDITOR);
@@ -2262,7 +2260,7 @@ function VideoPlugin() {
       editor.update(() => {
         const videoNode = $createVideoNode(payload);
         const selection = lexical.$getSelection();
-        const root = lexical.$getRoot();
+        lexical.$getRoot();
         const selectedNodes = selection?.getNodes(); // Remove initial empty paragraph if it exists
 
         if (selectedNodes?.length === 1 && lexical.$isParagraphNode(selectedNodes[0]) && selectedNodes[0].getTextContent() === '') {
@@ -2271,14 +2269,13 @@ function VideoPlugin() {
 
 
         utils.$insertNodeToNearestRoot(videoNode); // Insert a new paragraph after the video
-
-        const paragraph = lexical.$createParagraphNode();
-        root.append(paragraph); // Move cursor into the new paragraph
-
-        const newSelection = lexical.$createRangeSelection();
-        newSelection.anchor.set(paragraph.getKey(), 0, 'element');
-        newSelection.focus.set(paragraph.getKey(), 0, 'element');
-        lexical.$setSelection(newSelection);
+        // const paragraph = $createParagraphNode();
+        // root.append(paragraph);
+        // // Move cursor into the new paragraph
+        // const newSelection = $createRangeSelection();
+        // newSelection.anchor.set(paragraph.getKey(), 0, 'element');
+        // newSelection.focus.set(paragraph.getKey(), 0, 'element');
+        // $setSelection(newSelection);
       });
       return true;
     }, lexical.COMMAND_PRIORITY_EDITOR);
