@@ -36,16 +36,16 @@ var table = require('@lexical/table');
 var LexicalBlockWithAlignableContents = require('@lexical/react/LexicalBlockWithAlignableContents');
 var LexicalDecoratorBlockNode = require('@lexical/react/LexicalDecoratorBlockNode');
 var selection = require('@lexical/selection');
-var LexicalAutoEmbedPlugin = require('@lexical/react/LexicalAutoEmbedPlugin');
-var LexicalAutoLinkPlugin$1 = require('@lexical/react/LexicalAutoLinkPlugin');
+var LexicalAutoEmbedPlugin$1 = require('@lexical/react/LexicalAutoEmbedPlugin');
 var link = require('@lexical/link');
+var LexicalTypeaheadMenuPlugin = require('@lexical/react/LexicalTypeaheadMenuPlugin');
+var LexicalAutoLinkPlugin$1 = require('@lexical/react/LexicalAutoLinkPlugin');
 var lodash = require('lodash');
 var mark = require('@lexical/mark');
 var LexicalComposer = require('@lexical/react/LexicalComposer');
 var text = require('@lexical/text');
 var yjs = require('yjs');
 var list = require('@lexical/list');
-var LexicalTypeaheadMenuPlugin = require('@lexical/react/LexicalTypeaheadMenuPlugin');
 var richText = require('@lexical/rich-text');
 var LexicalMarkdownShortcutPlugin = require('@lexical/react/LexicalMarkdownShortcutPlugin');
 var useLexicalEditable = require('@lexical/react/useLexicalEditable');
@@ -2437,6 +2437,896 @@ function YouTubePlugin() {
   return null;
 }
 
+const formatDate = dateString => {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
+};
+
+const getStatusClass = (actualType, previewData) => {
+  if (actualType === 'merge_request' && previewData?.state) {
+    return `status-${previewData.state}`;
+  }
+
+  if (actualType === 'issue' && previewData?.state) {
+    return `status-${previewData.state}`;
+  }
+
+  if (actualType === 'pipeline' && previewData?.status) {
+    return `status-${previewData.status}`;
+  }
+
+  return '';
+};
+
+const renderStaticMarkupContent = (id, actualType, previewData) => {
+  let html = '';
+
+  switch (actualType) {
+    case 'project':
+      html = `
+<span class="preview-title">${previewData?.namespace || previewData?.projectName || ''}</span>
+<span class="preview-description">${previewData?.description || ''}</span>
+<span class="preview-meta">
+  ${previewData?.starCount !== undefined ? `<span class="meta-item">⭐ ${previewData.starCount}</span>` : ''}
+  ${previewData?.forkCount !== undefined ? `<span class="meta-item">🔱 ${previewData.forkCount}</span>` : ''}
+  ${previewData?.visibility ? `<span class="meta-item">${previewData.visibility}</span>` : ''}
+</span>`;
+      break;
+
+    case 'branch':
+      html = `
+<span class="preview-title">${previewData?.branchName || id}</span>
+${previewData?.lastCommit ? `<span class="preview-description">${previewData?.projectName ? `Project: ${previewData.projectName}<br/>` : ''}Last commit: ${previewData.lastCommit.title || ''}</span>` : ''}
+<span class="preview-meta">
+  ${previewData?.lastCommit?.author ? `
+    ${previewData.lastCommit.authorAvatar ? `<img src="${previewData.lastCommit.authorAvatar}" alt="" class="avatar-xs" />` : ''}
+    <span>${previewData.lastCommit.author}</span>
+    <span class="separator">•</span>` : ''}
+  ${previewData?.lastCommit?.date ? `<span>${formatDate(previewData.lastCommit.date)}</span>` : ''}
+  ${previewData?.isDefault ? `<span class="badge badge-default">default</span>` : ''}
+  ${previewData?.isProtected ? `<span class="badge badge-protected">protected</span>` : ''}
+</span>`;
+      break;
+
+    case 'merge_request':
+      html = `
+<span class="preview-header-row">
+  <span class="preview-title">!${previewData?.mrNumber || id} ${previewData?.title || ''}</span>
+  ${previewData?.state ? `<span class="status-badge ${getStatusClass(actualType, previewData)}">${previewData.state}</span>` : ''}
+</span>
+${previewData?.description ? `<span class="preview-description">${previewData.description}</span>` : ''}
+${previewData?.sourceBranch ? `<span class="preview-branches">${previewData.sourceBranch} → ${previewData.targetBranch}</span>` : ''}
+<span class="preview-meta">
+  ${previewData?.author ? `
+    ${previewData.author.avatar ? `<img src="${previewData.author.avatar}" alt="" class="avatar-xs" />` : ''}
+    <span>${previewData.author.name}</span>
+    <span class="separator">•</span>` : ''}
+  ${previewData?.createdAt ? `<span>${formatDate(previewData.createdAt)}</span>` : ''}
+</span>`;
+      break;
+
+    case 'issue':
+      html = `
+<span class="preview-header-row">
+  <span class="preview-title">#${previewData?.issueNumber || id} ${previewData?.issueTitle || ''}</span>
+  ${previewData?.state ? `<span class="status-badge ${getStatusClass(actualType, previewData)}">${previewData.state}</span>` : ''}
+</span>
+${previewData?.issueDescription ? `<span class="preview-description">${previewData.issueDescription}</span>` : ''}
+${previewData?.labels?.length ? `<span class="preview-labels">${previewData.labels.map(label => `<span class="label">${label}</span>`).join('')}</span>` : ''}
+<span class="preview-meta">
+  ${previewData?.author ? `
+    ${previewData.author.avatar ? `<img src="${previewData.author.avatar}" alt="" class="avatar-xs" />` : ''}
+    <span>${previewData.author.name}</span>
+    <span class="separator">•</span>` : ''}
+  ${previewData?.createdAt ? `<span>${formatDate(previewData.createdAt)}</span>` : ''}
+</span>`;
+      break;
+
+    case 'commit':
+      html = `
+<span class="preview-title">${previewData?.title || previewData?.message || ''}</span>
+${previewData?.message && previewData?.title !== previewData?.message ? `<span class="preview-description">${previewData.message}</span>` : ''}
+<span class="preview-meta">
+  ${previewData?.author ? `
+    ${previewData.author.avatar ? `<img src="${previewData.author.avatar}" alt="" class="avatar-xs" />` : ''}
+    <span>${previewData.author.name}</span>
+    <span class="separator">•</span>` : ''}
+  ${previewData?.shortHash ? `<code class="commit-hash">${previewData.shortHash}</code><span class="separator">•</span>` : ''}
+  ${previewData?.date ? `<span>${formatDate(previewData.date)}</span>` : ''}
+</span>`;
+      break;
+
+    case 'pipeline':
+      html = `
+<span class="preview-header-row">
+  <span class="preview-title">Pipeline #${previewData?.pipelineId || id}</span>
+  ${previewData?.status ? `<span class="status-badge ${getStatusClass(actualType, previewData)}">${previewData.status}</span>` : ''}
+</span>
+${previewData?.ref ? `<span class="preview-description">Branch: ${previewData.ref}</span>` : ''}
+<span class="preview-meta">
+  ${previewData?.createdAt ? `<span>${formatDate(previewData.createdAt)}</span>` : ''}
+</span>`;
+      break;
+
+    default:
+      html = `
+      <span class="preview-title">${previewData?.title || previewData?.projectName || ''}</span>
+${previewData?.description ? `<span class="preview-description">${previewData.description}</span>` : ''}`;
+      break;
+  }
+
+  return html.replace(/\n+/g, '').replace(/\t+/g, '').replace(/\s{2,}/g, ' ').trim();
+};
+
+const getIcon = () => {
+  //gitlab SVG icon
+  return /*#__PURE__*/React.createElement("svg", {
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 32 32",
+    width: "20",
+    height: "20",
+    role: "img",
+    "aria-labelledby": "gitlabTitle"
+  }, /*#__PURE__*/React.createElement("title", {
+    id: "gitlabTitle"
+  }, "GitLab logo"), /*#__PURE__*/React.createElement("polygon", {
+    points: "16 28.896 10.844 13.029 3.619 13.029 16 28.896",
+    style: {
+      fill: '#fc6d26'
+    }
+  }), /*#__PURE__*/React.createElement("polygon", {
+    points: "16 28.896 21.156 13.029 28.381 13.029 16 28.896",
+    style: {
+      fill: '#fc6d26'
+    }
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M3.619 13.029h7.225L7.739 3.473a.534.534 0 0 0-1.015 0L3.619 13.029z",
+    style: {
+      fill: '#e24329'
+    }
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M28.381 13.029h-7.225l3.105-9.557a.534.534 0 0 1 1.015 0l3.105 9.557z",
+    style: {
+      fill: '#e24329'
+    }
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M3.619 13.029h0L2.052 17.851a1.067 1.067 0 0 0 .388 1.193L16 28.896 3.619 13.029z",
+    style: {
+      fill: '#fca326'
+    }
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M28.381 13.029h0l1.567 4.822a1.067 1.067 0 0 1-.388 1.193L16 28.896 28.381 13.029z",
+    style: {
+      fill: '#fca326'
+    }
+  }), /*#__PURE__*/React.createElement("polygon", {
+    points: "16 28.896 16 28.896 21.156 13.029 10.844 13.029 16 28.896",
+    style: {
+      fill: '#e24329'
+    }
+  }));
+};
+
+function GitlabEmbed({
+  className,
+  format,
+  nodeKey,
+  owner,
+  repo,
+  id,
+  type,
+  previewData
+}) {
+  const [loading, setLoading] = React.useState(!previewData);
+  const [hasError, setHasError] = React.useState(false);
+  const actualType = previewData?.type || type;
+  const defaultTypes = ['project', 'branch', 'merge_request', 'issue', 'commit', 'pipeline'];
+  React.useEffect(() => {
+    if (loading && !previewData) {
+      // Set a timeout - if still loading after 10 seconds, show error
+      const timeout = setTimeout(() => {
+        if (loading) {
+          setHasError(true);
+          setLoading(false);
+        }
+      }, 10000);
+      return () => clearTimeout(timeout);
+    }
+  }, [loading, previewData]);
+  React.useEffect(() => {
+    if (previewData) {
+      if (previewData.error) {
+        setHasError(true);
+        setLoading(false);
+      } else {
+        setLoading(false);
+        setHasError(false);
+      }
+    }
+  }, [previewData]); // Construct URL for fallback display
+
+  const constructUrl = () => {
+    let url = `https://gitlab.com/${owner}/${repo}`;
+
+    if (id) {
+      const typeMap = {
+        'merge_request': 'merge_requests',
+        'issue': 'issues',
+        'commit': 'commit',
+        'pipeline': 'pipelines',
+        'branch': 'tree',
+        'project': ''
+      };
+      const path = typeMap[type];
+
+      if (path) {
+        url += `/-/${path}/${id}`;
+      }
+    }
+
+    return url;
+  };
+
+  const fallbackUrl = previewData?.url || constructUrl();
+
+  if (hasError || previewData?.error || !loading && !previewData || previewData && Object.keys(previewData).length === 1 && previewData.type) {
+    return /*#__PURE__*/React.createElement(LexicalBlockWithAlignableContents.BlockWithAlignableContents, {
+      className: className,
+      format: format,
+      nodeKey: nodeKey
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "gitlab-preview-card gitlab-preview-fallback"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "preview-icon"
+    }, getIcon()), /*#__PURE__*/React.createElement("div", {
+      className: "preview-content"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "preview-type"
+    }, "GitLab"), /*#__PURE__*/React.createElement("div", {
+      className: "preview-url"
+    }, fallbackUrl)), /*#__PURE__*/React.createElement("a", {
+      href: fallbackUrl,
+      target: "_blank",
+      rel: "noopener noreferrer",
+      className: "preview-link",
+      onClick: e => e.stopPropagation(),
+      title: "Open in GitLab"
+    }, /*#__PURE__*/React.createElement("svg", {
+      width: "16",
+      height: "16",
+      viewBox: "0 0 24 24",
+      fill: "none",
+      stroke: "currentColor",
+      strokeWidth: "2"
+    }, /*#__PURE__*/React.createElement("path", {
+      d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+    }), /*#__PURE__*/React.createElement("polyline", {
+      points: "15 3 21 3 21 9"
+    }), /*#__PURE__*/React.createElement("line", {
+      x1: "10",
+      y1: "14",
+      x2: "21",
+      y2: "3"
+    })))));
+  }
+
+  if (loading) {
+    return /*#__PURE__*/React.createElement(LexicalBlockWithAlignableContents.BlockWithAlignableContents, {
+      className: className,
+      format: format,
+      nodeKey: nodeKey
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "gitlab-embed-loading"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "gitlab-spinner"
+    }), /*#__PURE__*/React.createElement("span", null, "Loading GitLab preview...")));
+  }
+
+  const renderContent = () => {
+    switch (actualType) {
+      case 'project':
+        return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+          className: "preview-title"
+        }, previewData?.namespace || previewData?.projectName), /*#__PURE__*/React.createElement("div", {
+          className: "preview-description"
+        }, previewData?.description), /*#__PURE__*/React.createElement("div", {
+          className: "preview-meta"
+        }, previewData?.starCount !== undefined && /*#__PURE__*/React.createElement("span", {
+          className: "meta-item"
+        }, /*#__PURE__*/React.createElement("span", null, "\u2B50"), previewData.starCount), previewData?.forkCount !== undefined && /*#__PURE__*/React.createElement("span", {
+          className: "meta-item"
+        }, /*#__PURE__*/React.createElement("span", null, "\uD83D\uDD31"), previewData.forkCount), previewData?.visibility && /*#__PURE__*/React.createElement("span", {
+          className: "meta-item"
+        }, previewData.visibility)));
+
+      case 'branch':
+        return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+          className: "preview-title"
+        }, previewData?.branchName || id), previewData?.lastCommit && /*#__PURE__*/React.createElement("div", {
+          className: "preview-description"
+        }, previewData?.projectName && /*#__PURE__*/React.createElement(React.Fragment, null, "Project: ", previewData?.projectName), "Last commit: ", previewData.lastCommit.title), /*#__PURE__*/React.createElement("div", {
+          className: "preview-meta"
+        }, previewData?.lastCommit?.author && /*#__PURE__*/React.createElement(React.Fragment, null, previewData.lastCommit.authorAvatar && /*#__PURE__*/React.createElement("img", {
+          src: previewData.lastCommit.authorAvatar,
+          alt: "",
+          className: "avatar-xs"
+        }), /*#__PURE__*/React.createElement("span", null, previewData.lastCommit.author), /*#__PURE__*/React.createElement("span", {
+          className: "separator"
+        }, "\u2022")), previewData?.lastCommit?.date && /*#__PURE__*/React.createElement("span", null, formatDate(previewData.lastCommit.date)), previewData?.isDefault && /*#__PURE__*/React.createElement("span", {
+          className: "badge badge-default"
+        }, "default"), previewData?.isProtected && /*#__PURE__*/React.createElement("span", {
+          className: "badge badge-protected"
+        }, "protected")));
+
+      case 'merge_request':
+        return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+          className: "preview-header-row"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "preview-title"
+        }, "!", previewData?.mrNumber || id, " ", previewData?.title), previewData?.state && /*#__PURE__*/React.createElement("span", {
+          className: `status-badge ${getStatusClass(actualType, previewData)}`
+        }, previewData.state)), previewData?.description && /*#__PURE__*/React.createElement("div", {
+          className: "preview-description"
+        }, previewData.description), previewData?.sourceBranch && /*#__PURE__*/React.createElement("div", {
+          className: "preview-branches"
+        }, previewData.sourceBranch, " \u2192 ", previewData.targetBranch), /*#__PURE__*/React.createElement("div", {
+          className: "preview-meta"
+        }, previewData?.author && /*#__PURE__*/React.createElement(React.Fragment, null, previewData.author.avatar && /*#__PURE__*/React.createElement("img", {
+          src: previewData.author.avatar,
+          alt: "",
+          className: "avatar-xs"
+        }), /*#__PURE__*/React.createElement("span", null, previewData.author.name), /*#__PURE__*/React.createElement("span", {
+          className: "separator"
+        }, "\u2022")), previewData?.createdAt && /*#__PURE__*/React.createElement("span", null, formatDate(previewData.createdAt))));
+
+      case 'issue':
+        return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+          className: "preview-header-row"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "preview-title"
+        }, "#", previewData?.issueNumber || id, " ", previewData?.issueTitle), previewData?.state && /*#__PURE__*/React.createElement("span", {
+          className: `status-badge ${getStatusClass(actualType, previewData)}`
+        }, previewData.state)), previewData?.issueDescription && /*#__PURE__*/React.createElement("div", {
+          className: "preview-description"
+        }, previewData.issueDescription), previewData?.labels && previewData.labels.length > 0 && /*#__PURE__*/React.createElement("div", {
+          className: "preview-labels"
+        }, previewData.labels.map((label, idx) => /*#__PURE__*/React.createElement("span", {
+          key: idx,
+          className: "label"
+        }, label))), /*#__PURE__*/React.createElement("div", {
+          className: "preview-meta"
+        }, previewData?.author && /*#__PURE__*/React.createElement(React.Fragment, null, previewData.author.avatar && /*#__PURE__*/React.createElement("img", {
+          src: previewData.author.avatar,
+          alt: "",
+          className: "avatar-xs"
+        }), /*#__PURE__*/React.createElement("span", null, previewData.author.name), /*#__PURE__*/React.createElement("span", {
+          className: "separator"
+        }, "\u2022")), previewData?.createdAt && /*#__PURE__*/React.createElement("span", null, formatDate(previewData.createdAt))));
+
+      case 'commit':
+        return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+          className: "preview-title"
+        }, previewData?.title || previewData?.message), previewData?.message && previewData?.title !== previewData?.message && /*#__PURE__*/React.createElement("div", {
+          className: "preview-description"
+        }, previewData.message), /*#__PURE__*/React.createElement("div", {
+          className: "preview-meta"
+        }, previewData?.author && /*#__PURE__*/React.createElement(React.Fragment, null, previewData.author.avatar && /*#__PURE__*/React.createElement("img", {
+          src: previewData.author.avatar,
+          alt: "",
+          className: "avatar-xs"
+        }), /*#__PURE__*/React.createElement("span", null, previewData.author.name), /*#__PURE__*/React.createElement("span", {
+          className: "separator"
+        }, "\u2022")), previewData?.shortHash && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("code", {
+          className: "commit-hash"
+        }, previewData.shortHash), /*#__PURE__*/React.createElement("span", {
+          className: "separator"
+        }, "\u2022")), previewData?.date && /*#__PURE__*/React.createElement("span", null, formatDate(previewData.date))));
+
+      case 'pipeline':
+        return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+          className: "preview-header-row"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "preview-title"
+        }, "Pipeline #", previewData?.pipelineId || id), previewData?.status && /*#__PURE__*/React.createElement("span", {
+          className: `status-badge ${getStatusClass(actualType, previewData)}`
+        }, previewData.status)), previewData?.ref && /*#__PURE__*/React.createElement("div", {
+          className: "preview-description"
+        }, "Branch: ", previewData.ref), /*#__PURE__*/React.createElement("div", {
+          className: "preview-meta"
+        }, previewData?.createdAt && /*#__PURE__*/React.createElement("span", null, formatDate(previewData.createdAt))));
+
+      default:
+        return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+          className: "preview-title"
+        }, previewData?.title || previewData?.projectName || ''), previewData?.description && /*#__PURE__*/React.createElement("div", {
+          className: "preview-description"
+        }, previewData.description));
+    }
+  };
+
+  return /*#__PURE__*/React.createElement(LexicalBlockWithAlignableContents.BlockWithAlignableContents, {
+    className: className,
+    format: format,
+    nodeKey: nodeKey
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "gitlab-preview-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "preview-icon"
+  }, getIcon()), /*#__PURE__*/React.createElement("div", {
+    className: "preview-content"
+  }, defaultTypes.includes(actualType) && /*#__PURE__*/React.createElement("div", {
+    className: "preview-type"
+  }, actualType.replace('_', ' ')), renderContent(), /*#__PURE__*/React.createElement("div", {
+    className: "preview-project"
+  }, previewData?.namespace || `${owner}/${repo}`)), /*#__PURE__*/React.createElement("a", {
+    href: previewData?.url,
+    target: "_blank",
+    rel: "noopener noreferrer",
+    className: "preview-link",
+    onClick: e => e.stopPropagation(),
+    title: "Open in GitLab"
+  }, /*#__PURE__*/React.createElement("svg", {
+    width: "16",
+    height: "16",
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+  }), /*#__PURE__*/React.createElement("polyline", {
+    points: "15 3 21 3 21 9"
+  }), /*#__PURE__*/React.createElement("line", {
+    x1: "10",
+    y1: "14",
+    x2: "21",
+    y2: "3"
+  })))));
+}
+
+function convertGitlabElement(domNode) {
+  const owner = domNode.getAttribute('data-gitlab-owner');
+  const repo = domNode.getAttribute('data-gitlab-repo');
+  const id = domNode.getAttribute('data-gitlab-id') || undefined;
+  const linkType = domNode.getAttribute('data-gitlab-type');
+  let previewData = domNode.getAttribute('data-gitlab-preview');
+
+  if (previewData) {
+    previewData = JSON.parse(previewData);
+  }
+
+  if (owner && repo && linkType) {
+    const node = $createGitlabNode({
+      owner,
+      repo,
+      id,
+      linkType,
+      previewData
+    });
+    return {
+      node
+    };
+  }
+
+  return null;
+}
+
+class GitlabNode extends LexicalDecoratorBlockNode.DecoratorBlockNode {
+  static getType() {
+    return 'gitlab';
+  }
+
+  static clone(node) {
+    const cloned = new GitlabNode(node.__owner, node.__repo, node.__linkType, node.__id, node.__format, node.__key);
+    cloned.__previewData = node.__previewData;
+    return cloned;
+  }
+
+  constructor(owner, repo, linkType, id, format, key, previewData) {
+    super(format, key);
+
+    _defineProperty(this, "__owner", void 0);
+
+    _defineProperty(this, "__repo", void 0);
+
+    _defineProperty(this, "__id", void 0);
+
+    _defineProperty(this, "__linkType", void 0);
+
+    _defineProperty(this, "__previewData", void 0);
+
+    this.__owner = owner;
+    this.__repo = repo;
+    this.__linkType = linkType;
+    this.__id = id;
+    this.__previewData = previewData;
+  }
+
+  setPreviewData(data) {
+    const writable = this.getWritable();
+    writable.__previewData = data;
+  }
+
+  getPreviewData() {
+    return this.__previewData;
+  }
+
+  static importJSON(serializedNode) {
+    const {
+      owner,
+      repo,
+      id,
+      linkType,
+      format
+    } = serializedNode;
+    const node = $createGitlabNode({
+      owner,
+      repo,
+      id,
+      linkType
+    });
+    node.setFormat(format);
+    return node;
+  }
+
+  exportJSON() {
+    return { ...super.exportJSON(),
+      type: 'gitlab',
+      version: 1,
+      owner: this.__owner,
+      repo: this.__repo,
+      id: this.__id,
+      linkType: this.__linkType
+    };
+  }
+
+  exportDOM() {
+    const finalType = this.__previewData?.type || this.__linkType;
+    const element = document.createElement('p');
+    element.setAttribute('data-lexical-gitlab', 'true');
+    element.setAttribute('data-gitlab-owner', this.__owner);
+    element.setAttribute('data-gitlab-repo', this.__repo);
+    element.setAttribute('data-gitlab-type', finalType);
+    element.setAttribute('data-gitlab-previewData', this.__previewData);
+    if (this.__id) element.setAttribute('data-gitlab-id', this.__id);
+
+    if (this.__previewData) {
+      element.setAttribute('data-gitlab-preview', JSON.stringify(this.__previewData));
+    }
+
+    const fallbackUrl = `https://gitlab.com/${this.__owner}/${this.__repo}`;
+
+    const hasError = this.__previewData?.error || !this.__previewData && !this.__loading || this.__previewData && Object.keys(this.__previewData).length === 1 && this.__previewData.type; // ---- ⚠️ Handle Error / Fallback Case ----
+
+
+    if (hasError) {
+      element.innerHTML = `
+          <span class="gitlab-preview-card gitlab-preview-fallback">
+            <span class="preview-icon">
+            <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 32 32"
+          width="20"
+          height="20"
+          role="img"
+          aria-labelledby="gitlabTitle">
+          <title id="gitlabTitle">GitLab logo</title>
+          <polygon points="16 28.896 10.844 13.029 3.619 13.029 16 28.896" fill="#fc6d26" />
+          <polygon points="16 28.896 21.156 13.029 28.381 13.029 16 28.896" fill="#fc6d26" />
+          <path d="M3.619 13.029h7.225L7.739 3.473a.534.534 0 0 0-1.015 0L3.619 13.029z" fill="#e24329" />
+          <path d="M28.381 13.029h-7.225l3.105-9.557a.534.534 0 0 1 1.015 0l3.105 9.557z" fill="#e24329" />
+          <path d="M3.619 13.029L2.052 17.851a1.067 1.067 0 0 0 .388 1.193L16 28.896 3.619 13.029z" fill="#fca326" />
+          <path d="M28.381 13.029l1.567 4.822a1.067 1.067 0 0 1-.388 1.193L16 28.896 28.381 13.029z" fill="#fca326" />
+          <polygon points="16 28.896 21.156 13.029 10.844 13.029 16 28.896" fill="#e24329" />
+        </svg>
+            </span>
+            <span class="preview-content preview-fallback">
+              <span class="preview-type">GitLab</span>
+              <span class="preview-url">${fallbackUrl}</span>
+            </span>
+            <a
+              href="${fallbackUrl}"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="preview-link"
+              title="Open in GitLab">
+              <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+          <polyline points="15 3 21 3 21 9" />
+          <line x1="10" y1="14" x2="21" y2="3" />
+        </svg>
+            </a>
+          </span>
+        `.replace(/\s{2,}/g, ' ').trim();
+      return {
+        element
+      };
+    }
+
+    const innerHtml = renderStaticMarkupContent(this.__id, finalType, this.__previewData);
+    const defaultTypes = ['project', 'branch', 'merge_request', 'issue', 'commit', 'pipeline'];
+    element.innerHTML = `<span class="gitlab-preview-card">
+      <span class="preview-icon">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 32 32"
+          width="20"
+          height="20"
+          role="img"
+          aria-labelledby="gitlabTitle">
+          <title id="gitlabTitle">GitLab logo</title>
+          <polygon points="16 28.896 10.844 13.029 3.619 13.029 16 28.896" fill="#fc6d26" />
+          <polygon points="16 28.896 21.156 13.029 28.381 13.029 16 28.896" fill="#fc6d26" />
+          <path d="M3.619 13.029h7.225L7.739 3.473a.534.534 0 0 0-1.015 0L3.619 13.029z" fill="#e24329" />
+          <path d="M28.381 13.029h-7.225l3.105-9.557a.534.534 0 0 1 1.015 0l3.105 9.557z" fill="#e24329" />
+          <path d="M3.619 13.029L2.052 17.851a1.067 1.067 0 0 0 .388 1.193L16 28.896 3.619 13.029z" fill="#fca326" />
+          <path d="M28.381 13.029l1.567 4.822a1.067 1.067 0 0 1-.388 1.193L16 28.896 28.381 13.029z" fill="#fca326" />
+          <polygon points="16 28.896 21.156 13.029 10.844 13.029 16 28.896" fill="#e24329" />
+        </svg>
+      </span>
+      <span class="preview-content">
+        ${defaultTypes.includes(finalType) ? `<span class="preview-type">${finalType.replace('_', ' ')}</span>` : ''}
+        ${innerHtml}
+        <span class="preview-project">
+          ${this.__previewData?.namespace || `${this.__owner}/${this.__repo}`}
+        </span>
+      </span>
+      <a
+        href="${this.__previewData?.url}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="preview-link"
+        title="Open in GitLab">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+          <polyline points="15 3 21 3 21 9" />
+          <line x1="10" y1="14" x2="21" y2="3" />
+        </svg>
+      </a>
+    </span>
+    `.replace(/\s{2,}/g, ' ').trim();
+    return {
+      element
+    };
+  }
+
+  static importDOM() {
+    return {
+      p: domNode => {
+        if (!domNode.hasAttribute('data-lexical-gitlab')) return null;
+        return {
+          conversion: convertGitlabElement,
+          priority: 1
+        };
+      }
+    };
+  }
+
+  updateDOM() {
+    return false;
+  }
+
+  decorate(_editor, config) {
+    const embedBlockTheme = config.theme.embedBlock || {};
+    const className = {
+      base: embedBlockTheme.base || '',
+      focus: embedBlockTheme.focus || ''
+    };
+    return /*#__PURE__*/React.createElement(GitlabEmbed, {
+      className: className,
+      format: this.__format,
+      nodeKey: this.getKey(),
+      owner: this.__owner,
+      repo: this.__repo,
+      id: this.__id,
+      type: this.__linkType,
+      previewData: this.__previewData
+    });
+  }
+
+  isInline() {
+    return false;
+  }
+
+}
+function $createGitlabNode({
+  owner,
+  repo,
+  id,
+  linkType,
+  previewData
+}) {
+  return new GitlabNode(owner, repo, linkType, id, undefined, undefined, previewData);
+}
+
+const INSERT_GITLAB_COMMAND = lexical.createCommand('INSERT_GITLAB_COMMAND');
+function GitlabPlugin({
+  onFetchPreview
+}) {
+  const [editor] = LexicalComposerContext.useLexicalComposerContext();
+  React.useEffect(() => {
+    if (!editor.hasNodes([GitlabNode])) {
+      throw new Error('GitlabPlugin: GitlabNode not registered');
+    }
+
+    return editor.registerCommand(INSERT_GITLAB_COMMAND, payload => {
+      const node = $createGitlabNode({ ...payload,
+        linkType: payload.type
+      });
+      utils.$insertNodeToNearestRoot(node);
+
+      if (onFetchPreview) {
+        onFetchPreview(payload.url).then(previewData => {
+          editor.update(() => {
+            const latestNode = lexical.$getNodeByKey(node.getKey());
+
+            if (latestNode instanceof GitlabNode) {
+              const writable = latestNode.getWritable(); // Always set preview data, even if empty
+
+              writable.__previewData = previewData || {
+                error: true,
+                url: payload.url
+              };
+            }
+          });
+        }).catch(err => {
+          console.error('Failed to fetch GitLab preview:', err);
+          editor.update(() => {
+            const latestNode = lexical.$getNodeByKey(node.getKey());
+
+            if (latestNode instanceof GitlabNode) {
+              const writable = latestNode.getWritable();
+              writable.__previewData = {
+                error: true,
+                url: payload.url
+              };
+            }
+          });
+        });
+      } else {
+        // If no fetch function, set minimal preview data
+        editor.update(() => {
+          const latestNode = lexical.$getNodeByKey(node.getKey());
+
+          if (latestNode instanceof GitlabNode) {
+            const writable = latestNode.getWritable();
+            writable.__previewData = {
+              error: true,
+              url: payload.url
+            };
+          }
+        });
+      }
+
+      return true;
+    }, lexical.COMMAND_PRIORITY_EDITOR);
+  }, [editor, onFetchPreview]);
+  return null;
+}
+
+const INSERT_EMBED_COMMAND = lexical.createCommand('INSERT_EMBED_COMMAND');
+function LexicalAutoEmbedPlugin({
+  embedConfigs,
+  onOpenEmbedModalForConfig,
+  getMenuOptions,
+  menuRenderFn
+}) {
+  const [editor] = LexicalComposerContext.useLexicalComposerContext();
+  const [nodeKey, setNodeKey] = React.useState(null);
+  const [activeEmbedConfig, setActiveEmbedConfig] = React.useState(null);
+  const reset = React.useCallback(() => {
+    setNodeKey(null);
+    setActiveEmbedConfig(null);
+  }, []);
+  const checkIfLinkNodeIsEmbeddable = React.useCallback(key => {
+    editor.getEditorState().read(async () => {
+      const linkNode = lexical.$getNodeByKey(key);
+
+      if (link.$isLinkNode(linkNode)) {
+        for (let i = 0; i < embedConfigs.length; i++) {
+          const embedConfig = embedConfigs[i];
+          const urlMatch = await Promise.resolve(embedConfig.parseUrl(linkNode.__url));
+
+          if (urlMatch != null) {
+            setActiveEmbedConfig(embedConfig);
+            setNodeKey(linkNode.getKey());
+          }
+        }
+      }
+    });
+  }, [editor, embedConfigs]);
+  React.useEffect(() => {
+    const listener = (nodeMutations, {
+      updateTags,
+      dirtyLeaves
+    }) => {
+      for (const [key, mutation] of nodeMutations) {
+        if (mutation === 'created' && updateTags.has('paste')) {
+          checkIfLinkNodeIsEmbeddable(key);
+        } else if (key === nodeKey) {
+          reset();
+        }
+      }
+    };
+
+    return utils.mergeRegister(...[link.LinkNode, link.AutoLinkNode].map(Klass => editor.registerMutationListener(Klass, (...args) => listener(...args))));
+  }, [checkIfLinkNodeIsEmbeddable, editor, embedConfigs, nodeKey, reset]);
+  React.useEffect(() => {
+    return editor.registerCommand(INSERT_EMBED_COMMAND, embedConfigType => {
+      const embedConfig = embedConfigs.find(({
+        type
+      }) => type === embedConfigType);
+
+      if (embedConfig) {
+        onOpenEmbedModalForConfig(embedConfig);
+        return true;
+      }
+
+      return false;
+    }, lexical.COMMAND_PRIORITY_EDITOR);
+  }, [editor, embedConfigs, onOpenEmbedModalForConfig]);
+  const embedLinkViaActiveEmbedConfig = React.useCallback(async () => {
+    if (activeEmbedConfig != null && nodeKey != null) {
+      const linkNode = editor.getEditorState().read(() => {
+        const node = lexical.$getNodeByKey(nodeKey);
+
+        if (link.$isLinkNode(node)) {
+          return node;
+        }
+
+        return null;
+      });
+
+      if (link.$isLinkNode(linkNode)) {
+        const result = await Promise.resolve(activeEmbedConfig.parseUrl(linkNode.__url));
+
+        if (result != null) {
+          editor.update(() => {
+            activeEmbedConfig.insertNode(editor, result);
+
+            if (linkNode.isAttached()) {
+              linkNode.remove();
+            }
+          });
+        }
+      }
+    }
+  }, [activeEmbedConfig, editor, nodeKey]);
+  const options = React.useMemo(() => {
+    return activeEmbedConfig != null && nodeKey != null ? getMenuOptions(activeEmbedConfig, embedLinkViaActiveEmbedConfig, reset) : [];
+  }, [activeEmbedConfig, embedLinkViaActiveEmbedConfig, getMenuOptions, nodeKey, reset]);
+  const onSelectOption = React.useCallback((selectedOption, targetNode, closeMenu) => {
+    editor.update(() => {
+      selectedOption.onSelect(targetNode);
+      closeMenu();
+    });
+  }, [editor]);
+  return nodeKey != null ? /*#__PURE__*/React.createElement(LexicalTypeaheadMenuPlugin.LexicalNodeMenuPlugin, {
+    nodeKey: nodeKey,
+    onClose: reset,
+    onSelectOption: onSelectOption,
+    options: options,
+    menuRenderFn: menuRenderFn
+  }) : null;
+}
+
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -2512,6 +3402,55 @@ const VideoEmbedConfig = {
   },
   type: 'video'
 };
+const GitlabEmbedConfig = {
+  contentName: 'GitLab URL',
+  exampleUrl: 'https://gitlab.com/gitlab-org/gitlab',
+  icon: /*#__PURE__*/React.createElement("i", {
+    className: "icon gitlab"
+  }),
+  keywords: ['gitlab', 'repo', 'merge', 'issue', 'commit'],
+  type: 'gitlab-link',
+  insertNode: (editor, result) => {
+    editor.dispatchCommand(INSERT_GITLAB_COMMAND, result);
+  },
+  parseUrl: async url => {
+    if (url.includes('gitlab') || url.includes('git.')) {
+      try {
+        // Match ANY GitLab instance and extract groups, repo, type, id
+        const regex = /^https?:\/\/[^/]+\/(.+?)\/([^/]+?)(?:\/-\/(issues|merge_requests|commit|pipelines)\/([^/?#]+))?\/?$/i;
+        const match = url.match(regex);
+
+        if (!match) {
+          return null;
+        }
+
+        const [, groupPath, repo, typeRaw, id] = match;
+        const linkTypeMap = {
+          branches: 'branch',
+          issues: 'issue',
+          merge_requests: 'merge_request',
+          commit: 'commit',
+          pipelines: 'pipeline'
+        };
+        const linkType = linkTypeMap[typeRaw] || 'project';
+        return {
+          url,
+          type: linkType,
+          // "issue", "merge_request", "commit", "pipeline", "project"
+          owner: groupPath,
+          // group / subgroup structure
+          repo: repo,
+          id: id || ''
+        };
+      } catch (err) {
+        console.error('GitLab URL parse failed', err);
+        return null;
+      }
+    }
+
+    return null;
+  }
+};
 const PdfEmbedConfig = {
   contentName: 'Pdf',
   exampleUrl: 'https://media.geeksforgeeks.org/wp-content/cdn-uploads/20210101201653/PDF.pdf',
@@ -2574,7 +3513,7 @@ const OfficeEmbedConfig = {
 };
 const EmbedConfigs = [// TwitterEmbedConfig,
 YoutubeEmbedConfig, // FigmaEmbedConfig,
-VideoEmbedConfig, PdfEmbedConfig, OfficeEmbedConfig];
+VideoEmbedConfig, PdfEmbedConfig, OfficeEmbedConfig, GitlabEmbedConfig];
 
 function AutoEmbedMenuItem({
   index,
@@ -2640,7 +3579,7 @@ function AutoEmbedDialog({
   const [editor] = LexicalComposerContext.useLexicalComposerContext();
   const [embedResult, setEmbedResult] = React.useState(null);
   const validateText = React.useMemo(() => debounce(inputText => {
-    const urlMatch = LexicalAutoEmbedPlugin.URL_MATCHER.exec(inputText);
+    const urlMatch = LexicalAutoEmbedPlugin$1.URL_MATCHER.exec(inputText);
 
     if (embedConfig != null && inputText != null && urlMatch != null) {
       Promise.resolve(embedConfig.parseUrl(inputText)).then(parseResult => {
@@ -2694,14 +3633,14 @@ function AutoEmbedPlugin() {
   };
 
   const getMenuOptions = (activeEmbedConfig, embedFn, dismissFn) => {
-    return [new LexicalAutoEmbedPlugin.AutoEmbedOption('Dismiss', {
+    return [new LexicalAutoEmbedPlugin$1.AutoEmbedOption('Dismiss', {
       onSelect: dismissFn
-    }), new LexicalAutoEmbedPlugin.AutoEmbedOption(`Embed ${activeEmbedConfig.contentName}`, {
+    }), new LexicalAutoEmbedPlugin$1.AutoEmbedOption(`Embed ${activeEmbedConfig.contentName}`, {
       onSelect: embedFn
     })];
   };
 
-  return /*#__PURE__*/React.createElement(React.Fragment, null, modal, /*#__PURE__*/React.createElement(LexicalAutoEmbedPlugin.LexicalAutoEmbedPlugin, {
+  return /*#__PURE__*/React.createElement(React.Fragment, null, modal, /*#__PURE__*/React.createElement(LexicalAutoEmbedPlugin, {
     embedConfigs: EmbedConfigs,
     onOpenEmbedModalForConfig: openEmbedModal,
     getMenuOptions: getMenuOptions,
@@ -5213,7 +6152,7 @@ function ComponentPickerMenuPlugin({
     ...EmbedConfigs.filter(config => config.type === 'youtube' ? config.embedYoutubeVideo : config.type === 'video' ? config.embedVideo : config.type === 'pdf' ? config.embedPdf : config.type === 'office' ? config.embedOffice : false).map(embedConfig => new ComponentPickerOption(`Embed ${embedConfig.contentName}`, {
       icon: embedConfig.icon,
       keywords: [...embedConfig.keywords, 'embed'],
-      onSelect: () => editor.dispatchCommand(LexicalAutoEmbedPlugin.INSERT_EMBED_COMMAND, embedConfig.type)
+      onSelect: () => editor.dispatchCommand(LexicalAutoEmbedPlugin$1.INSERT_EMBED_COMMAND, embedConfig.type)
     })), // new ComponentPickerOption('Equation', {
     //   icon: <i className="icon equation" />,
     //   keywords: ['equation', 'latex', 'math'],
@@ -10851,7 +11790,8 @@ function Editor({
   rootClassName,
   containerClassName,
   dummyMentionsDatas,
-  handleAIData
+  handleAIData,
+  onGitLabPreviewFetch
 }) {
   const {
     historyState
@@ -10967,7 +11907,9 @@ function Editor({
     maxDepth: 7
   }), /*#__PURE__*/React.createElement(LexicalTablePlugin.TablePlugin, null), /*#__PURE__*/React.createElement(TableCellResizerPlugin, null), /*#__PURE__*/React.createElement(ImagesPlugin, null), /*#__PURE__*/React.createElement(OnImageUploadPlugin, {
     onUpload: onUpload
-  }), /*#__PURE__*/React.createElement(LinkPlugin, null), /*#__PURE__*/React.createElement(PollPlugin, null), /*#__PURE__*/React.createElement(TwitterPlugin, null), /*#__PURE__*/React.createElement(YouTubePlugin, null), /*#__PURE__*/React.createElement(VideoPlugin, null), /*#__PURE__*/React.createElement(PdfPlugin, null), /*#__PURE__*/React.createElement(OfficePlugin, null), /*#__PURE__*/React.createElement(FigmaPlugin, null), /*#__PURE__*/React.createElement(ClickableLinkPlugin, null), /*#__PURE__*/React.createElement(LexicalHorizontalRulePlugin.HorizontalRulePlugin, null), /*#__PURE__*/React.createElement(TabFocusPlugin, null), /*#__PURE__*/React.createElement(LexicalTabIndentationPlugin.TabIndentationPlugin, null), /*#__PURE__*/React.createElement(CollapsiblePlugin, null), floatingAnchorElem && !isSmallWidthViewport && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(DraggableBlockPlugin, {
+  }), /*#__PURE__*/React.createElement(LinkPlugin, null), /*#__PURE__*/React.createElement(PollPlugin, null), /*#__PURE__*/React.createElement(TwitterPlugin, null), /*#__PURE__*/React.createElement(YouTubePlugin, null), /*#__PURE__*/React.createElement(GitlabPlugin, {
+    onFetchPreview: onGitLabPreviewFetch
+  }), /*#__PURE__*/React.createElement(VideoPlugin, null), /*#__PURE__*/React.createElement(PdfPlugin, null), /*#__PURE__*/React.createElement(OfficePlugin, null), /*#__PURE__*/React.createElement(FigmaPlugin, null), /*#__PURE__*/React.createElement(ClickableLinkPlugin, null), /*#__PURE__*/React.createElement(LexicalHorizontalRulePlugin.HorizontalRulePlugin, null), /*#__PURE__*/React.createElement(TabFocusPlugin, null), /*#__PURE__*/React.createElement(LexicalTabIndentationPlugin.TabIndentationPlugin, null), /*#__PURE__*/React.createElement(CollapsiblePlugin, null), floatingAnchorElem && !isSmallWidthViewport && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(DraggableBlockPlugin, {
     anchorElem: floatingAnchorElem
   }), /*#__PURE__*/React.createElement(CodeActionMenuPlugin, {
     anchorElem: floatingAnchorElem
@@ -11717,7 +12659,7 @@ function $createTableNode(rows) {
  * LICENSE file in the root directory of this source tree.
  *
  */
-const PlaygroundNodes = [richText.HeadingNode, list.ListNode, list.ListItemNode, richText.QuoteNode, code.CodeNode, TableNode, table.TableNode, table.TableCellNode, table.TableRowNode, hashtag.HashtagNode, code.CodeHighlightNode, link.AutoLinkNode, link.LinkNode, overflow.OverflowNode, PollNode, StickyNode, ImageNode, MentionNode, EmojiNode, AutocompleteNode, KeywordNode, LexicalHorizontalRuleNode.HorizontalRuleNode, TweetNode, YouTubeNode, FigmaNode, mark.MarkNode, CollapsibleContainerNode, CollapsibleContentNode, CollapsibleTitleNode, ExtendedTextNode, VideoNode, PdfNode, OfficeNode];
+const PlaygroundNodes = [richText.HeadingNode, list.ListNode, list.ListItemNode, richText.QuoteNode, code.CodeNode, TableNode, table.TableNode, table.TableCellNode, table.TableRowNode, hashtag.HashtagNode, code.CodeHighlightNode, link.AutoLinkNode, link.LinkNode, overflow.OverflowNode, PollNode, StickyNode, ImageNode, MentionNode, EmojiNode, AutocompleteNode, KeywordNode, LexicalHorizontalRuleNode.HorizontalRuleNode, TweetNode, YouTubeNode, FigmaNode, mark.MarkNode, CollapsibleContainerNode, CollapsibleContentNode, CollapsibleTitleNode, ExtendedTextNode, VideoNode, PdfNode, OfficeNode, GitlabNode];
 var PlaygroundNodes$1 = PlaygroundNodes;
 
 /* eslint-disable header/header */

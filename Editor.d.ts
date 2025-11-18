@@ -23,6 +23,7 @@ export declare type EditorProps = {
     onChangeMode?: 'html' | 'json';
     toolbarConfig?: ToolbarConfig;
     onUpload?: OnImageUpload;
+    onGitLinkAppend?: (url: URL) => Promise<any>;
     handleAIData?: (data: string) => Promise<any>;
     onDataSend?: (img: File) => Promise<{
         url: string;
@@ -34,5 +35,6 @@ export declare type EditorProps = {
         name: string;
         email: string;
     }];
+    onGitLabPreviewFetch?: (url: string) => Promise<any>;
 };
-export default function Editor({ isCollab, isAutocomplete, isMaxLength, isCharLimit, isCharLimitUtf8, isRichText, allowEmoji, showTreeView, showTableOfContents, onChange, onChangeMode, onUpload, onDataSend, toolbarConfig, rootClassName, containerClassName, dummyMentionsDatas, handleAIData, }: EditorProps): JSX.Element;
+export default function Editor({ isCollab, isAutocomplete, isMaxLength, isCharLimit, isCharLimitUtf8, isRichText, allowEmoji, showTreeView, showTableOfContents, onChange, onChangeMode, onUpload, onDataSend, toolbarConfig, rootClassName, containerClassName, dummyMentionsDatas, handleAIData, onGitLabPreviewFetch, }: EditorProps): JSX.Element;
